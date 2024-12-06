@@ -175,5 +175,96 @@ const loginValidationSchema=Joi.object({
 
 })
 
+const postValidationSchema = Joi.object({
+  title: Joi.string()
+    .max(200)
+    .required()
+    .messages({
+      'string.max': 'Title cannot exceed 200 characters',
+      'any.required': 'Title is required'
+    }),
+  
+  description: Joi.string()
+    .max(500)
+    .optional()
+    .messages({
+      'string.max': 'Description cannot exceed 500 characters'
+    }),
+  
+  imageUrl: Joi.string()
+    .uri()
+    .required()
+    .messages({
+      'string.uri': 'Image URL must be a valid URL',
+      'any.required': 'Image URL is required'
+    }),
+  
+  link: Joi.string()
+    .uri()
+    .optional()
+    .messages({
+      'string.uri': 'Link must be a valid URL'
+    }),
+
+  category: Joi.string()
+    .valid('Food', 'Fashion', 'Travel', 'DIY', 'Tech', 'Home', 'Other')
+    .required()
+    .messages({
+      'any.only': 'Category must be one of the following: Food, Fashion, Travel, DIY, Tech, Home, Other',
+      'any.required': 'Category is required'
+    }),
+
+  tags: Joi.array()
+    .items(Joi.string())
+    .max(5)
+    .optional()
+    .messages({
+      'array.max': 'A post can have a maximum of 5 tags'
+    }),
+
+  userId: Joi.string()
+    .required()
+    .messages({
+      'any.required': 'User ID is required'
+    }),
+
+  boardId: Joi.string()
+    .required()
+    .messages({
+      'any.required': 'Board ID is required'
+    }),
+
+  likesCount: Joi.number()
+    .min(0)
+    .default(0)
+    .messages({
+      'number.min': 'Likes count cannot be negative'
+    }),
+
+  commentsCount: Joi.number()
+    .min(0)
+    .default(0)
+    .messages({
+      'number.min': 'Comments count cannot be negative'
+    }),
+
+  savesCount: Joi.number()
+    .min(0)
+    .default(0)
+    .messages({
+      'number.min': 'Saves count cannot be negative'
+    }),
+
+  viewsCount: Joi.number()
+    .min(0)
+    .default(0)
+    .messages({
+      'number.min': 'Views count cannot be negative'
+    }),
+
+  createdAt: Joi.date().default(Date.now)
+});
+
+
 // Validation for registration
-module.exports = { userValidationSchema,loginValidationSchema };
+module.exports = { userValidationSchema,loginValidationSchema,postValidationSchema };

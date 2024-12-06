@@ -1,13 +1,30 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-import { logout } from '../Redux.js/UserSlice';
+import { logoutUser } from '../Redux.js/UserSlice';
+import axiosInstance from "../Utils/AxioaInstance";
+import handleAsync from "../Utils/HandleAsync";
 const Navbar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const handleLogout = handleAsync( async (e) => {
+    e.preventDefault();
+      const  response=await axiosInstance.post('/logout',{},{withCredentials:true});
+      dispatch(logoutUser(user));
 
+      if (response.status >= 200 && response.status < 300) {
+        alert('Logout successful', response.data);
+        navigate("/login")
+      } else {
+        throw new Error(response.data.message || 'An error occurred');
+      }
+      setIsDropdownOpen(false);
+      navigate('/');
+    
+  });
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
@@ -63,9 +80,9 @@ const Navbar = () => {
         />
       ) : (
         <div
-          className="w-12 h-12 rounded-full bg-gray-500 flex items-center justify-center text-white font-bold text-lg"
+          className="w-12 h-12 rounded-full bg-gray-200 flex items-center pb-3 justify-center text-blck  text-lg"
         >
-          {user.firstName ? user.firstName[0].toUpperCase() : ''}
+          {user.firstname ? user.firstname[0].toUpperCase() : ''}
         </div>
       )}
     </div>
@@ -82,57 +99,66 @@ const Navbar = () => {
 
       {/* Dropdown Menu */}
       {isDropdownOpen && (
-        <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg ring-1 ring-gray-200 	z-50">
-          <div className="p-4 border-b border-gray-200 ">
-            <p className="text-sm text-gray-500">Currently in</p>
+        <div className="absolute right-0 mt-2 w-63 bg-white rounded-lg shadow-lg ring-1 ring-gray-200 z-50">
+          <div className="p-4 ">
+            <p className="text-xs ">Currently in</p>
             <div className="flex items-center justify-between mt-2 bg-gray-100 px-3 py-2 rounded-md">
-              <div>
+              
+              <div
+          className="w-12 h-12 pr-6 pt-4 rounded-full  flex items-center pb-3 justify-center text-blck text-2xl"
+        >
+          {user.firstname ? user.firstname[0].toUpperCase() : ''}
+        </div>
+        <div>
                 <p className="font-medium text-gray-800">{user.firstname}</p>
                 <p className="text-sm text-gray-500">Personal</p>
                 <p className="text-sm text-gray-500">{user.email}</p>
               </div>
-              <i className="fas fa-check text-gray-500"></i>
+              <i className="fas fa-check text-base text-black"></i>
             </div>
           </div>
 
           <div className="py-2">
-            <p className="px-4 text-sm text-gray-500">Your accounts</p>
-            <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+            <p className="px-4 text-xs ">Your accounts</p>
+            <button className="block w-full text-left px-4 py-2 text-sm  hover:bg-gray-100">
               Add account
             </button>
-            <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+            <button className="block w-full text-left px-4 py-2 text-sm  hover:bg-gray-100">
               Convert to business
             </button>
           </div>
 
-          <div className="py-2 border-t border-gray-200">
-            <p className="px-4 text-sm text-gray-500">More options</p>
-            <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+          <div className="py-3 ">
+            <p className="px-4 text-xs  ">More options</p>
+            <button className="block w-full text-left px-4 py-4 text-sm  hover:bg-gray-100">
               Settings
             </button>
-            <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+            <button className="block w-full text-left px-4 py-2 text-sm  hover:bg-gray-100">
               Home feed tuner
             </button>
-            <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+            <button className="block w-full text-left px-4 py-2 text-sm  hover:bg-gray-100">
               Install the Windows app
             </button>
-            <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+            <button className="block w-full text-left px-4 py-2 text-sm  hover:bg-gray-100">
               Reports and Violations Centre
             </button>
-            <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+            <button className="block w-full text-left px-4 py-2 text-sm  hover:bg-gray-100">
               Your privacy rights
             </button>
-            <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+            <button className="block w-full text-left px-4 py-2 text-sm  hover:bg-gray-100">
               Help Centre
             </button>
-            <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+            <button className="block w-full text-left px-4 py-2 text-sm  hover:bg-gray-100">
               Terms of Service
             </button>
-            <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+            <button className="block w-full text-left px-4 py-2 text-sm  hover:bg-gray-100">
               Privacy Policy
             </button>
-            <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+            <button className="block w-full text-left px-4 py-2 text-sm  hover:bg-gray-100">
               Be a beta tester
+            </button>
+            <button className="block w-full text-left px-4 py-2 text-sm  hover:bg-gray-100" onClick={handleLogout}>
+             Log out
             </button>
           </div>
         </div>

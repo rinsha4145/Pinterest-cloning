@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import handleAsync from '../Utils/HandleAsync';
 import Cookies from 'js-cookie'
-import { useDispatch, useSelector } from 'react-redux';
-import { loginUser, setUser } from '../Redux.js/UserSlice';
+import { useDispatch } from 'react-redux';
+import {  setUser } from '../Redux.js/UserSlice';
 import axiosInstance from '../Utils/AxioaInstance';
 function Login() {
   const [datas, setDatas] = useState({email: '',password: ''});
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
@@ -23,7 +24,7 @@ function Login() {
     } else {
       console.log('User cookie not found');
     }
-  }, [dispatch]);
+  }, [isLoggedIn]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,8 +36,8 @@ function Login() {
       const response = await axiosInstance.post('/login', {email: datas.email, password: datas.password});
       console.log('//',response)
       if (response.status === 200) {
-        
-        navigate('/'); // Redirect to home page after login
+        navigate('/'); 
+        setIsLoggedIn(true); // Redirect to home page after login
       }
   });
   return (
