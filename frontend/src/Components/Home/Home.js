@@ -1,7 +1,24 @@
 // Home.js
-import React from 'react';
-
-const Home = ({ posts }) => {
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setPosts } from '../Redux/PostSlice';
+const Home = () => {
+    const dispatch = useDispatch();
+    const { posts } = useSelector((state) => state.posts);
+//post fetching
+  useEffect(() => {
+    fetch('http://localhost:4000/posts')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        dispatch(setPosts(data));
+      })
+      
+  }, []);
   return (
     <div className="container mx-auto p-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

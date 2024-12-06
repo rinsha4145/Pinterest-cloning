@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import handleAsync from '../Utils/HandleAsync';
 import Cookies from 'js-cookie'
 import { useDispatch } from 'react-redux';
-import {  setUser } from '../Redux.js/UserSlice';
+import {  setUser } from '../Redux/UserSlice';
 import axiosInstance from '../Utils/AxioaInstance';
 function Login() {
   const [datas, setDatas] = useState({email: '',password: ''});
