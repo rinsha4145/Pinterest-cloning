@@ -13,11 +13,11 @@ const storage =new CloudinaryStorage({
     cloudinary:cloudinary,
     params:{
         folder:"products",
-        allowed_formates:['jpg','png','jpeg']
-    }
+        allowed_formats: ['jpg', 'png', 'jpeg', 'mp4', 'mov', 'avi', 'mkv'],    
+    },    
 })
 
 const upload=multer({storage:storage})
 console.log(upload.single('image') ); 
 
-module.exports=upload
+module.exports=upload 
