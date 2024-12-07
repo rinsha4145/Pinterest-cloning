@@ -1,0 +1,44 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    width: 100%; /* Use 100% to make it responsive */
+    max-width: 1400px; /* Limit max width for larger screens */
+   
+    columns: 6; /* Default to 6 columns */
+    column-gap: 20px;
+    padding:20px ;
+}
+
+.container .box {
+    width: 100%;
+    margin-bottom: 10px;
+    break-inside: avoid; /* Prevent column breaks inside elements */
+}
+
+.container .box img {
+    width: 100%;
+    border-radius: 15px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .container {
+        columns: 4; /* Reduce to 4 columns */
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        columns: 2; /* Reduce to 2 columns for tablets */
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        columns: 1; /* Single column for small screens */
+    }
+}

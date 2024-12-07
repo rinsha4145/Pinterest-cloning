@@ -12,7 +12,7 @@ const postSchema = new Schema({
     type: String,
     maxlength: 500
   },
-  imageUrl: {
+  image: {
     type: String,
     required: true
   },
@@ -35,7 +35,6 @@ const postSchema = new Schema({
   boardId: {
     type: Schema.Types.ObjectId,
     ref: 'Board',
-    required: true
   },
   likesCount: {
     type: Number,

@@ -191,7 +191,7 @@ const postValidationSchema = Joi.object({
       'string.max': 'Description cannot exceed 500 characters'
     }),
   
-  imageUrl: Joi.string()
+  image: Joi.string()
     .uri()
     .required()
     .messages({

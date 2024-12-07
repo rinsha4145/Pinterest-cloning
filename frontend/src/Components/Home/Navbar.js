@@ -52,12 +52,12 @@ const Navbar = () => {
  </div>
 
  
- <div className="search flex items-center bg-gray-300 hover:bg-gray-400 rounded-full px-4 ml-10 h-12">
+ <div className="search flex items-center bg-gray-200 hover:bg-gray-300 rounded-full px-4 ml-10 h-12">
    <i className="fas fa-search text-gray-500 w-12 flex justify-center items-center"></i>
    <input
      type="search"
-     placeholder="search"
-     className="w-[800px] bg-transparent border-none outline-none text-sm text-gray-700 placeholder-gray-500 pr-4"
+     placeholder="Search for"
+     className="w-[800px] bg-transparent border-none outline-none text-base text-gray-700 placeholder-gray-500  pl-[-15px]"
    />
  </div>
 
@@ -69,7 +69,7 @@ const Navbar = () => {
    <Link to="" className="items w-12 h-12 rounded-full flex items-center justify-center hover:bg-gray-200">
      <i className="far fa-comment-dots text-gray-500 text-2xl"></i>
    </Link>
-   <Link to="" className="avatar w-12 h-12 rounded-full flex items-center justify-center">
+   <Link to="" className="avatar w-12 h-12 rounded-full flex items-center justify-center hover:bg-gray-200">
      <div className="img w-8 h-8 rounded-full overflow-hidden relative">
      <div className="flex items-center justify-center">
       {user.profileImage ? (
