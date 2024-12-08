@@ -24,7 +24,7 @@ const Home = () => {
     <>
     <div className="container">
     {posts.map((post) => (
-        <div className='box'><img src={post.imageUrl} className='' alt={post.title}></img></div>
+        <div className='box' key={post._id}><img src={post.image} alt={post.title}></img></div>
     ))}
     </div>
     </>

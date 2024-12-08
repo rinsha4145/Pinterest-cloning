@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import handleAsync from '../Utils/HandleAsync';
 import Cookies from 'js-cookie'
 import { useDispatch } from 'react-redux';
@@ -57,8 +57,8 @@ function Login() {
       {/* Password input */}
       <label className="flex gap-1 items-center text-sm pl-[70px] text-base font-medium leading-relaxed">Password</label>
       <input type="password" placeholder="Password" name="password"
-                  value={datas.password} onChange={handleChange} className="w-4/6 mx-auto px-4 py-3 mb-2 text-sm border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"/>
-      <h4 className="text-[13px] ml-[70px] font-semibold mb-2 text-left">Forgot your password?</h4>
+                  value={datas.password} onChange={handleChange} className="w-4/6 mx-auto px-4 py-3 mb-2  text-sm border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"/><br/>
+      <Link to='/forgot-password' className="text-[13px] ml-[-11px] font-semibold mb-2 text-left">Forgot your password?</Link>
       {/* Login button */}
       <button className="w-4/6 h-[40px] mx-auto bg-red-600 text-white text-center py-3 mb-2 rounded-full  hover:bg-red-700 text-base">Log in</button>
       <p className="font-semibold mb-2">OR</p>
