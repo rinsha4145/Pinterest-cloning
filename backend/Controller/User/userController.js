@@ -29,7 +29,7 @@ const userLogin = async (req, res,next) => {
     
     const { value, error } = loginValidationSchema.validate(req.body);
     if (error) {
-        return next(new CustomError(error.details[0].message, 400));
+        return next(new ValidationError(error.details[0].message));
     }
     const { email, password } = value;
     const user = await User.findOne({ email });
@@ -51,7 +51,7 @@ const userLogin = async (req, res,next) => {
        
         const token = jwt.sign({ id: user._id,email: user.email },process.env.JWT_KEY,{ expiresIn: '3d' });
         const refreshToken = jwt.sign({ id: user._id,email: user.email },process.env.JWT_KEY,{ expiresIn: '7d' });
-            console.log("sdfghj",refreshToken);
+            console.log("token",token);
             
         // Set cookies for tokens
         res.cookie("token", token, {

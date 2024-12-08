@@ -191,14 +191,7 @@ const postValidationSchema = Joi.object({
       'string.max': 'Description cannot exceed 500 characters'
     }),
   
-  image: Joi.string()
-    .uri()
-    .required()
-    .messages({
-      'string.uri': 'Image URL must be a valid URL',
-      'any.required': 'Image URL is required'
-    }),
-  
+  image: Joi.string(),
   link: Joi.string()
     .uri()
     .optional()
@@ -216,23 +209,7 @@ const postValidationSchema = Joi.object({
 
   tags: Joi.array()
     .items(Joi.string())
-    .max(5)
-    .optional()
-    .messages({
-      'array.max': 'A post can have a maximum of 5 tags'
-    }),
-
-  userId: Joi.string()
-    .required()
-    .messages({
-      'any.required': 'User ID is required'
-    }),
-
-  boardId: Joi.string()
-    .required()
-    .messages({
-      'any.required': 'Board ID is required'
-    }),
+    .optional(),
 
   likesCount: Joi.number()
     .min(0)

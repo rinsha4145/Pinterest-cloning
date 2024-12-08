@@ -31,6 +31,10 @@ const addPost = async (req, res,next) => {
         return next(new ValidationError("No file uploaded"));
     
     }
+    // Ensure userId is set from the middleware
+    if (!req.userId) {
+        return res.status(401).json({ message: "Unauthorized: User ID not found" });
+      }
     const image = req.file?.path;
     const newPost = new Posts({
         title,
@@ -38,6 +42,7 @@ const addPost = async (req, res,next) => {
         category,
         image,
         tags, 
+        userId: req.userId,
     });
     await newPost.save();
 
