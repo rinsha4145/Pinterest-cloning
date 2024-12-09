@@ -9,7 +9,7 @@ const postSchema = new Schema({
   link: {type: String},
   category: {type: String,enum: ['Food', 'Fashion', 'Travel', 'DIY', 'Tech', 'Home', 'Other'],required: true},
   tags: {type: [String]},
-  userId: {type:mongoose.Schema.ObjectId,ref: 'Users',required: true},
+  owner: {type:mongoose.Schema.ObjectId,ref: 'Users',required: true},
   boardId: {type: Schema.Types.ObjectId,ref: 'Board',},
   likesCount: {type: Number,default: 0},
   commentsCount: {type: Number,default: 0},

@@ -42,11 +42,11 @@ const addPost = async (req, res,next) => {
         category,
         image,
         tags, 
-        userId: req.userId,
+        owner: req.userId,
     });
     await newPost.save();
 
-        res.status(200).json({status:"success", message:"product added successfully",newPost});
+        res.status(200).json({status:"success", message:"pin added successfully",newPost});
 };
 
 module.exports = {getAllPosts,getpostbyid,addPost};
