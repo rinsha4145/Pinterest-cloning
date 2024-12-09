@@ -19,9 +19,10 @@ router
 
 //  .post('/forgottpass',tryCatch(forgottpass))
 
- .get('/posts',tryCatch(postcontroller.getAllPosts))
- .get('/posts/:id',userAuthMiddleware,tryCatch(postcontroller.getpostbyid))
- .post('/addpost',userAuthMiddleware,upload.single('image'),tryCatch(postcontroller.addPost)) 
+ .get('/allposts',tryCatch(postcontroller.getAllPosts))
+ .get('/post/:id',userAuthMiddleware,tryCatch(postcontroller.getpostbyid))
+ .get('/postss/:category',userAuthMiddleware,tryCatch(postcontroller.getbycategory))   
+ .post('/addpost',userAuthMiddleware,upload.single('image'),tryCatch(postcontroller.addPost))  
 
 
 
