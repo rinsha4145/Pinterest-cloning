@@ -73,7 +73,7 @@ const Create = () => {
     formData.append("pin", pin);
     formData.append("file", file);
 
-    addPin(formData, setFilePrev, setFile, setTitle, setPin, navigate);
+    // addPin(formData, setFilePrev, setFile, setTitle, setPin, navigate);
   };
   return (
     <div>

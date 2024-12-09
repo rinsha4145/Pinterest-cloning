@@ -9,6 +9,7 @@ const persistConfig = {
   key: 'user', // Key for the persisted state
   storage, // Use localStorage
 };
+
 const postsPersistConfig = {
   key: 'posts', // Key for the persisted state
   storage, // Use localStorage
