@@ -3,7 +3,6 @@ const {UnauthorizedError} = require('../Utils/customeError');
 
 const userAuthMiddleware = async (req, res, next) => {
   try {
-    console.log("Cookies received:", req.cookies);
     const token = req.cookies.token;
     if (!token) {
       return res.status(401).json({ message: 'Authentication token missing' }); // Ensure return to avoid further execution

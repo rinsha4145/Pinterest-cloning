@@ -1,14 +1,13 @@
 const User=require('../../Models/userSchema')
-const jwt = require('jsonwebtoken');
 const {userValidationSchema,loginValidationSchema} = require('../../Models/validation')
 const {ValidationError}=require('../../Utils/customeError')
 const bcrypt = require('bcrypt');
+const { generateToken } = require('../../Utils/generateToken');
 
 
 //user registration
 const userReg = async (req,res,next)=>{
     const {value,error}=userValidationSchema.validate(req.body);
-    console.log(value)
     if(error){
         return next(new ValidationError(error.details[0].message, 400))
         
@@ -26,7 +25,6 @@ const userReg = async (req,res,next)=>{
 }
 
 const userLogin = async (req, res,next) => {
-    
     const { value, error } = loginValidationSchema.validate(req.body);
     if (error) {
         return next(new ValidationError(error.details[0].message));
@@ -43,41 +41,25 @@ const userLogin = async (req, res,next) => {
     const isblock= user.isBlocked
   
     if(isblock){
-        console.log("isblock")
         // return res.status(404).json({message:"user is blocked"})
         return next(new CustomError('you are blocked contact the admin', 404));
     }
     if(!user.admin){
-       
-        const token = jwt.sign({ id: user._id,email: user.email },process.env.JWT_KEY,{ expiresIn: '3d' });
-        const refreshToken = jwt.sign({ id: user._id,email: user.email },process.env.JWT_KEY,{ expiresIn: '7d' });
-            console.log("token",token);
-            
-        // Set cookies for tokens
-        res.cookie("token", token, {
-            httpOnly: false,
-            secure: true, 
-            sameSite: "none",
-            maxAge: 3 * 24 * 60 * 60 * 1000 
-        });
-
-        res.cookie("refreshtoken", refreshToken, {
-            httpOnly: false,
-            secure: true, 
-            sameSite: "none",
-            maxAge: 7 * 24 * 60 * 60 * 1000 
-        });
-
-        res.cookie("user", user, {
-            httpOnly: false,
-            secure: true, 
-            sameSite: "none",
-            maxAge: 7 * 24 * 60 * 60 * 1000 
-        })
-
+        generateToken(user,res)
         res.status(200).json({ status: 'success', message: "User Logged in successfully"});
     }
-}     
+}   
+
+//own profile view
+const profileView = async (req, res) => {
+        const profile = await User.findById(req.userId);
+        if (!profile) {
+            return res.status(404).json({ message: "Profile not found" });
+        }
+        res.json(profile);
+};
+
+
 
 //user logout
 const userLogout = async (req, res) => {
@@ -101,4 +83,4 @@ const userLogout = async (req, res) => {
     res.status(200).json({ status: 'success', message: 'Logout successful' });
 };
 
-module.exports = { userReg,userLogin,userLogout};
+module.exports = { userReg,userLogin,userLogout,profileView};

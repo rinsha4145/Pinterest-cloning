@@ -11,10 +11,12 @@ const { forgottpass } = require("../Controller/forgottPassword");
 
 router
  .post('/signup',tryCatch(userController.userReg))
- .post('/forgottpass',tryCatch(forgottpass))
-
  .post('/login',tryCatch(userController.userLogin))
  .post('/logout',tryCatch(userController.userLogout))
+ .get('/me',userAuthMiddleware,tryCatch(userController.profileView))
+
+
+//  .post('/forgottpass',tryCatch(forgottpass))
 
  .get('/posts',tryCatch(postcontroller.getAllPosts))
  .get('/posts/:id',userAuthMiddleware,tryCatch(postcontroller.getpostbyid))
