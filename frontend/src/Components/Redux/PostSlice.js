@@ -4,8 +4,6 @@ import { createSlice } from '@reduxjs/toolkit';
 // Initial state for posts
 const initialState = {
   posts: [], // Store posts fetched from the API
-  isLoading: false, // Indicates if posts are being loaded
-  error: null, // For any errors while fetching posts
 };
 
 const postsSlice = createSlice({
@@ -20,12 +18,6 @@ const postsSlice = createSlice({
     },
     clearPosts: (state) => {
       state.posts = []; // Clear all posts
-    },
-    setLoading: (state, action) => {
-      state.isLoading = action.payload; // Set loading state
-    },
-    setError: (state, action) => {
-      state.error = action.payload; // Set error state
     },
   },
 });

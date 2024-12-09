@@ -12,7 +12,7 @@ const postSchema = new Schema({
   owner: {type:mongoose.Schema.ObjectId,ref: 'Users',required: true},
   boardId: {type: Schema.Types.ObjectId,ref: 'Board',},
   likesCount: {type: Number,default: 0},
-  commentsCount: {type: Number,default: 0},
+  comments: [{user: {type: mongoose.Schema.Types.ObjectId,ref: "User",required: true,},name: {type: String,required: true,},comment: {type: String,required: true,},reply:{type: String,required: true,}}],
   savesCount: {type: Number,default: 0},
   viewsCount: {type: Number,default: 0},
   createdAt: {type: Date,default: Date.now }

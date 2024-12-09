@@ -6,6 +6,7 @@ import Navbar from './Components/Home/Navbar';
 import Slide1 from './Components/Home/Slide1';
 import Home from './Components/Home/Home';
 import ForgotPassword from './Components/Home/ForgotPassword';
+import Create from './Components/Home/Create';
 
 function App() {
   return (
@@ -17,6 +18,8 @@ function App() {
     <Route path='/login' element={<Login/>}/>
     <Route path='/home' element={<Home/>}/>
     <Route path='/forgot-password' element={<ForgotPassword/>}/>
+    <Route path='/create' element={<Create/>}/>
+
 
 
 
