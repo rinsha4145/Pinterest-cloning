@@ -24,7 +24,7 @@ const getbycategory = async (req, res, next) => {
     if (!posts || posts.length === 0) {
         return next(new NotFoundError('Posts not found for this category.'));
     }
-    res.json(posts);
+    res.json({posts});
 };
 
 // Add post by a user

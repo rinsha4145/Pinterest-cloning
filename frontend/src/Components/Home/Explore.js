@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 function Explore() {
-    const { posts } = useSelector((state) => state.posts);
     const navigate= useNavigate()
 
     const [date, setDate] = useState("");
@@ -17,17 +16,17 @@ function Explore() {
         {
           image: "...",
           title: "Christmas gift ideas for fashion lovers",
-        category:"Travel"
+        category:"Food"
         },
         {
           image: "...",
           title: "Shine through the festivities",
-           category:"Travel"
+           category:"DIY"
         },
         {
           image: "...",
           title: "Relatable memes that are so you", 
-          category:"Travel"
+          category:"Tech"
         },
         {
           image: "...",
@@ -62,8 +61,8 @@ function Explore() {
    
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 ">
   {data.map((item, index) => (
-    <div key={index} className="relative rounded-lg overflow-hidden w-[380px] h-[280px]">
-      <img
+    <div key={index} className="relative rounded-lg overflow-hidden w-[380px] h-[280px]" onClick={() => navigate(`/category/${item.category}`)}>
+      <img 
   src={item.image}
   alt={item.title}
   className="w-full h-full object-cover"
@@ -73,10 +72,7 @@ function Explore() {
       <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white p-4">
         <h3 className="text-lg font-bold">{item.title}</h3>
       </div>
-<button onClick={() => navigate(`/category/${item.category}`)}>uuuu</button>
-
     </div>
-    
   ))}
 </div>
 </div>
