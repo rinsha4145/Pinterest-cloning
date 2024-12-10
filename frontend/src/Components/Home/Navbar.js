@@ -43,7 +43,7 @@ const Navbar = () => {
    <Link to="/home" className="home font-bold active:bg-black active:text-white  flex items-center justify-center px-4 py-2 rounded-full">
    Home
    </Link>
-   <Link to="" className="home font-bold active:bg-black active:text-white flex items-center justify-center px-4 py-2 rounded-full">
+   <Link to="/explore" className="home font-bold active:bg-black active:text-white flex items-center justify-center px-4 py-2 rounded-full">
    Explore
    </Link>
    <Link to="/create" className="home font-bold active:bg-black active:text-white flex items-center justify-center px-4 py-2 rounded-full">

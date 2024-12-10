@@ -4,13 +4,13 @@ const errorHandler = (err, req, res, next) => {
     if (err instanceof AppError) {
         return res.status(err.statusCode).json({
             statusCode: err.statusCode,
-            status: err.status,
+            status: err.status, 
             message: err.message,
             stack: process.env.NODE_ENV === "development" ? err.stack : undefined,
-        });
+        }); 
     }
     // Handle unknown errors
-    console.error("Unknown error:", err);  // Log the unknown error
+    console.error("Unknown error:", err); 
 
     return res.status(500).json({
         status: "error",

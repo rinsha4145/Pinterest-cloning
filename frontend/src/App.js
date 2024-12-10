@@ -7,6 +7,8 @@ import Slide1 from './Components/Home/Slide1';
 import Home from './Components/Home/Home';
 import ForgotPassword from './Components/Home/ForgotPassword';
 import Create from './Components/Home/Create';
+import Explore from './Components/Home/Explore';
+import Category from './Components/Home/Category';
 
 function App() {
   return (
@@ -19,6 +21,10 @@ function App() {
     <Route path='/home' element={<Home/>}/>
     <Route path='/forgot-password' element={<ForgotPassword/>}/>
     <Route path='/create' element={<Create/>}/>
+    <Route path='/explore' element={<Explore/>}/>
+    <Route path='/category/:category' element={<Category/>}/>
+
+
 
 
 

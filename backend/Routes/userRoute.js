@@ -14,19 +14,17 @@ router
  .post('/login',tryCatch(userController.userLogin))
  .post('/logout',userAuthMiddleware,tryCatch(userController.userLogout))
  .get('/me',userAuthMiddleware,tryCatch(userController.profileView))
- .get('/:id',userAuthMiddleware,tryCatch(userController.userProfile))
+ .get('/profile/:id',userAuthMiddleware,tryCatch(userController.userProfile))
  .post('/follow/:id',userAuthMiddleware,tryCatch(userController.followUnfollow))
 
 //  .post('/forgottpass',tryCatch(forgottpass))
 
- .get('/allposts',tryCatch(postcontroller.getAllPosts))
+ .get('/all',tryCatch(postcontroller.getAllPosts))
  .get('/post/:id',userAuthMiddleware,tryCatch(postcontroller.getpostbyid))
- .get('/postss/:category',userAuthMiddleware,tryCatch(postcontroller.getbycategory))   
+ .get('/posts/:category',userAuthMiddleware,tryCatch(postcontroller.getbycategory)) 
  .post('/addpost',userAuthMiddleware,upload.single('image'),tryCatch(postcontroller.addPost))  
-
-
 
 
  
 module.exports = router; 
-  
+                   
