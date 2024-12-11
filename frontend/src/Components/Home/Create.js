@@ -8,9 +8,19 @@ import { addPost } from '../Redux/PostSlice';
 const Create = () => {
   const [isImageUploaded, setIsImageUploaded] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
+  const [post, setPost] = useState({
+    title:'',description: '',
+    link: '',board:'',
+    tag: ''
+  });
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
 
+  const handleChange = (e) => {
+    console.log(e)
+    const { name, value } = e.target;
+    setPost({ ...post, [name]: value });
+  };
   const handleFileUpload = (event) => {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
@@ -30,7 +40,6 @@ const Create = () => {
   }
   
 
-    const [error, setError] = useState(null);
   const [image, setImage] = useState(null);
   const [product, setProduct] = useState({
     title:'',productName: '',
@@ -43,36 +52,42 @@ const Create = () => {
     setImage(e.target.files[0]);
   };
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setProduct((prevProduct) => ({...prevProduct,[name]: value,}));
-  };
 
   //submit the form
   const handleSubmit = handleAsync(async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append('image', image);
-    Object.keys(product).forEach((key) => {
-        formData.append(key, product[key]);
+    
+    // Ensure image exists before appending
+    if (image) {
+        formData.append('image', image);
+    }
+
+    // Append post data
+    Object.keys(post).forEach((key) => {
+        formData.append(key, post[key]);
     });
 
-    try {
-        const response = await axiosInstance.post('/addpost', formData);
-
-        if (response.status === 200 && response.status < 300) {
-            // Dispatch action with the response data
-            dispatch(addPost(response.data)); // Example action
-            alert('Product added successfully');
-            // Optionally navigate or reset form
-        } else {
-            throw new Error(`Error: ${response.data.message || 'An error occurred'}`);
-        }
-    } catch (error) {
-        console.error(error);
-        alert('Failed to add product');
+    // Debugging: Log the form data
+    for (let [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
     }
+
+    try {
+      const response = await axiosInstance.post('/addpost', formData);
+      if (response.status === 200 && response.status < 300) {
+          alert('Post added successfully');
+      } else {
+          throw new Error(`Error: ${response.data.message || 'An unknown error occurred'}`);
+      }
+  } catch (error) {
+      console.error('API error:', error.response ? error.response.data : error.message);
+      alert('Failed to create post. Please check the data and try again.');
+  }
 });
+
+
+
 
   const inputRef = useRef(null);
 
@@ -85,31 +100,32 @@ const Create = () => {
   const [title, setTitle] = useState("");
   const [pin, setPin] = useState("");
 
-  const changeFileHandler = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
+  // const changeFileHandler = (e) => {
+  //   const file = e.target.files[0];
+  //   const reader = new FileReader();
 
-    reader.readAsDataURL(file);
+  //   reader.readAsDataURL(file);
 
-    reader.onloadend = () => {
-      setFilePrev(reader.result);
-      setFile(file);
-    };
-  };
+  //   reader.onloadend = () => {
+  //     setFilePrev(reader.result);
+  //     setFile(file);
+  //   };
+  // };
 
   const navigate = useNavigate();
 
-  const addPinHandler = (e) => {
-    e.preventDefault();
+  // const addPinHandler = (e) => {
+  //   e.preventDefault();
 
-    const formData = new FormData();
+  //   const formData = new FormData();
 
-    formData.append("title", title);
-    formData.append("pin", pin);
-    formData.append("file", file);
+  //   formData.append("title", title);
+  //   formData.append("pin", pin);
+  //   formData.append("file", file);
 
-    // addPin(formData, setFilePrev, setFile, setTitle, setPin, navigate);
-  };
+  //   // addPin(formData, setFilePrev, setFile, setTitle, setPin, navigate);
+  // };
+ 
   return <>
   <div className="flex items-center justify-between w-full border-b border-gray-300 px-4 py-2">
       <h1 className="text-lg font-semibold">Create Pin</h1>
@@ -132,6 +148,7 @@ const Create = () => {
         <div className="flex flex-col items-center">
           {imagePreview ? (
             <img
+            onChange={handleImageChange}
               src={imagePreview}
               alt="Uploaded Preview"
               className="h-full object-cover rounded-lg"
@@ -170,6 +187,9 @@ const Create = () => {
             <label className="block text-sm font-medium text-gray-700">Title</label>
             <input
               type="text"
+              name="title"
+              value={post.title}
+              onChange={handleChange}
               placeholder="Add a title"
               className="w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
             />
@@ -178,6 +198,9 @@ const Create = () => {
             <label className="block text-sm font-medium text-gray-700">Description</label>
             <textarea
               placeholder="Add a detailed description"
+              value={post.description}
+              name="description"
+              onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
               rows="4"
             ></textarea>
@@ -186,22 +209,33 @@ const Create = () => {
             <label className="block text-sm font-medium text-gray-700">Link</label>
             <input
               type="url"
+              value={post.link}
+              name="link"
+              onChange={handleChange}
               placeholder="Add a link"
               className="w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Board</label>
-            <select className="w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-              <option>Choose a board</option>
-              <option>Board 1</option>
-              <option>Board 2</option>
-            </select>
+            <select
+  name="board"
+  value={post.board}
+  onChange={handleChange} // Ensure the post state gets updated
+  className="w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+>
+  <option value="">Choose a board</option>
+  <option value="board1">Board 1</option>
+  <option value="board2">Board 2</option>
+</select>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Tagged topics</label>
             <input
               type="text"
+              name="tag"
+              value={post.tag}
+              onChange={handleChange}
               placeholder="Search for a tag"
               className="w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
             />

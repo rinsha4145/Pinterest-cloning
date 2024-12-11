@@ -14,7 +14,8 @@ module.exports = {
       },
       animation: {
         fadeInDown: 'fadeInDown 0.5s ease-in-out forwards',
-        fadeOutUp: 'fadeOutUp 0.5s ease-in-out forwards', // Define the fadeInUp animation
+        fadeOutUp: 'fadeOutUp 0.5s ease-in-out forwards', 
+        bounce: 'bounce 1s infinite',// Define the fadeInUp animation
       },
       keyframes: {
         fadeOutUp: {
