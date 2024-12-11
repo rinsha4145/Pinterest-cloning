@@ -25,7 +25,7 @@ const Slide1 = () => {
     slidesToShow: 1,
     fade: true,
     autoplay: true, 
-    autoplaySpeed: 4000,
+    autoplaySpeed: 3000,
     slidesToScroll: 1,
     beforeChange: (oldIndex, newIndex) => {
     setCurrentSlide(oldIndex)
@@ -34,26 +34,16 @@ const Slide1 = () => {
         setNextSlide(newIndex);
         setCurrentSlide(newIndex);
         setAnimationClass("animate-fadeInDown");
-      }, 4000); // Match the animation duration
+      }, 3000); // Match the animation duration
     },
   
   appendDots: dots => (
-    <div style={{ marginBottom: "400px", textAlign: "center" }}>
+    <div style={{ marginBottom: "400px", textAlign: "center",}}>
       <ul>{dots}</ul>
     </div>
   ),
   customPaging: i => (
-    <div
-      style={{
-        width: "12px",
-        height: "12px",
-        borderRadius: "50%",
-        backgroundColor: currentSlide === i ? "#000" : "#ccc",
-        display: "inline-block",
-        margin: "0 5px",
-        cursor: "pointer",
-      }}
-    ></div>
+    <button className={`${currentSlide === i ? 'active' : ''}`} >{i + 1}</button>
   ),
 };
 
@@ -66,12 +56,12 @@ const Slide1 = () => {
   ];
   return (
     <>
-    <section id="home">
+    <section id="home" className="font-sans">
     
     <div className="mt-[100px]">
       {/* Hero Text */}
       <div className="flex justify-center text-center">
-        <h1 className=" text-6xl md:text-5xl font-bold text-black ">
+        <h1 className=" text-7xl md:text-6xl font-medium text-black ">
           Get your next
         </h1>
         
@@ -136,7 +126,7 @@ const Slide1 = () => {
   <div className=" flex justify-center items-center z-50 ">
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    className="animate-bounce w-10 h-10 text-white border rounded-full"
+    className="animate-bounce w-12 h-12 text-white border rounded-full"
     style={{backgroundColor:slide.color}}
     fill="none"
     viewBox="0 0 24 24"
@@ -194,9 +184,9 @@ const Slide1 = () => {
  
 
       {/* Scroll Down Button */}
-      <div className=" flex justify-center absolute bottom-0 w-full py-4 mt-6 w-[100%]" id="search">
+      <div className=" flex justify-center absolute bottom-0 w-full py-4 mt-6 w-[100%] bg-custom-yellow" id="search">
       
-        <button className="flex items-center space-x-2  text-base ">
+        <button className="flex items-center space-x-2  text-base  ">
           <span>Here's how it works</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -218,7 +208,7 @@ const Slide1 = () => {
       
     </section>
     <section id="about" className="h-[100vh] w-[100%]">
-    <div className="flex justify-center items-center h-screen bg-custom-yellow font-sans">
+    <div className="flex justify-center items-center h-screen bg-custom-yellow font-sans" >
   <div className="rounded-lg  w-full flex flex-col md:flex-row items-center">
     <div className="ml-[0px] mt-3">
       <img src="https://media.assettype.com/cdomagazine%2F2024-07%2Fc28cd648-625d-41df-b67d-01bc0f47eb54%2FPinterest.png?w=1024&auto=format%2Ccompress&fit=max" alt="Easy Chicken Dinner" className="rounded-lg  w-[2000px] h-[600px] h-auto object-cover" />

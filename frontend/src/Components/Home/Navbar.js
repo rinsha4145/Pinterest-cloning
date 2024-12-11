@@ -171,13 +171,16 @@ const Navbar = () => {
       <>
       <nav className="flex flex-wrap justify-between items-center px-6 py-4 bg-white fixed top-0 left-0 right-0 z-10 bg-white">
         {/* Left Section - Logo */} 
+        <div className="flex items-center space-x-3">
         <div className="flex items-center space-x-2">
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/0/08/Pinterest-logo.png"
             alt="Logo"
-            className="w-8 h-8"
+            className="w-8 h-8  cursor-pointer"
+            onClick={()=>navigate('/')}
           />
-          <span className="text-xl font-bold text-red-600">Pinterest</span>
+            
+            <span className="text-xl font-bold text-red-600 cursor-pointer" onClick={()=>navigate('/')}>Pinterest</span>
         </div>
   
         {/* Hamburger Menu for Smaller Screens */}
@@ -203,7 +206,7 @@ const Navbar = () => {
   
         {/* Middle Section - Links */}
         <div className="hidden mr[750px] md:flex md:space-x-6 font-sm font-sans font-semibold ">
-          <Link to="/explore" className="hover:text-black">
+          <Link to="/explore" className="hover:text-black ">
             Today
           </Link>
           <Link to="#watch" className="hover:text-black">
@@ -212,6 +215,7 @@ const Navbar = () => {
           <Link to="#explore" className="hover:text-black">
             Explore
           </Link>
+        </div>
         </div>
   
         {/* Right Section - Links and Buttons */}
