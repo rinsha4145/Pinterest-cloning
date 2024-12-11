@@ -178,7 +178,6 @@ const loginValidationSchema=Joi.object({
 const postValidationSchema = Joi.object({
   title: Joi.string()
     .max(200)
-    .required()
     .messages({
       'string.max': 'Title cannot exceed 200 characters',
       'any.required': 'Title is required'
@@ -201,7 +200,6 @@ const postValidationSchema = Joi.object({
 
   category: Joi.string()
     .valid('Food', 'Fashion', 'Travel', 'DIY', 'Tech', 'Home', 'Other')
-    .required()
     .messages({
       'any.only': 'Category must be one of the following: Food, Fashion, Travel, DIY, Tech, Home, Other',
       'any.required': 'Category is required'
@@ -241,6 +239,7 @@ const postValidationSchema = Joi.object({
 
   createdAt: Joi.date().default(Date.now)
 });
+
 
 
 // Validation for registration

@@ -10,8 +10,8 @@ import {
     FacebookMessengerShareButton,
   FacebookMessengerIcon,
   } from "react-share";
-import { useSelector } from "react-redux";
 
+  
 
 
 const ShareMenu = ({url}) => {

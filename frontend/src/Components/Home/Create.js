@@ -3,11 +3,13 @@ import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import handleAsync from "../Utils/HandleAsync";
 import axiosInstance from "../Utils/AxioaInstance";
-
+import { useDispatch } from 'react-redux';
+import { addPost } from '../Redux/PostSlice';
 const Create = () => {
   const [isImageUploaded, setIsImageUploaded] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
   const [show, setShow] = useState(false);
+  const dispatch = useDispatch();
 
   const handleFileUpload = (event) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -47,21 +49,31 @@ const Create = () => {
   };
 
   //submit the form
-  const handleSubmit = handleAsync(async(event) => {
-    event.preventDefault();
+  const handleSubmit = handleAsync(async (e) => {
+    e.preventDefault();
     const formData = new FormData();
     formData.append('image', image);
-    Object.keys(product).forEach((key) => {formData.append(key, product[key]);});
-    const response = await axiosInstance.post('admin/addproduct', formData)
-    if (response.status === 200 && response.status < 300) {
-      alert('Product added successfully', response.data);
-      setProduct(null);
-      setImage(null);
-      navigate('/products');
-    }else {
-      throw new Error(`Error: ${response.data.message || 'An error occurred'}`);
+    Object.keys(product).forEach((key) => {
+        formData.append(key, product[key]);
+    });
+
+    try {
+        const response = await axiosInstance.post('/addpost', formData);
+
+        if (response.status === 200 && response.status < 300) {
+            // Dispatch action with the response data
+            dispatch(addPost(response.data)); // Example action
+            alert('Product added successfully');
+            // Optionally navigate or reset form
+        } else {
+            throw new Error(`Error: ${response.data.message || 'An error occurred'}`);
+        }
+    } catch (error) {
+        console.error(error);
+        alert('Failed to add product');
     }
-  });
+});
+
   const inputRef = useRef(null);
 
   const handleClick = () => {
@@ -102,7 +114,7 @@ const Create = () => {
   <div className="flex items-center justify-between w-full border-b border-gray-300 px-4 py-2">
       <h1 className="text-lg font-semibold">Create Pin</h1>
       {/* <p className="hidden md:block text-gray-500 text-sm">Changes stored!</p> */}
-      <button className="bg-red-600 text-white font-semibold py-2 px-4 rounded-full hover:bg-red-700 focus:ring focus:ring-red-300">
+      <button className="bg-red-600 text-white font-semibold py-2 px-4 rounded-full hover:bg-red-700 focus:ring focus:ring-red-300" onClick={handleSubmit}>
         Publish
       </button>
     </div>

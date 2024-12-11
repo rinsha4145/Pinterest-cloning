@@ -22,7 +22,11 @@ router
  .get('/all',tryCatch(postcontroller.getAllPosts))
  .get('/post/:id',userAuthMiddleware,tryCatch(postcontroller.getpostbyid))
  .get('/posts/:category',userAuthMiddleware,tryCatch(postcontroller.getbycategory)) 
- .post('/addpost',userAuthMiddleware,upload.single('image'),tryCatch(postcontroller.addPost))  
+ .post('/addpost',userAuthMiddleware,upload.single('image'),tryCatch(postcontroller.addPost))
+ .put('/updatepost/:id',userAuthMiddleware,upload.single('image'),tryCatch(postcontroller.postUpdate)) 
+ .delete('/deletepost/:id',userAuthMiddleware,tryCatch(postcontroller.deletePost)) 
+
+
 
 
  

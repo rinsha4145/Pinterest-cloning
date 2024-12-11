@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 // Define the schema
 const postSchema = new Schema({
-  title: { type: String, required: true, maxlength: 200 },
+  title: { type: String,maxlength: 200 },
   description: { type: String, maxlength: 500 },
   image: { type: String, required: true },
   link: { type: String },

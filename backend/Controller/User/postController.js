@@ -1,7 +1,7 @@
 const Posts = require('../../Models/postSchema');
 const { postValidationSchema } = require('../../Models/validation');
 const { NotFoundError, ValidationError } = require('../../Utils/customeError');
-
+const cloudinary = require("cloudinary");
 // Get all posts
 const getAllPosts = async (req, res, next) => {
         const posts = await Posts.find(); // Fetch posts without authentication checks
@@ -33,19 +33,13 @@ const addPost = async (req, res, next) => {
     if (error) {
         return next(new ValidationError(error.details[0].message)); 
     }
-
     const { title, description, category, tags } = value;
-
-    // Check if file is uploaded
     if (!req.file) {
         return next(new ValidationError("No file uploaded"));
     }
-
-    // Check if user is authenticated
     if (!req.userId) {
         return res.status(401).json({ message: "Unauthorized: User ID not found" });
     }
-
     const image = req.file?.path;
     const newPost = new Posts({
         title,
@@ -55,11 +49,54 @@ const addPost = async (req, res, next) => {
         tags, 
         owner: req.userId,
     });
-
     await newPost.save();
-
     res.status(200).json({ status: "success", message: "Post added successfully", newPost });
 };
 
-module.exports = { getAllPosts, getpostbyid, addPost, getbycategory };
+//update a post by the owner
+const postUpdate = async (req, res, next) => {
+    const { error, value } = postValidationSchema.validate(req.body);
+    if (error) {
+        console.log(error.details[0].message)
+        return next(new ValidationError('Validation failed', 400));
+    }
+    if (req.file) {
+        value.image = req.file.path;
+    }
+    
+    const updatedPost = await Posts.findByIdAndUpdate(req.params.id, value, { new: true });   
+    if (!updatedPost) {
+        return next(new NotFoundError('Post not found with this ID', 404));
+    }
+    if (updatedPost.owner.toString() !== req.userId.toString())
+        return res.status(403).json({
+          message: "Unauthorized",
+        });
+
+    return res.status(200).json({updatedPost});
+};
+
+//delete a post by its owner
+const deletePost=async(req,res,next)=>{
+    const deleteProduct = await Posts.findByIdAndDelete(req.params.id)
+    console.log(deleteProduct)
+    if (!deleteProduct) {
+        return next(new NotFoundError('Product with this ID is not found', 404))
+    }
+    if (deleteProduct.owner.toString() !== req.userId.toString())
+        return res.status(403).json({
+          message: "Unauthorized",
+        });
+    // await cloudinary.v2.uploader.destroy(deleteProduct.image.id);
+
+    // await Cart.updateMany(
+    //     { 'products.productId': req.params.id },
+    //     { $pull: { products: { productId: req.params.id } } }
+    // )
+
+    res.status(200).json("Post deleted successfully and removed from all carts and wishlists");
+}
+
+
+module.exports = { getAllPosts, getpostbyid, addPost, getbycategory,postUpdate,deletePost };
  

@@ -203,7 +203,7 @@ const Navbar = () => {
   
         {/* Middle Section - Links */}
         <div className="hidden mr[750px] md:flex md:space-x-6 font-sm font-sans font-semibold ">
-          <Link to="#today" className="hover:text-black">
+          <Link to="/explore" className="hover:text-black">
             Today
           </Link>
           <Link to="#watch" className="hover:text-black">
@@ -216,13 +216,13 @@ const Navbar = () => {
   
         {/* Right Section - Links and Buttons */}
         <div className="hidden md:flex md:space-x-5 items-center font-sm font-sans font-semibold">
-          <Link to="#about" className="hover:text-black text-gray-800">
+          <Link to="https://help.pinterest.com/en/guide/all-about-pinterest" className="hover:text-black text-gray-800">
             About
           </Link>
-          <Link to="#business" className="hover:text-black text-gray-800">
+          <Link to="https://business.pinterest.com/en-in/" className="hover:text-black text-gray-800">
             Business
           </Link>
-          <Link to="#blog" className="hover:text-black text-gray-800">
+          <Link to="https://newsroom.pinterest.com/?utm_campaign=pinterest_homepage_blogicon_all_evergreen&utm_medium=organic-pinterest&utm_source=organicpins_pinsite_homepageicon" className="hover:text-black text-gray-800">
             Blog
           </Link>
           <button className="bg-red-600 text-white px-4 py-2 rounded-full hover:bg-red-700"  onClick={()=>navigate('/login')}>
