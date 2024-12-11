@@ -48,7 +48,7 @@ const Slide1 = () => {
 
       ];
   return (
-    <>
+    <div className="h-screen w-full overflow-y-scroll snap-y snap-mandatory scroll-smooth">
     <section id="home" className=" w-[100%]">
       <div>
     <div>
@@ -105,7 +105,8 @@ const Slide1 = () => {
               
            
   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-7 md:grid-row-2 gap-4  bg-gradient-to-t from-red to-transparent ml-0 h-[450px] mt-[10px] ">
-  <div className="flex flex-col space-y-4 mt-2">
+  <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent z-50"></div>
+  <div className="flex flex-col space-y-4 mt-2 ">
     <div className="relative rounded-lg overflow-hidden  h-[300px]">
       <img src={slide.images[9]} alt="Image 0" className="w-full h-full object-cover" />
     </div>
@@ -241,7 +242,7 @@ const Slide1 = () => {
   </div>
 </section>
 
-    </>
+    </div>
   );
 };
 
