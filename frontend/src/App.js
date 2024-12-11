@@ -9,16 +9,18 @@ import ForgotPassword from './Components/Home/ForgotPassword';
 import Create from './Components/Home/Create';
 import Explore from './Components/Home/Explore';
 import Category from './Components/Home/Category';
+import { useSelector } from 'react-redux';
 
 function App() {
+  const { user } = useSelector((state) => state.user);
+
   return (
    <>
    <Navbar />
    <Routes>
-   <Route path='/' element={<Slide1/>}/>
+    {!user ?<Route path='/' element={<Slide1/>}/>:<Route path='/' element={<Home/>}/>}
     <Route path='/signup' element={<Signup/>}/>
     <Route path='/login' element={<Login/>}/>
-    <Route path='/home' element={<Home/>}/>
     <Route path='/forgot-password' element={<ForgotPassword/>}/>
     <Route path='/create' element={<Create/>}/>
     <Route path='/explore' element={<Explore/>}/>

@@ -11,8 +11,6 @@ const Slide1 = () => {
   const { posts } = useSelector((state) => state.posts);
   
   const foodPosts = posts.filter((post) => post.category === 'Food').slice(0, 10).map((post) => post.image); 
-  console.log("first,",foodPosts)
-
   const DIYPosts = posts.filter((post) => post.category === 'DIY').slice(0, 10).map((post) => post.image);     
   const homePosts = posts.filter((post) => post.category === 'Home').slice(0, 10).map((post) => post.image);     
   const fashionPosts = posts.filter((post) => post.category === 'Fashion').slice(0, 10).map((post) => post.image);     
@@ -38,41 +36,48 @@ const Slide1 = () => {
         setAnimationClass("animate-fadeInDown");
       }, 4000); // Match the animation duration
     },
-  };
-    
-      const slides = [
-        { id: 1, content: 'Slide 1', style: {  color: 'white' },heading:"chai time snacks idea",images:foodPosts},
-        { id: 2, content: 'Slide 2', style: {  color: 'yellow'},heading:"home decor idea",images:homePosts },
-        { id: 3, content: 'Slide 3', style: {  color: 'black'},heading:"outfit idea",images:fashionPosts} ,
-        { id: 3, content: 'Slide 4', style: {  color: 'black'},heading:"DIY idea",images:DIYPosts} ,
+  
+  appendDots: dots => (
+    <div style={{ marginBottom: "400px", textAlign: "center" }}>
+      <ul>{dots}</ul>
+    </div>
+  ),
+  customPaging: i => (
+    <div
+      style={{
+        width: "12px",
+        height: "12px",
+        borderRadius: "50%",
+        backgroundColor: currentSlide === i ? "#000" : "#ccc",
+        display: "inline-block",
+        margin: "0 5px",
+        cursor: "pointer",
+      }}
+    ></div>
+  ),
+};
 
-      ];
+    
+  const slides = [
+    { id: 1, content: 'Slide 1', color: '#c28b00' ,heading:"food snacks idea",images:foodPosts},
+    { id: 2, content: 'Slide 2', color: '#0076d3',heading:"home decor idea",images:homePosts },
+    { id: 3, content: 'Slide 3', color: '#518c7b',heading:"outfit idea",images:fashionPosts} ,
+    { id: 3, content: 'Slide 4', color: '#507a57',heading:"DIY idea",images:DIYPosts} ,
+  ];
   return (
-    <div className="h-screen w-full overflow-y-scroll snap-y snap-mandatory scroll-smooth">
-    <section id="home" className=" w-[100%]">
-      <div>
-    <div>
+    <>
+    <section id="home">
+    
+    <div className="mt-[100px]">
       {/* Hero Text */}
       <div className="flex justify-center text-center">
         <h1 className=" text-6xl md:text-5xl font-bold text-black ">
           Get your next
         </h1>
-        <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="animate-bounce w-6 h-6 text-blue-500 border-radius bg-blue"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        strokeWidth={2}
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-         d="m19.5 8.25-7.5 7.5-7.5-7.5"
-        />
-      </svg>
+        
       
       </div>
+      
       {/* Indicator Section */}
       <div className="relative bg-white">
 
@@ -90,14 +95,15 @@ const Slide1 = () => {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                fontSize: '240px',
+                fontSize: '300px',
                 zIndex:"50px"
               }}
             >
               <h2
-                className={`text-center text-3xl md:text-5xl font-bold text-green-700 ${
-                  index === currentSlide ? animationClass : ""
-                }`}
+              style={{color:slide.color}}
+                className={`text-center text-3xl md:text-5xl font-bold 
+                   ${index === currentSlide ? animationClass : ""}`}
+
               >
                 {slide.heading}
               </h2>
@@ -124,11 +130,34 @@ const Slide1 = () => {
       <img src={slide.images[3]} alt="Image 3" className="w-full h-full object-cover" />
     </div>
     
-  </div><div className="flex flex-col space-y-4 mt-[300px]">
+  </div>
+  
+  <div className="flex flex-col space-y-4 mt-[300px]">
+  <div className=" flex justify-center items-center z-50 ">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="animate-bounce w-10 h-10 text-white border rounded-full"
+    style={{backgroundColor:slide.color}}
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={2} // Adjust only the SVG
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="m19.5 8.25-7.5 7.5-7.5-7.5"
+    />
+  </svg>
+</div>
     <div className="relative rounded-lg overflow-hidden  h-[250px]">
       <img src={slide.images[4]} alt="Image 4" className="w-full h-full object-cover" />
     </div>
-  </div><div className="flex flex-col space-y-4 mt-[200px]">
+    
+  </div>
+  
+  <div className="flex flex-col space-y-4 mt-[200px]">
+    
     <div className="relative rounded-lg overflow-hidden  h-[250px]">
       <img src={slide.images[5]} alt="Image 5" className="w-full h-full object-cover" />
     </div>
@@ -144,6 +173,7 @@ const Slide1 = () => {
     <div className="relative rounded-lg overflow-hidden ">
       <img src={slide.images[8]} alt="Image 8" className="w-full h-full object-cover" />
     </div>
+    
   </div>
 
   
@@ -155,6 +185,7 @@ const Slide1 = () => {
 </div>
 </div>
 </div>
+
 
 
 
@@ -185,7 +216,6 @@ const Slide1 = () => {
       </div>
 
       
-    </div>
     </section>
     <section id="about" className="h-[100vh] w-[100%]">
     <div className="flex justify-center items-center h-screen bg-custom-yellow font-sans">
@@ -242,7 +272,7 @@ const Slide1 = () => {
   </div>
 </section>
 
-    </div>
+    </>
   );
 };
 
