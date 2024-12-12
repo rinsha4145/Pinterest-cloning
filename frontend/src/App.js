@@ -10,6 +10,7 @@ import Create from './Components/Home/Create';
 import Explore from './Components/Home/Explore';
 import Category from './Components/Home/Category';
 import { useSelector } from 'react-redux';
+import ResetPassword from './Components/Home/ResetPassword';
 
 function App() {
   const { user } = useSelector((state) => state.user);
@@ -21,10 +22,13 @@ function App() {
     {!user ?<Route path='/' element={<Slide1/>}/>:<Route path='/' element={<Home/>}/>}
     <Route path='/signup' element={<Signup/>}/>
     <Route path='/login' element={<Login/>}/>
-    <Route path='/forgot-password' element={<ForgotPassword/>}/>
     <Route path='/create' element={<Create/>}/>
     <Route path='/explore' element={<Explore/>}/>
     <Route path='/category/:category' element={<Category/>}/>
+    <Route path='/forgot-password' element={<ForgotPassword/>}/>
+    <Route path='/reset_password/:id/:token' element={<ResetPassword/>}/>
+
+
 
 
 

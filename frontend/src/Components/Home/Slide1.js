@@ -18,6 +18,7 @@ const Slide1 = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [animationClass, setAnimationClass] = useState("animate-fadeInDown");
   const [nextSlide, setNextSlide] = useState(currentSlide);
+  
   const settings = {
     dots: true,
     infinite: true,
@@ -79,7 +80,6 @@ const Slide1 = () => {
               key={slide.id}
               style={{
                 ...slide.style,
-                 margin: '50px auto',
                   width: '80%',
                 height: '300px',
                 display: 'flex',
@@ -91,7 +91,7 @@ const Slide1 = () => {
             >
               <h2
               style={{color:slide.color}}
-                className={`text-center text-3xl md:text-5xl font-bold 
+                className={`text-center text-4xl md:text-5xl 
                    ${index === currentSlide ? animationClass : ""}`}
 
               >
@@ -226,7 +226,7 @@ const Slide1 = () => {
     <div className="flex justify-center items-center h-screen bg-custom-yellow font-sans" >
   <div className="rounded-lg  w-full flex flex-col md:flex-row items-center">
     <div className="ml-[0px] mt-3">
-      <img src="https://media.assettype.com/cdomagazine%2F2024-07%2Fc28cd648-625d-41df-b67d-01bc0f47eb54%2FPinterest.png?w=1024&auto=format%2Ccompress&fit=max" alt="Easy Chicken Dinner" className="rounded-lg  w-[2000px] h-[600px] h-auto object-cover" />
+      <img src="https://media.assettype.com/cdomagazine%2F2024-07%2Fc28cd648-625d-41df-b67d-01bc0f47eb54%2FPinterest.png?w=1024&auto=format%2Ccompress&fit=max" alt="Easy Chicken Dinner" className="rounded-lg  w-[2100px] h-[610px] h-auto object-cover" />
     </div>
     <div className="md:w-3/4 md:ml-1 -4 mr-[100px] pb-[100px] md:mt-0  ">
       <h2 className="text-3xl font-bold text-pink-700 pt-[100px]  pb-10 text-[55px]">Search for an idea</h2>
@@ -259,22 +259,28 @@ const Slide1 = () => {
   </div>
 </div>
 </section>
-<section
+<section 
   id="shop"
-  className="h-[100vh] w-[100%]"
+  className="h-[100vh] w-[100%]">
+  <div
   style={{
-    backgroundImage: "url('')",
+    backgroundImage: "url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEz5uN2EK6OxVGJoUqrNWwS2KU7xOvrXyhGvph5oBvbGnM51LfHmU5YxalHXw5JliJjRw&usqp=CAU')",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover", // Ensures the image covers the entire section
     backgroundPosition: "center center", // Centers the image
     width: "100%",
-    height: "100vh"
-  }}
->
-  <div className="flex justify-center pt-10 pl-[400px]w-full max-w-[600px]">
+    height: "100vh",
+    
+    opacity:0.5
+  }}>
+    <div className="flex justify-center pt-10 pl-[400px]w-full max-w-[600px] z:1">
     
     <Signup />
   </div>
+  </div>
+    
+  
+  
 </section>
 
     </>

@@ -40,7 +40,7 @@ const Navbar = () => {
    <Link to="" className="logo w-12 h-12 rounded-full flex items-center justify-center hover:bg-gray-200">
      <i className="fab fa-pinterest text-red-600 text-2xl"></i>
    </Link>
-   <Link to="/home" className="home font-bold active:bg-black active:text-white  flex items-center justify-center px-4 py-2 rounded-full">
+   <Link to="/" className="home font-bold active:bg-black active:text-white  flex items-center justify-center px-4 py-2 rounded-full">
    Home
    </Link>
    <Link to="/explore" className="home font-bold active:bg-black active:text-white flex items-center justify-center px-4 py-2 rounded-full">
