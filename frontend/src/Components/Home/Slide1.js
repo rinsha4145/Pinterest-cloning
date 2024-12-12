@@ -126,8 +126,14 @@ const Slide1 = () => {
   <div className=" flex justify-center items-center z-50 ">
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    className="animate-bounce w-12 h-12 text-white border rounded-full"
+    className="animate-bounce w-12 h-12 text-white border rounded-full cursor-pointer"
     style={{backgroundColor:slide.color}}
+    onClick={() => {
+      const element = document.getElementById("food");
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }}
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"
@@ -188,10 +194,17 @@ const Slide1 = () => {
       {/* Scroll Down Button */}
       <div className=" flex justify-center absolute bottom-0 w-full py-4 mt-6 w-[100%] bg-custom-yellow" id="search">
       
-        <button className="flex items-center space-x-2  text-base  ">
+        <button className="flex items-center space-x-2  text-base  " 
+        onClick={() => {
+              const element = document.getElementById("food");
+              if (element) {
+                element.scrollIntoView({ behavior: "smooth" });
+              }
+            }}>
           <span>Here's how it works</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
+            
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -209,7 +222,7 @@ const Slide1 = () => {
 
       
     </section>
-    <section id="about" className="h-[100vh] w-[100%]">
+    <section id="food" className="h-[100vh] w-[100%]">
     <div className="flex justify-center items-center h-screen bg-custom-yellow font-sans" >
   <div className="rounded-lg  w-full flex flex-col md:flex-row items-center">
     <div className="ml-[0px] mt-3">
@@ -227,7 +240,7 @@ const Slide1 = () => {
   </div>
 </div>
 </section>
-<section id="about" className="h-[100vh] w-[100%]" style={{backgroundColor:"#dafff6"}}>
+<section id="fur" className="h-[100vh] w-[100%]" style={{backgroundColor:"#dafff6"}}>
 <div className="flex  h-screen">
   <div className="grid grid-cols-2 ">
     <div className="  overflow-hidden w-[800px] h-[100vh]">
