@@ -169,7 +169,7 @@ const userValidationSchema = Joi.object({
       'string.base': 'Google ID must be a valid string.',
     }),
 });
-const loginValidationSchema=Joi.object({
+const loginValidationSchema=Joi.object({ 
   email:Joi.string().email().required(),
   password:Joi.string().required()
 

@@ -3,7 +3,7 @@ const jwt =require("jsonwebtoken")
     const token = jwt.sign({ id: user._id,email: user.email },process.env.JWT_KEY,{ expiresIn: '3d' });
     const refreshToken = jwt.sign({ id: user._id,email: user.email },process.env.JWT_KEY,{ expiresIn: '7d' });
         
-    // Set cookies for tokens
+    // Set cookies for tokens 
     res.cookie("token", token, {
         httpOnly: false,
         secure: true, 

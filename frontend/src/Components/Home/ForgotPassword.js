@@ -1,7 +1,6 @@
 import React from 'react'
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from 'axios'
 import axiosInstance from '../Utils/AxioaInstance';
 
 
@@ -9,7 +8,7 @@ function ForgotPassword() {
     const [email, setEmail] = useState()
     const navigate = useNavigate()
 
-    axiosInstance.defaults.withCredentials = true;
+   
     const handleSubmit = (e) => {
         e.preventDefault()
         axiosInstance.post('/forgot-password', {email})

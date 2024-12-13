@@ -39,7 +39,7 @@ const userLogin = async (req, res,next) => {
     const isblock= user.isBlocked
     if(isblock){
         // return res.status(404).json({message:"user is blocked"})
-        return next(new CustomError('you are blocked contact the admin', 404));
+        return next(new ValidationError('you are blocked contact the admin', 404));
     }
     if(!user.admin){
         generateToken(user,res)

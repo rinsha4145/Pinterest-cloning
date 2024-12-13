@@ -1,29 +1,32 @@
 const crypto = require('crypto');
 const User=require('../Models/userSchema')
+const jwt =require("jsonwebtoken")
 
 const nodemailer = require('nodemailer');
 const forgotpass=async(req, res) => {
     const {email} = req.body;
     User.findOne({email: email})
+    
    
     .then(user => {
+      console.log(user)
         if(!user) {
             return res.send({Status: "User not existed"})
         } 
         const token = jwt.sign({ id: user._id,email: user.email },process.env.JWT_KEY,{ expiresIn: '3d' });
         var transporter = nodemailer.createTransport({
-            service: 'gmail',
+            service: 'gmail', 
             auth: {
-              user: 'rinujouhar@gmail.com',
-              pass: 'rinsha@4145'
+              user: process.env.EMAIL_USER,
+              pass:  process.env.EMAIL_PASS
             }
           });
           
           var mailOptions = {
-            from: 'youremail@gmail.com',
-            to: User.email,
+            from: process.env.EMAIL_USER,
+            to: user.email,
             subject: 'Reset Password Link',
-            text: `http://localhost:4000/reset_password/${user._id}/${token}`
+            text: `http://localhost:3000/reset_password/${user._id}/${token}`
           };
           
           transporter.sendMail(mailOptions, function(error, info){

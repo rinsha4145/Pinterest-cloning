@@ -1,14 +1,18 @@
+const User=require('../Models/userSchema')
+const jwt =require("jsonwebtoken")
+const bcrypt = require('bcrypt');
+
 const resetpass=async(req, res) => {
     const {id, token} = req.params
     const {password} = req.body
 
-    jwt.verify(token, "jwt_secret_key", (err, decoded) => {
+    jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
         if(err) {
             return res.json({Status: "Error with token"})
         } else {
             bcrypt.hash(password, 10)
             .then(hash => {
-                UserModel.findByIdAndUpdate({_id: id}, {password: hash})
+                User.findByIdAndUpdate({_id: id}, {password: hash})
                 .then(u => res.send({Status: "Success"}))
                 .catch(err => res.send({Status: err}))
             })
@@ -16,4 +20,4 @@ const resetpass=async(req, res) => {
         }
     })
 }
-module.exports = { resetpass};
+module.exports = {resetpass};
