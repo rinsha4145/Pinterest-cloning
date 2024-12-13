@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -6,9 +6,12 @@ import { useNavigate } from "react-router-dom";
 import Signup from '../Home/Signup'
 import './Home.css'
 import { useSelector } from "react-redux";
+import Login from "./Login";
+import {useClickHandler} from '../Context/ClickHandlerContext'
 const Slide1 = () => {
   const navigate=useNavigate()
   const { posts } = useSelector((state) => state.posts);
+  const { showLogin, showSignup, toggleLogin, toggleSignup } = useClickHandler()
   
   const foodPosts = posts.filter((post) => post.category === 'Food').slice(0, 10).map((post) => post.image); 
   const DIYPosts = posts.filter((post) => post.category === 'DIY').slice(0, 10).map((post) => post.image);     
@@ -57,9 +60,22 @@ const Slide1 = () => {
   ];
   return (
     <>
-    <section id="home" className="font-sans">
-    
-    <div className="mt-[100px]">
+    <section id="home" className="relative  font-sans">
+    {showLogin && (
+    <div className="absolute inset-0 z-50  flex items-center justify-center bg-black bg-opacity-50">
+      <div className="bg-white p-5 rounded-3xl shadow-lg">
+        <Login/>
+      </div>
+    </div>
+  )}
+    {showSignup && (
+    <div className="absolute inset-0 z-50  flex items-center justify-center bg-black bg-opacity-50">
+      <div className="bg-white p-5 rounded-3xl shadow-lg">
+        <Signup/>
+      </div>
+    </div>
+  )}
+    <div className={`mt-[72px] ${ showLogin || showSignup ? "opacity-50 pointer-events-none" : ""}`}>
       {/* Hero Text */}
       <div className="flex justify-center text-center">
         <h1 className=" text-7xl md:text-6xl font-medium text-black ">
@@ -100,7 +116,7 @@ const Slide1 = () => {
               
               
   <div className={`${index === currentSlide ? animationClass : ""}`}>
-  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-7 md:grid-row-2 gap-4  bg-gradient-to-t from-red to-transparent ml-0 h-[450px] mt-[10px] ">
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-7 md:grid-row-2 gap-4  bg-gradient-to-t from-red to-transparent ml-0 h-[450px] mt-[50px] ">
   <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent z-50"></div>
   <div className="flex flex-col space-y-4 mt-2 ">
     <div className="relative rounded-lg overflow-hidden  h-[300px]">

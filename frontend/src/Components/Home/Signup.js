@@ -4,14 +4,19 @@ import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import axiosInstance from '../Utils/AxioaInstance';
 import { useNavigate } from 'react-router-dom';
 import handleAsync from '../Utils/HandleAsync';
+import { useClickHandler } from '../Context/ClickHandlerContext';
+import OutsideClickHandler from 'react-outside-click-handler';
 
 function Signup() {
   const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     birthdate: '',
   });
+  const {  setShowSignup} = useClickHandler()
   
   const handleChange = (e) => {
     console.log(e)
@@ -23,7 +28,6 @@ function Signup() {
     e.preventDefault()
     const response = await axiosInstance.post('/signup', formData);
     if (response.status === 200 && response.status < 300) {
-      alert('Login successful');
       setFormData({ email: '', password: '',birthdate:'' });
       navigate('/')
     }else{
@@ -32,14 +36,16 @@ function Signup() {
   });  
   return (
     <>
+    <OutsideClickHandler onOutsideClick={() => setShowSignup(false)}>
+
       <form onSubmit={handleSubmit}>
-        <div className="container flex justify-center items-center h-[100%] font-sans">
-          <div className="bg-white w-full max-w-md rounded-3xl shadow-md">
+        <div className="bg-transparent flex justify-center items-center  h-[80vh] font-sans">
+          <div className=" w-[400px] max-w-md rounded-3xl ">
             <div className="px-6 py-10 text-center">
               <img
                 src="https://i.pinimg.com/originals/d3/d1/75/d3d175e560ae133f1ed5cd4ec173751a.png"
                 alt="pin logo"
-                className="w-14 mx-auto mb-4"
+                className="w-10 mx-auto mb-3"
               />
               <p className="text-xl  mb-1 text-custom-gray font-semi">Welcome to Pinterest</p>
               <p className="text-sm mb-2 text-custom-gray mb-4">Find new ideas to try</p>
@@ -84,17 +90,19 @@ Your birthdate also helps us provide more personalized recommendations and relev
                   Continue with Google
                 </button>
               </div>
-              <footer className="mt-6">
+              <footer className="mt-3">
                 <p className="text-xs opacity-70">
                   By continuing, you agree to Pinterest's <br /><b className="text-black">Terms of Service</b> and acknowledge you've read<br /> our <b>Privacy Policy. Notice at collection.</b>
                 </p>
-                <hr className="w-1/2 mx-auto my-4 opacity-40" />
+                <hr className="w-1/2 mx-auto my-3 opacity-40" />
                 <p className="text-xs">Already a member?<span className="font-bold"> Log in</span></p>
               </footer>
             </div>
           </div>
         </div>
       </form>
+    </OutsideClickHandler>
+
     </>
   );
 }

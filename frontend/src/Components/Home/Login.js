@@ -5,9 +5,17 @@ import Cookies from 'js-cookie'
 import { useDispatch } from 'react-redux';
 import {  setUser } from '../Redux/UserSlice';
 import axiosInstance from '../Utils/AxioaInstance';
+import OutsideClickHandler from 'react-outside-click-handler';
+
+import { useClickHandler } from '../Context/ClickHandlerContext';
+
+
 function Login() {
   const [datas, setDatas] = useState({email: '',password: ''});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [show, setShow] = useState(true);
+  const { setShowLogin} = useClickHandler()
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
@@ -37,55 +45,97 @@ function Login() {
       console.log('//',response)
       if (response.status === 200) {
         navigate('/'); 
-        setIsLoggedIn(true); // Redirect to home page after login
+        setIsLoggedIn(true);
+        setShowLogin(true) // Redirect to home page after login
       }
   });
   return (
     <>
-    <form onSubmit={handleSubmit}>
-    <div className="container flex justify-center items-center h-[100%] font-sans">
-  <div className="bg-white w-full max-w-md rounded-3xl shadow-md mt-1">
-    <div className="px-6 py-6 text-center">
-      {/* Pinterest logo */}
-      <img src="https://i.pinimg.com/originals/d3/d1/75/d3d175e560ae133f1ed5cd4ec173751a.png" alt="pin logo" className="w-14 mx-auto mb-4" />
-      <p className="text-3xl text-custom-gray font-semi mb-3">Welcome to Pinterest</p>
-      {/* Email input */}
-      <label className="flex pl-[70px] gap-1 items-center text-sm  text-base font-medium leading-relaxed">Email</label>
+    <OutsideClickHandler onOutsideClick={() => setShowLogin(false)}>
 
-      <input type="email" placeholder="Email"  name="email"
-                  value={datas.email} onChange={handleChange} className="w-4/6 mx-auto px-4 py-3 mb-2 text-sm border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"/>
-      {/* Password input */}
-      <label className="flex gap-1 items-center text-sm pl-[70px] text-base font-medium leading-relaxed">Password</label>
-      <input type="password" placeholder="Password" name="password"
-                  value={datas.password} onChange={handleChange} className="w-4/6 mx-auto px-4 py-3 mb-2  text-sm border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"/><br/>
-      <Link to='/forgot-password' className="text-[13px] ml-[-11px] font-semibold mb-2 text-left">Forgot your password?</Link>
-      {/* Login button */}
-      <button className="w-4/6 h-[40px] mx-auto bg-red-600 text-white text-center py-3 mb-2 rounded-full  hover:bg-red-700 text-base">Log in</button>
-      <p className="font-semibold mb-2">OR</p>
-      {/* Facebook button */}
-      <button className="w-4/6 mx-auto h-[40px] bg-blue-600 text-white py-3 mb-2 rounded-full font-bold flex items-center justify-center hover:bg-blue-700">
-        <i className="fab fa-facebook-f mr-2 text-white"></i>
-        Continue with Facebook
-      </button>
-      {/* Google button */}
-      <button className="w-4/6 mx-auto bg-gray-200 text-black py-3 rounded-full font-bold flex items-center justify-center hover:bg-gray-300">
-        <i className="fab fa-google mr-2 text-green-500"></i>
-        Continue with Google
-      </button>
-      <footer className="mt-6">
-        <p className="text-xs opacity-70">
-        By continuing, you agree to Pinterest's <b>Terms of Service</b> and <br/>acknowledge you've read our <b>Privacy Policy. <br/> 
-        Notice at collection.</b>
-        </p>
-        <hr className="w-[120px] mx-auto my-4 mt-2" />
-        <p className="text-xs t-2">Not on Pinterest yet? <span className="font-bold">Sign up</span></p>
-      </footer>
-    </div>
-  </div>
+    <form onSubmit={handleSubmit}>
+      <div className="bg-transparent flex justify-center items-center h-[80vh] font-sans">
+        <div className="w-full max-w-md rounded-4xl mt-[10px]">
+            <div className="px-6 py-6 text-center">
+              {/* Pinterest logo */}
+              <img
+                src="https://i.pinimg.com/originals/d3/d1/75/d3d175e560ae133f1ed5cd4ec173751a.png"
+                alt="pin logo"
+                className="w-14 mx-auto mb-4"
+              />
+              <p className="text-3xl text-custom-gray font-semi mb-3">
+                Welcome to Pinterest
+              </p>
+              {/* Email input */}
+              <label className="flex pl-[70px] gap-1 items-center text-sm text-base font-medium leading-relaxed">
+                Email
+              </label>
+              <input
+                type="email"
+                placeholder="Email"
+                name="email"
+                value={datas.email}
+                onChange={handleChange}
+                className="w-4/6 mx-auto px-4 py-3 mb-2 text-sm border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+              {/* Password input */}
+              <label className="flex gap-1 items-center text-sm pl-[70px] text-base font-medium leading-relaxed">
+                Password
+              </label>
+              <input
+                type="password"
+                placeholder="Password"
+                name="password"
+                value={datas.password}
+                onChange={handleChange}
+                className="w-4/6 mx-auto px-4 py-3 mb-2 text-sm border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+              <br />
+              <Link
+                to="/forgot-password"
+                className="text-[13px] ml-[-11px] font-semibold mb-2 text-left"
+              >
+                Forgot your password?
+              </Link>
+              {/* Login button */}
+              <button
+                type="submit"
+                className="w-4/6 h-[40px] mx-auto bg-red-600 text-white text-center py-3 mb-2 rounded-full hover:bg-red-700 text-base"
+              >
+                Log in
+              </button>
+              <p className="font-semibold mb-2">OR</p>
+              {/* Facebook button */}
+              <button className="w-4/6 mx-auto h-[40px] bg-blue-600 text-white py-3 mb-2 rounded-full font-bold flex items-center justify-center hover:bg-blue-700">
+                <i className="fab fa-facebook-f mr-2 text-white"></i>
+                Continue with Facebook
+              </button>
+              {/* Google button */}
+              <button className="w-4/6 mx-auto bg-gray-200 text-black py-3 rounded-full font-bold flex items-center justify-center hover:bg-gray-300">
+                <i className="fab fa-google mr-2 text-green-500"></i>
+                Continue with Google
+              </button>
+              <footer className="mt-6">
+                <p className="text-xs opacity-70">
+                  By continuing, you agree to Pinterest's <b>Terms of Service</b>{" "}
+                  and <br />
+                  acknowledge you've read our <b>Privacy Policy. <br /> Notice at
+                  collection.</b>
+                </p>
+                <hr className="w-[120px] mx-auto my-4 mt-2" />
+                <p className="text-xs t-2">
+                  Not on Pinterest yet? <span className="font-bold">Sign up</span>
+                </p>
+              </footer>
+            </div>
+        </div>
+      </div>
+    </form>
+    </OutsideClickHandler>
+
+
+  </>
   
-</div>
-</form>
-    </>
   )
 }
 

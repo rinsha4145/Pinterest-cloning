@@ -1,15 +1,30 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutUser } from '../Redux/UserSlice';
 import axiosInstance from "../Utils/AxioaInstance";
 import handleAsync from "../Utils/HandleAsync";
+import OutsideClickHandler from 'react-outside-click-handler';
+import {useClickHandler} from '../Context/ClickHandlerContext'
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
+  const { showLogin, showSignup,setShowLogin, setShowSignup } = useClickHandler()
+
   
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  useEffect(() => {
+    if (showLogin || showSignup) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto'; // Reset scrolling when the form is hidden
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto'; // Cleanup to reset when the component is unmounted
+    };
+  }, [showLogin, showSignup]);
   const handleLogout = handleAsync( async (e) => {
     e.preventDefault();
       const  response=await axiosInstance.post('/logout',{},{withCredentials:true});
@@ -28,6 +43,7 @@ const Navbar = () => {
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
+  
 
   return (
     <>
@@ -88,6 +104,8 @@ const Navbar = () => {
     </div>
      </div>
    </Link>
+   <OutsideClickHandler onOutsideClick={() => setIsDropdownOpen(false)}>
+
    <div className="relative inline-block text-left">
       {/* Trigger Button */}
       <button
@@ -96,10 +114,9 @@ const Navbar = () => {
       >
         <i className="fas fa-chevron-down text-gray-500"></i>
       </button>
-
       {/* Dropdown Menu */}
       {isDropdownOpen && (
-        <div className="absolute right-0 mt-2 w-63 bg-white rounded-lg shadow-lg ring-1 ring-gray-200 z-50">
+        <div className="absolute overflow-hidden right-0 mt-2 w-63 bg-white rounded-lg shadow-lg ring-1 ring-gray-200 z-50">
           <div className="p-4 ">
             <p className="text-xs ">Currently in</p>
             <div className="flex items-center justify-between mt-2 bg-gray-100 px-3 py-2 rounded-md">
@@ -164,12 +181,13 @@ const Navbar = () => {
         </div>
       )}
     </div>
+    </OutsideClickHandler>
  </div>
 </div>
    </>
     ):(
       <>
-      <nav className="flex flex-wrap justify-between items-center px-6 py-4 bg-white fixed top-0 left-0 right-0 z-10 bg-white">
+      <nav className={`flex flex-wrap justify-between items-center px-6 py-4  fixed top-0 left-0 right-0  ${showLogin || showSignup ? " bg-black bg-opacity-50 pointer-events-none" : ""}`}>
         {/* Left Section - Logo */} 
         <div className="flex items-center space-x-3">
         <div className="flex items-center space-x-2">
@@ -229,17 +247,24 @@ const Navbar = () => {
           <Link to="https://newsroom.pinterest.com/?utm_campaign=pinterest_homepage_blogicon_all_evergreen&utm_medium=organic-pinterest&utm_source=organicpins_pinsite_homepageicon" className="hover:text-black text-gray-800">
             Blog
           </Link>
-          <button className="bg-red-600 text-white px-4 py-2 rounded-full hover:bg-red-700"  onClick={()=>navigate('/login')}>
+          
+          <button className="bg-red-600 text-white px-4 py-2 rounded-full hover:bg-red-700"  onClick={() => setShowLogin(true)}>
             Log in
           </button>
-          <button className="bg-gray-200 px-4 py-2 rounded-full hover:bg-gray-300" onClick={()=>navigate('/signup')}>
+         
+          <button className="bg-gray-200 px-4 py-2 rounded-full hover:bg-gray-300" onClick={() => setShowSignup(true)}  >
             Sign up
           </button>
         </div>
       </nav>
+      
       </>
     
     )}
+   
+
+   
+   
     </>
   );
 };

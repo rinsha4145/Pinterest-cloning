@@ -7,8 +7,6 @@ import axiosInstance from '../Utils/AxioaInstance';
 function ForgotPassword() {
     const [email, setEmail] = useState()
     const navigate = useNavigate()
-
-   
     const handleSubmit = (e) => {
         e.preventDefault()
         axiosInstance.post('/forgot-password', {email})

@@ -20,20 +20,11 @@ function App() {
    <Navbar />
    <Routes>
     {!user ?<Route path='/' element={<Slide1/>}/>:<Route path='/' element={<Home/>}/>}
-    <Route path='/signup' element={<Signup/>}/>
-    <Route path='/login' element={<Login/>}/>
+    <Route path='/forgot-password' element={<ForgotPassword/>}/>
     <Route path='/create' element={<Create/>}/>
     <Route path='/explore' element={<Explore/>}/>
     <Route path='/category/:category' element={<Category/>}/>
-    <Route path='/forgot-password' element={<ForgotPassword/>}/>
     <Route path='/reset_password/:id/:token' element={<ResetPassword/>}/>
-
-
-
-
-
-
-
 
    </Routes>
    </>
