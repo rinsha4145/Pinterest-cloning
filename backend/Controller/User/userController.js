@@ -77,7 +77,7 @@ const followUnfollow= async (req,res,next)=>{
   
     if (user._id.toString() === loggedInUser._id.toString())
       return res.status(400).json({
-        message: "you can't follow yourself",
+        message: "you can't follow yourself", 
       });
   
     if (user.followers.includes(loggedInUser._id)) {

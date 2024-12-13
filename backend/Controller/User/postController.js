@@ -1,7 +1,7 @@
 const Posts = require('../../Models/postSchema');
 const { postValidationSchema } = require('../../Models/validation');
 const { NotFoundError, ValidationError } = require('../../Utils/customeError');
-const cloudinary = require("cloudinary");
+
 // Get all posts
 const getAllPosts = async (req, res, next) => {
         const posts = await Posts.find(); // Fetch posts without authentication checks
@@ -94,7 +94,7 @@ const deletePost=async(req,res,next)=>{
     //     { $pull: { products: { productId: req.params.id } } }
     // )
 
-    res.status(200).json("Post deleted successfully and removed from all carts and wishlists");
+    res.status(200).json("Post deleted successfully");
 }
 
 
