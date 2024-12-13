@@ -1,12 +1,9 @@
 const User=require('../Models/userSchema')
 const jwt =require("jsonwebtoken")
-
 const nodemailer = require('nodemailer');
 const forgotpass=async(req, res) => {
     const {email} = req.body;
     User.findOne({email: email})
-    
-   
     .then(user => {
       console.log(user)
         if(!user) {

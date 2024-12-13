@@ -6,14 +6,16 @@ const cloudinary=require('cloudinary').v2
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET 
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    timeout: 300000 
 })
 
-const storage =new CloudinaryStorage({
-    cloudinary:cloudinary,
+const storage =new CloudinaryStorage({ 
+    cloudinary:cloudinary, 
     params:{
         folder:"products",
-        allowed_formats: ['jpg', 'png', 'jpeg', 'mp4', 'mov', 'avi', 'mkv'],    
+        allowed_formats: ['jpg', 'png', 'jpeg', 'mp4', 'mov', 'avi', 'mkv'],
+        resource_type: 'auto',    
     },    
 })
 

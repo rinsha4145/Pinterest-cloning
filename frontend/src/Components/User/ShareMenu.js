@@ -12,7 +12,7 @@ import {
   FacebookMessengerIcon,
 } from "react-share";
 
-const ShareMenu = ({ url }) => {
+const ShareMenu = ({ url,pro }) => {
   const shareUrl = url; // Replace with your website URL
   const title = "Check out this awesome image!";
   const [isOpen, setIsOpen] = useState(false);
@@ -21,38 +21,49 @@ const ShareMenu = ({ url }) => {
     setIsOpen(!isOpen);
   };
 
-  const handleCopyLink = (url) => {
+  const handleCopyLink = (value) => {
     // Copy the URL to the clipboard
-    navigator.clipboard.writeText(url).then(() => {
+
+    navigator.clipboard.writeText(value).then(() => {
       alert("Image URL copied to clipboard!");
     }).catch(err => {
-      console.error("Failed to copy: ", err);
+      console.error("Failed to copy: ", err); 
     });
+  
   };
 
   return (
     <OutsideClickHandler onOutsideClick={() => setIsOpen(false)}>
+      
       <div className="absolute bottom-2 right-12">
-        {/* SVG Button */}
-        <button
-          onClick={toggleMenu}
-          className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 text-black"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={2.5}
-            stroke="currentColor"
-            className="size-5"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"
-            />
-          </svg>
-        </button>
+      {url ? (
+  // SVG Button
+  <button
+    onClick={toggleMenu}
+    className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 text-black"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={2.5}
+      stroke="currentColor"
+      className="w-5 h-5"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"
+      />
+    </svg>
+  </button>
+) : (
+  // Share Button
+  <button className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-full mb-[370px] mr-[770px] hover:bg-gray-200" onClick={toggleMenu}>
+    Share
+  </button>
+)}
+
 
         {/* Share Menu */}
         {isOpen && (
@@ -65,7 +76,7 @@ const ShareMenu = ({ url }) => {
                   <img
                     src={link}
                     alt="Copy Link"
-                    onClick={() => handleCopyLink(url)}
+                    onClick={() => handleCopyLink(url) }
                     className="rounded-full hover:bg-gray-200 text-black w-9 h-9"
                   />
                 </div>

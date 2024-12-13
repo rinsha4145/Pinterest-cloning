@@ -85,9 +85,9 @@ const Navbar = () => {
    <Link to="" className="items w-12 h-12 rounded-full flex items-center justify-center hover:bg-gray-200">
      <i className="far fa-comment-dots text-gray-500 text-2xl"></i>
    </Link>
-   <Link to="" className="avatar w-12 h-12 rounded-full flex items-center justify-center hover:bg-gray-200">
+   <Link to="/profilepage" className="avatar w-12 h-12 rounded-full flex items-center justify-center hover:bg-gray-200">
      <div className="img w-8 h-8 rounded-full overflow-hidden relative">
-     <div className="flex items-center justify-center">
+     <div className="flex items-center justify-center" >
       {user.profileImage ? (
         <img
           src={user.profileImage}
@@ -187,7 +187,7 @@ const Navbar = () => {
    </>
     ):(
       <>
-      <nav className={`flex flex-wrap justify-between items-center px-6 py-4  fixed top-0 left-0 right-0  ${showLogin || showSignup ? " bg-black bg-opacity-50 pointer-events-none" : ""}`}>
+      <nav className={` flex flex-wrap justify-between items-center px-6 py-4 z-50 fixed top-0 left-0 right-0 bg-white ${showLogin || showSignup ? " bg-black bg-opacity-50 pointer-events-none" : ""}`}>
         {/* Left Section - Logo */} 
         <div className="flex items-center space-x-3">
         <div className="flex items-center space-x-2">

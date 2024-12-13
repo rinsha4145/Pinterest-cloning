@@ -3,12 +3,12 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { useNavigate } from "react-router-dom";
-import Signup from '../Home/Signup'
+import Signup from './Signup'
 import './Home.css'
 import { useSelector } from "react-redux";
 import Login from "./Login";
 import {useClickHandler} from '../Context/ClickHandlerContext'
-const Slide1 = () => {
+const Slides = () => {
   const navigate=useNavigate()
   const { posts } = useSelector((state) => state.posts);
   const { showLogin, showSignup, toggleLogin, toggleSignup } = useClickHandler()
@@ -303,4 +303,4 @@ const Slide1 = () => {
   );
 };
 
-export default Slide1;
+export default Slides;
