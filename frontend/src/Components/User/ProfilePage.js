@@ -33,10 +33,10 @@ function ProfilePage() {
     {data.following==[] ? (
   <p className="mt-2 text-sm text-gray-600">{data.following} following</p>
 ) : (
-  <p className="mt-2 text-sm text-gray-600">0 following</p>
+  <p className="mt-2 text-sm text-gray-600">0 following</p> 
 )}
 
-    <div className="flex justify-center mt-4 space-x-4">
+    <div className="flex justify-center mt-4 space-x-4"> 
     <ShareMenu pro={currentUrl}/>
 
       <button className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-full hover:bg-gray-200">

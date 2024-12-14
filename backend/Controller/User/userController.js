@@ -49,7 +49,7 @@ const userLogin = async (req, res,next) => {
 
 //view own profile view
 const profileView = async (req, res) => {
-    const profile = await User.findById(req.userId);
+    const profile = await User.findById(req.userId); 
     if (!profile) {
         return res.status(404).json({ message: "Profile not found" });
     }
