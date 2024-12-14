@@ -47,29 +47,15 @@ const userValidationSchema = Joi.object({
 
   email: Joi.string()
     .email()
-    .required()
-    .messages({
-      'string.email': `Hmm...that doesn't look like an email address.`,
-      'any.required': `You missed a spot! Don't forget to add your email.`,
-    }),
+    .required(),
 
   password: Joi.string()
     .min(6)
-    .required()
-    .messages({
-      'string.base': 'Password should be a string.',
-      'string.min': 'Your password is too short! You need 6+ characters.',
-      'any.required': 'Password is required.',
-    }),
+    .required(),
 
   birthdate: Joi.date()
     .less('now') // Ensure the birthdate is in the past
-    .required()
-    .messages({
-      'date.base': 'Birthdate must be a valid date.',
-      'date.less': 'Birthdate must be in the past.',
-      'any.required': 'Birthdate is required.',
-    }),
+    .required(),
 
   countryCode: Joi.string()
     .optional()

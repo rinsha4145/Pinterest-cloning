@@ -59,15 +59,8 @@ const Slides = () => {
     { id: 3, content: 'Slide 4', color: '#507a57',heading:"DIY idea",images:DIYPosts} ,
   ];
   return (
-    <>
-    <section id="home" className="relative  font-sans">
-    {showLogin && (
-    <div className="absolute inset-0 z-50  flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white p-5 rounded-3xl shadow-lg">
-        <Login/>
-      </div>
-    </div>
-  )}
+    <div className="overflow-hidden">
+    <section id="home" className="relative font-sans">
     {showSignup && (
     <div className="absolute inset-0 z-50  flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white p-5 rounded-3xl shadow-lg">
@@ -75,6 +68,14 @@ const Slides = () => {
       </div>
     </div>
   )}
+    {showLogin && (
+    <div className="absolute inset-0 z-50  flex items-center justify-center bg-black bg-opacity-50">
+      <div className="bg-white p-5 rounded-3xl shadow-lg">
+        <Login/>
+      </div>
+    </div>
+  )}
+    
     <div className={`mt-[72px] ${ showLogin || showSignup ? "opacity-50 pointer-events-none" : ""}`}>
       {/* Hero Text */}
       <div className="flex justify-center text-center">
@@ -208,9 +209,9 @@ const Slides = () => {
  
 
       {/* Scroll Down Button */}
-      <div className=" flex justify-center absolute bottom-0 w-full py-4 mt-6 w-[100%] bg-custom-yellow" id="search">
+      <div className=" flex justify-center items-center absolute bottom-0 w-full py-4 mt-8 w-[100%] bg-custom-yellow h-4" id="search">
       
-        <button className="flex items-center space-x-2  text-base  " 
+        <button className="flex items-center space-x-2 text-base  " 
         onClick={() => {
               const element = document.getElementById("food");
               if (element) {
@@ -289,17 +290,14 @@ const Slides = () => {
     
     opacity:0.5
   }}>
-    <div className="flex justify-center pt-10 pl-[400px]w-full max-w-[600px] z:1">
+    <div className="flex justify-center pt-10 pl-[400px] w-full max-w-[600px] z:1">
     
     <Signup />
   </div>
   </div>
-    
-  
-  
 </section>
 
-    </>
+    </div>
   );
 };
 

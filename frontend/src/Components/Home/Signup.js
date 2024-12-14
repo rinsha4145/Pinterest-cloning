@@ -1,4 +1,4 @@
-import React,{useState,} from 'react'
+import React,{useEffect, useState,} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import axiosInstance from '../Utils/AxioaInstance';
@@ -6,40 +6,66 @@ import { useNavigate } from 'react-router-dom';
 import handleAsync from '../Utils/HandleAsync';
 import { useClickHandler } from '../Context/ClickHandlerContext';
 import OutsideClickHandler from 'react-outside-click-handler';
+import Cookies from 'js-cookie'
+import { useDispatch } from 'react-redux';
+import {  setUser } from '../Redux/UserSlice';
+
 
 function Signup() {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     birthdate: '',
   });
-  const {  setShowSignup} = useClickHandler()
+  const {showSignup,setShowSignup} = useClickHandler()
+  const validateForm = () => {
+    const errors = {};
+    if (!formData.email ) {
+      errors.email="You missed a spot! Don't forget to add your email.";
+    }else if(!/\S+@\S+\.\S+/.test(formData.email)){
+      errors.email="Hmm...that doesn't look like an email address";
+
+    }
+    if (!formData.password || formData.password.length < 6) {
+      errors.password="Your password is too short! You need 6+ characters.";
+    }
+    
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  }
   
+  const handleOutsideClick = (e) => {
+    
+    setShowSignup(false); // Close the signup modal
+  };
   const handleChange = (e) => {
-    console.log(e)
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit =handleAsync( async (e) => {
     e.preventDefault()
+    if(validateForm()){
     const response = await axiosInstance.post('/signup', formData);
     if (response.status === 200 && response.status < 300) {
       setFormData({ email: '', password: '',birthdate:'' });
+      setIsSignUp(true);
       navigate('/')
     }else{
       throw new Error(`Error: ${response.data.message || 'An error occurred'}`);
     }
+  }
   });  
   return (
     <>
-    <OutsideClickHandler onOutsideClick={() => setShowSignup(false)}>
-
-      <form onSubmit={handleSubmit}>
-        <div className="bg-transparent flex justify-center items-center  h-[80vh] font-sans">
+     {showSignup && (
+    <OutsideClickHandler onOutsideClick={handleOutsideClick}>
+      
+      <form onSubmit={handleSubmit} >
+        <div className=" bg-transparent flex justify-center items-center h-[80vh] font-sans">
           <div className=" w-[400px] max-w-md rounded-3xl ">
             <div className="px-6 py-10 text-center">
               <img
@@ -52,13 +78,14 @@ function Signup() {
               <div>
                 <label className="flex pl-[70px] gap-1 items-center text-sm  text-base font-medium leading-relaxed">Email</label>
                 <input
-                  type="email"
+                  type="text"
                   placeholder="Email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
                   className="w-4/6 mx-auto px-4 py-3 mb-2 text-sm border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
+                {errors.email && <p className="ml-10 text-red-500 text-xs">{errors.email}</p>}
                 <label className="flex gap-1 items-center text-sm pl-[70px] text-base font-medium leading-relaxed">Password</label>
                 
                 <input
@@ -69,9 +96,18 @@ function Signup() {
                   onChange={handleChange}
                   className="w-4/6 mx-auto px-4 py-3 mb-2 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
+                {errors.password && <p className="ml-10 text-red-500 text-xs">{errors.password}</p>}
+
                 <label className="flex gap-1 items-center text-sm pl-[70px] text-base font-medium leading-relaxed">Birthdate
-                <FontAwesomeIcon icon={faInfoCircle} style={{ color: 'grey' }}  title="To help keep Pinterest safe, we now require your birthdate.
-Your birthdate also helps us provide more personalized recommendations and relevant ads. We won't share this information without your permission and it won't be visible on your profile." />
+                <FontAwesomeIcon icon={faInfoCircle} style={{ color: 'grey' }}  title="To help keep Pinterest safe, we
+                  now require your birthdate.
+                  Your birthdate also helps us
+                  provide more personalized 
+                  recommendations and
+                  relevant ads. We won't share 
+                  this information without your 
+                  permission and it won't be 
+                  visible on your profile." />
                 </label>
                 <input
                   type="date"
@@ -80,6 +116,8 @@ Your birthdate also helps us provide more personalized recommendations and relev
                   value={formData.birthdate}
                   className="w-4/6 mx-auto px-4 py-3 mb-2 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
+                {errors.birthdate && <p className="mr-16 text-red-500 text-xs">{errors.birthdate}</p>}
+
                 
                 {/* Continue button */}
                 <button className="w-4/6 h-[40px] mx-auto bg-red-600 text-white text-center py-3 mb-2 rounded-full font-bold hover:bg-red-700 text-base ">Continue</button>
@@ -102,7 +140,7 @@ Your birthdate also helps us provide more personalized recommendations and relev
         </div>
       </form>
     </OutsideClickHandler>
-
+      )}
     </>
   );
 }

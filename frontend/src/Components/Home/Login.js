@@ -14,10 +14,29 @@ function Login() {
   const [datas, setDatas] = useState({email: '',password: ''});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [show, setShow] = useState(true);
-  const { setShowLogin} = useClickHandler()
+  const { setShowLogin,showLogin} = useClickHandler()
+  const [errors, setErrors] = useState({});
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const validateForm = () => {
+    const errors = {};
+    if (!datas.email ) {
+      errors.email="You missed a spot! Don't forget to add your email.";
+    }else if(!/\S+@\S+\.\S+/.test(datas.email)){
+      errors.email="Hmm...that doesn't look like an email address";
+
+    }
+
+    // Password (required, min 6 characters)
+    if (!datas.password || datas.password.length < 6) {
+      errors.password="The password you entered is incorrect. Try again or Reset your password";
+    }
+
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  }
+
   useEffect(() => {
     const userCookie = Cookies.get('user');
     if (userCookie) {
@@ -41,6 +60,7 @@ function Login() {
 
   const handleSubmit = handleAsync(async (e) => {
     e.preventDefault();
+    if(validateForm()){
       const response = await axiosInstance.post('/login', {email: datas.email, password: datas.password});
       console.log('//',response)
       if (response.status === 200) {
@@ -48,14 +68,17 @@ function Login() {
         setIsLoggedIn(true);
         setShowLogin(true) // Redirect to home page after login
       }
+    }
   });
   return (
-    <>
+     
+      <>
+      {showLogin && (
     <OutsideClickHandler onOutsideClick={() => setShowLogin(false)}>
 
     <form onSubmit={handleSubmit}>
       <div className="bg-transparent flex justify-center items-center h-[80vh] font-sans">
-        <div className="w-full max-w-md rounded-4xl mt-[10px]">
+        <div className="w-[400px] max-w-md rounded-4xl ">
             <div className="px-6 py-6 text-center">
               {/* Pinterest logo */}
               <img
@@ -78,6 +101,8 @@ function Login() {
                 onChange={handleChange}
                 className="w-4/6 mx-auto px-4 py-3 mb-2 text-sm border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
+                {errors.email && <p className="ml-10 text-red-500 text-xs">{errors.email}</p>}
+
               {/* Password input */}
               <label className="flex gap-1 items-center text-sm pl-[70px] text-base font-medium leading-relaxed">
                 Password
@@ -90,6 +115,8 @@ function Login() {
                 onChange={handleChange}
                 className="w-4/6 mx-auto px-4 py-3 mb-2 text-sm border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
+                {errors.password && <p className="ml-10 text-red-500 text-xs">{errors.password}</p>}
+
               <br />
               <Link
                 to="/forgot-password"
@@ -132,6 +159,7 @@ function Login() {
       </div>
     </form>
     </OutsideClickHandler>
+     )}
 
 
   </>

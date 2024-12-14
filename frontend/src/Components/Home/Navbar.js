@@ -11,7 +11,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { showLogin, showSignup,setShowLogin, setShowSignup } = useClickHandler()
-
+console.log(showLogin, showSignup);
   
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   useEffect(() => {
@@ -110,13 +110,13 @@ const Navbar = () => {
       {/* Trigger Button */}
       <button
         onClick={toggleDropdown}
-        className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-800 rounded-full shadow-sm hover:bg-gray-200"
+        className="flex items-center gap-3 px-1 py-1  text-gray-800 rounded-full shadow-sm hover:bg-gray-200"
       >
-        <i className="fas fa-chevron-down text-gray-500"></i>
+        <i className="fas fa-chevron-down text-sm text-gray-500"></i>
       </button>
       {/* Dropdown Menu */}
       {isDropdownOpen && (
-        <div className="absolute overflow-hidden right-0 mt-2 w-63 bg-white rounded-lg shadow-lg ring-1 ring-gray-200 z-50">
+        <div className="absolute overflow-y-auto right-0 mt-2 w-[250px] h-[600px] bg-white rounded-lg shadow-lg ring-1 ring-gray-200 z-50">
           <div className="p-4 ">
             <p className="text-xs ">Currently in</p>
             <div className="flex items-center justify-between mt-2 bg-gray-100 px-3 py-2 rounded-md">
@@ -147,7 +147,7 @@ const Navbar = () => {
 
           <div className="py-3 ">
             <p className="px-4 text-xs  ">More options</p>
-            <button className="block w-full text-left px-4 py-4 text-sm  hover:bg-gray-100">
+            <button className="block w-full text-left px-4 py-4 text-sm  hover:bg-gray-100" onClick={()=>navigate('/settings')}>
               Settings
             </button>
             <button className="block w-full text-left px-4 py-2 text-sm  hover:bg-gray-100">
@@ -261,10 +261,6 @@ const Navbar = () => {
       </>
     
     )}
-   
-
-   
-   
     </>
   );
 };

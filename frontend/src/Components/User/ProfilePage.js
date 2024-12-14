@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react'
 import handleAsync from '../Utils/HandleAsync';
 import axiosInstance from '../Utils/AxioaInstance';
 import ShareMenu from './ShareMenu';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function ProfilePage() {
     const [data,setData] = useState({})
     const [currentUrl,setCurrentUrl] = useState(window.location.href);
+    const navigate =useNavigate()
     console.log(currentUrl)
     const {profile}=useParams()
+
     useEffect(() => {
         const fetchData = handleAsync(async () => {
             const response = await axiosInstance.get('/me');
@@ -38,11 +40,14 @@ function ProfilePage() {
 
     <div className="flex justify-center mt-4 space-x-4"> 
     <ShareMenu pro={currentUrl}/>
-
-      <button className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-full hover:bg-gray-200">
-        Edit Profile
-      </button>
     </div>
+    <button
+      onClick={() => navigate('/settings')}
+      className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-full hover:bg-gray-200"
+    >
+      Edit Profile
+    </button>
+   
   </div>
 
   <div className="mt-8 max-w-5xl mx-auto grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-4">

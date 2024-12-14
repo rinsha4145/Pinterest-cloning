@@ -17,7 +17,6 @@ router
  .get('/me',userAuthMiddleware,tryCatch(userController.profileView))
  .get('/profile/:id',userAuthMiddleware,tryCatch(userController.userProfile))
  .post('/follow/:id',userAuthMiddleware,tryCatch(userController.followUnfollow)) 
-
  .post('/forgot-password',tryCatch(forgotpass))
  .post('/reset-password/:id/:token',tryCatch(resetpass))
 

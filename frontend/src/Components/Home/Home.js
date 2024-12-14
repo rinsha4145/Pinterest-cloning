@@ -20,7 +20,7 @@ useEffect(() => {
 }, [dispatch]);
   return (
     <>
-    <div className="container">
+    <div className="container overflow-hidden">
   {posts.map((post) => (
     <div
       className="relative group box" 

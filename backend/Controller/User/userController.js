@@ -65,6 +65,7 @@ const userProfile = async (req, res, next) => {
     res.json(userProfile);
 };
 
+
 //follow and unfollow a user
 const followUnfollow= async (req,res,next)=>{
     const user = await User.findById(req.params.id);

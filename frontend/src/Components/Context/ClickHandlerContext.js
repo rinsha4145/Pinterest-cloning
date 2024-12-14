@@ -8,10 +8,6 @@ export const ClickHandlerProvider = ({ children }) => {
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
 
- 
-   
- 
-
   return (
     <clickHandlerContext.Provider value={{ showLogin, showSignup, setShowLogin, setShowSignup }}>
       {children}

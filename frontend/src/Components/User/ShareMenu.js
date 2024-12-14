@@ -59,7 +59,7 @@ const ShareMenu = ({ url,pro }) => {
   </button>
 ) : (
   // Share Button
-  <button className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-full mb-[370px] mr-[770px] hover:bg-gray-200" onClick={toggleMenu}>
+  <button className=" active:text-white active:bg-black px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-full mb-[370px] mr-[770px] hover:bg-gray-200" onClick={toggleMenu}>
     Share
   </button>
 )}
