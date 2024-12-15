@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -11,7 +11,7 @@ import {useClickHandler} from '../Context/ClickHandlerContext'
 const Slides = () => {
   const navigate=useNavigate()
   const { posts } = useSelector((state) => state.posts);
-  const { showLogin, showSignup, toggleLogin, toggleSignup } = useClickHandler()
+  const { showLogin, showSignup, } = useClickHandler()
   
   const foodPosts = posts.filter((post) => post.category === 'Food').slice(0, 10).map((post) => post.image); 
   const DIYPosts = posts.filter((post) => post.category === 'DIY').slice(0, 10).map((post) => post.image);     
@@ -22,6 +22,18 @@ const Slides = () => {
   const [animationClass, setAnimationClass] = useState("animate-fadeInDown");
   const [nextSlide, setNextSlide] = useState(currentSlide);
   
+  useEffect(() => {
+    if (showLogin || showSignup) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto'; // Reset scrolling when the form is hidden
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto'; // Cleanup to reset when the component is unmounted
+    };
+  }, [showLogin, showSignup]);
+
   const settings = {
     dots: true,
     infinite: true,
@@ -60,7 +72,7 @@ const Slides = () => {
   ];
   return (
     <div className="overflow-hidden">
-    <section id="home" className="relative font-sans">
+    <section id="home" className="relative font-sans z-10">
     {showSignup && (
     <div className="absolute inset-0 z-50  flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white p-5 rounded-3xl shadow-lg">

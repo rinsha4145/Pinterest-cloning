@@ -14,29 +14,29 @@ function Explore() {
           category:"Travel"
         },
         {
-          image: "...",
-          title: "Christmas gift ideas for fashion lovers",
+          image: "https://i.pinimg.com/236x/e5/fc/59/e5fc59c732ae0e62ba9ef1cc6e3786e7.jpg",
+          title: "Delicious bites and foodie delights to satisfy your cravings.",
         category:"Food"
         },
         {
-          image: "...",
-          title: "Shine through the festivities",
+          image: "https://i.pinimg.com/236x/07/ca/52/07ca52bcbe9f7555a5cbebfe405013bd.jpg",
+          title: "Creative DIY projects to bring your ideas to life",
            category:"DIY"
         },
         {
-          image: "...",
-          title: "Relatable memes that are so you", 
+          image: "https://i.pinimg.com/736x/8d/37/99/8d3799e24be55bdfddb7a4fd8e4100d0.jpg",
+          title: "Latest tech trends and gadgets to fuel your innovation.", 
           category:"Tech"
         },
         {
-          image: "...",
-          title: "Fitness update photos",
-           category:"Travel"
+          image: "https://i.pinimg.com/736x/78/fe/99/78fe99befa1e094824455e37c380cc38.jpg",
+          title: "Cozy vibes and inspiration for your home sweet home.",
+           category:"Home"
         },
         {
-          image: "...",
-          title: "Travel to South Korea",
-           category:"Travel"
+          image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROjA1uz5gFDN2L_XHFMDwU40y_Qp6DpNIGyA&s",
+          title: "Trendy styles and fashion inspo to elevate your wardrobe.",
+           category:"Fashion"
         },
       ]
      
@@ -55,7 +55,7 @@ function Explore() {
   }, []);
   return (
    <>
-    <div className="flex flex-col items-center pt-10 font-sans">
+    <div className="flex flex-col items-center pt-10 font-sans h-[900px]">
       <h1 className="text-xl font-semibold mb-4">{date}</h1>
       <h1 className="text-4xl font-semibold">Stay inspired</h1>
    
@@ -74,7 +74,10 @@ function Explore() {
       </div>
     </div>
   ))}
-</div>
+</div><br/>
+<h1 className="text-sm mb-4">That's all for today!</h1>
+      <h1 className="text-base font-semibold">Come back tomorrow for more inspiration</h1>
+      <button className='px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-full hover:bg-gray-200' onClick={()=>navigate('/')}>Go to home feed</button>
 </div>
    </>
   )

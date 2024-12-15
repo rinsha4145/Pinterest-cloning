@@ -64,9 +64,9 @@ function Login() {
       const response = await axiosInstance.post('/login', {email: datas.email, password: datas.password});
       console.log('//',response)
       if (response.status === 200) {
-        navigate('/'); 
         setIsLoggedIn(true);
-        setShowLogin(true) // Redirect to home page after login
+        navigate('/'); 
+       
       }
     }
   });
@@ -75,7 +75,6 @@ function Login() {
       <>
       {showLogin && (
     <OutsideClickHandler onOutsideClick={() => setShowLogin(false)}>
-
     <form onSubmit={handleSubmit}>
       <div className="bg-transparent flex justify-center items-center h-[80vh] font-sans">
         <div className="w-[400px] max-w-md rounded-4xl ">

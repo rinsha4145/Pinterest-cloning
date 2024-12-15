@@ -33,7 +33,7 @@ function Settings() {
     <div class="grid grid-cols-2 gap-4">
       <div>
         <label class="block text-gray-700 mb-2" for="first-name">First name</label>
-        <input type="text" id="first-name" class="w-full p-2 border border-gray-300 rounded-md" value="Rinujouhar" />
+        <input type="text" id="first-name" class="w-full p-2 border border-gray-300 rounded-md"  />
       </div>
       <div>
         <label class="block text-gray-700 mb-2" for="surname">Surname</label>
@@ -43,7 +43,7 @@ function Settings() {
 
     <div class="mt-4">
       <label class="block text-gray-700 mb-2" for="about">About</label>
-      <textarea id="about" rows="4" class="w-full p-2 border border-gray-300 rounded-md" placeholder="Tell us about yourself">sfcws</textarea>
+      <textarea id="about" rows="4" class="w-full p-2 border border-gray-300 rounded-md" placeholder="Tell us about yourself"></textarea>
     </div>
 
     <div class="mt-4">

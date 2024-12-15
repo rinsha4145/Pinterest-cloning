@@ -30,11 +30,11 @@ const userLogin = async (req, res,next) => {
     const { email, password } = value;
     const user = await User.findOne({ email });
     if (!user) {
-        return next(new CustomError('user not found', 404));
+        return next(new ValidationError('user not found', 404));
     }
     const matching = await bcrypt.compare(password,user.password);
     if (!matching) {
-       return next(new CustomError('The Email or UserName is incorrect', 404));
+       return next(new ValidationError('The Email or UserName is incorrect', 404));
     }
     const isblock= user.isBlocked
     if(isblock){

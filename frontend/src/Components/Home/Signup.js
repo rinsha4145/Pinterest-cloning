@@ -38,7 +38,7 @@ function Signup() {
   }
   
   const handleOutsideClick = (e) => {
-    
+    console.log("outside")
     setShowSignup(false); // Close the signup modal
   };
   const handleChange = (e) => {
@@ -52,7 +52,8 @@ function Signup() {
     const response = await axiosInstance.post('/signup', formData);
     if (response.status === 200 && response.status < 300) {
       setFormData({ email: '', password: '',birthdate:'' });
-      setIsSignUp(true);
+      setShowSignup(false)
+      
       navigate('/')
     }else{
       throw new Error(`Error: ${response.data.message || 'An error occurred'}`);
@@ -62,10 +63,9 @@ function Signup() {
   return (
     <>
      {showSignup && (
-    <OutsideClickHandler onOutsideClick={handleOutsideClick}>
-      
-      <form onSubmit={handleSubmit} >
-        <div className=" bg-transparent flex justify-center items-center h-[80vh] font-sans">
+    // <OutsideClickHandler onOutsideClick={handleOutsideClick}>
+      <form onSubmit={handleSubmit}  className='z-50'>
+        <div className="bg-white flex justify-center items-center h-[80vh] font-sans">
           <div className=" w-[400px] max-w-md rounded-3xl ">
             <div className="px-6 py-10 text-center">
               <img
@@ -139,7 +139,7 @@ function Signup() {
           </div>
         </div>
       </form>
-    </OutsideClickHandler>
+    //  </OutsideClickHandler>
       )}
     </>
   );

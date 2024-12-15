@@ -13,7 +13,7 @@ function ResetPassword() {
       .post(`/reset-password/${id}/${token}`, { password })
       .then((res) => {
         if (res.data.Status === "Success") {
-          navigate("/login");
+          navigate("/");
         }
       })
       .catch((err) => console.log(err));

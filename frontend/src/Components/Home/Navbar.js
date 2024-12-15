@@ -11,28 +11,16 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { showLogin, showSignup,setShowLogin, setShowSignup } = useClickHandler()
-console.log(showLogin, showSignup);
   
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  useEffect(() => {
-    if (showLogin || showSignup) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto'; // Reset scrolling when the form is hidden
-    }
-
-    return () => {
-      document.body.style.overflow = 'auto'; // Cleanup to reset when the component is unmounted
-    };
-  }, [showLogin, showSignup]);
+  
   const handleLogout = handleAsync( async (e) => {
     e.preventDefault();
       const  response=await axiosInstance.post('/logout',{},{withCredentials:true});
       dispatch(logoutUser(user));
 
       if (response.status >= 200 && response.status < 300) {
-        alert('Logout successful', response.data);
-        navigate("/login")
+        navigate("/")
       } else {
         throw new Error(response.data.message || 'An error occurred');
       }

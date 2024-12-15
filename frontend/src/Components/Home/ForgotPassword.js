@@ -12,7 +12,7 @@ function ForgotPassword() {
         axiosInstance.post('/forgot-password', {email})
         .then(res => {
             if(res.data.Status === "Success") {
-                navigate('/login')
+                navigate('/')
                
             }
         }).catch(err => console.log(err))
