@@ -1,6 +1,6 @@
 const User=require('../../Models/userSchema')
 const {userValidationSchema,loginValidationSchema} = require('../../Models/validation')
-const {ValidationError}=require('../../Utils/customeError')
+const {ValidationError,NotFoundError}=require('../../Utils/customeError')
 const bcrypt = require('bcrypt');
 const { generateToken } = require('../../Utils/generateToken');
 
@@ -56,26 +56,18 @@ const profileView = async (req, res) => {
     res.json({profile});
 };
 
-//view other user profile
-const userProfile = async (req, res, next) => {
-    const userProfile = await User.findById(req.params.id).select('-password');
-    if (!userProfile) {
-        return res.status(404).json({ message: "Profile not found" });
-    }
-    res.json(userProfile);
-};
-
 const editProfile = async (req,res,next) => {
+    console.log("Incoming Request Body:", req.body);
     const { error, value } = userValidationSchema.validate(req.body);
     if (error) {
-        console.log(error.details[0].message)
+        console.log("ll",error.details[0].message)
         return next(new ValidationError('Validation failed', 400));
     }
     if (req.file) {
         value.image = req.file.path;
     }
     
-    const updatedProfile = await User.findByIdAndUpdate(req.userId, value, { new: true });   
+    const updatedProfile = await User.findByIdAndUpdate(req.user.id, value, { new: true });   
     if (!updatedProfile) {
         return next(new NotFoundError('Post not found with this ID', 404));
     }
@@ -83,6 +75,17 @@ const editProfile = async (req,res,next) => {
 
     return res.status(200).json({updatedProfile});
 };
+
+//view other user profile
+const userProfile = async (req, res, next) => {
+    const userProfile = await User.findById(req.params.id).select('-password');
+    if (!userProfile) {
+        return res.status(404).json({ message: "Profile not found" }); 
+    }
+    res.json(userProfile);
+};
+
+
 
 
 

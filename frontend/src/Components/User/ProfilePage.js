@@ -24,7 +24,7 @@ function ProfilePage() {
   <div className="max-w-3xl mx-auto pt-8">
     <div className="relative">
       <img
-        src={data.profileImage}
+        src={data.profileimage}
         alt="Profile"
         className="w-32 h-32 mx-auto rounded-full"
       />
@@ -32,14 +32,14 @@ function ProfilePage() {
     <h1 className="mt-4 text-2xl font-bold text-gray-800">{data.firstname}</h1>
     <p className="text-sm text-gray-600">{data.about}</p>
     <p className="text-sm text-gray-600">@{data.username}</p>
-    {data.following==[] ? (
-  <p className="mt-2 text-sm text-gray-600">{data.following} following</p>
+    {data.followers? (
+  <p className="mt-2 text-sm text-gray-600">{data.followers} following</p>
 ) : (
   <p className="mt-2 text-sm text-gray-600">0 following</p> 
 )}
 
     <div className="flex justify-center mt-4 space-x-4"> 
-    <ShareMenu pro={currentUrl}/>
+    <ShareMenu pro={currentUrl}/> 
     </div>
     <button
       onClick={() => navigate('/settings')}

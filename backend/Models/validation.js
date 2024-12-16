@@ -1,7 +1,7 @@
 const Joi = require('joi');
 
 // Define Joi validation schema for User Registration
-const userValidationSchema = Joi.object({
+const userValidationSchema = Joi.object({ 
   firstname: Joi.string()
     .min(2)
     .max(50)
@@ -10,8 +10,8 @@ const userValidationSchema = Joi.object({
   lastname: Joi.string()
     .min(2)
     .max(50),
-
-  profileImage: Joi.string()
+    
+  profileimage: Joi.string()
     .uri()
     .optional()
     .messages({
@@ -46,21 +46,18 @@ const userValidationSchema = Joi.object({
     .optional(),
 
   email: Joi.string()
-    .email()
-    .required(),
+    .email(),
 
   password: Joi.string()
-    .min(6)
-    .required(),
+    .min(6),
 
   birthdate: Joi.date()
-    .less('now') // Ensure the birthdate is in the past
-    .required(),
+    .less('now'), // Ensure the birthdate is in the past,
 
   countryCode: Joi.string()
     .optional()
     .messages({
-      'string.base': 'Country code should be a string.',
+      'string.base': 'Country code should be a string.', 
     }),
 
   phoneNumber: Joi.string()
@@ -110,17 +107,16 @@ const userValidationSchema = Joi.object({
       'boolean.base': 'Blocked status must be a boolean.',
     }),
 
-  followers: Joi.number()
-    .integer()
-    .min(0)
-    .default(0)
-    .optional()
-    .messages({
-      'number.base': 'Followers must be a number.',
-      'number.integer': 'Followers must be an integer.',
-      'number.min': 'Followers cannot be negative.',
-    }),
-
+  followers:  Joi.alternatives()
+  .try(Joi.array().items(Joi.string().hex().length(24)), Joi.string())
+  .custom((value) => (typeof value === 'string' ? JSON.parse(value) : value))
+  .optional()
+  .default([]),
+  following:  Joi.alternatives()
+  .try(Joi.array().items(Joi.string().hex().length(24)), Joi.string())
+  .custom((value) => (typeof value === 'string' ? JSON.parse(value) : value))
+  .optional()
+  .default([]),
   saved: Joi.array()
     .items(Joi.string().hex().length(24)) // ObjectId references
     .optional()
