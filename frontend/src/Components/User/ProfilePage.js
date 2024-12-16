@@ -14,8 +14,8 @@ function ProfilePage() {
     useEffect(() => {
         const fetchData = handleAsync(async () => {
             const response = await axiosInstance.get('/me');
+            setData(response.data.profile)
         });
-      
         fetchData();
       }, []);
   return (
@@ -24,9 +24,9 @@ function ProfilePage() {
   <div className="max-w-3xl mx-auto pt-8">
     <div className="relative">
       <img
-        src={data.image}
+        src={data.profileImage}
         alt="Profile"
-        className="w-24 h-24 mx-auto rounded-full border-4 border-gray-200"
+        className="w-32 h-32 mx-auto rounded-full"
       />
     </div>
     <h1 className="mt-4 text-2xl font-bold text-gray-800">{data.firstname}</h1>
@@ -50,7 +50,7 @@ function ProfilePage() {
    
   </div>
 
-  <div className="mt-8 max-w-5xl mx-auto grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-4">
+  {/* <div className="mt-8 max-w-5xl mx-auto grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-4">
     <div className="aspect-w-1 aspect-h-1">
       <img
         src="image1.jpg"
@@ -65,7 +65,7 @@ function ProfilePage() {
         className="w-full h-full object-cover rounded-lg"
       />
     </div>
-  </div>
+  </div> */}
 </div>
 
     </>

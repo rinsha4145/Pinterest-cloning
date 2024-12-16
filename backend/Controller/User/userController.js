@@ -65,6 +65,26 @@ const userProfile = async (req, res, next) => {
     res.json(userProfile);
 };
 
+const editProfile = async (req,res,next) => {
+    const { error, value } = userValidationSchema.validate(req.body);
+    if (error) {
+        console.log(error.details[0].message)
+        return next(new ValidationError('Validation failed', 400));
+    }
+    if (req.file) {
+        value.image = req.file.path;
+    }
+    
+    const updatedProfile = await User.findByIdAndUpdate(req.userId, value, { new: true });   
+    if (!updatedProfile) {
+        return next(new NotFoundError('Post not found with this ID', 404));
+    }
+    
+
+    return res.status(200).json({updatedProfile});
+};
+
+
 
 //follow and unfollow a user
 const followUnfollow= async (req,res,next)=>{
@@ -129,4 +149,4 @@ const userLogout = async (req, res) => {
     res.status(200).json({ status: 'success', message: 'Logout successful' });
 };
 
-module.exports = { userReg,userLogin,userLogout,profileView,userProfile,followUnfollow};
+module.exports = { userReg,userLogin,userLogout,profileView,userProfile,followUnfollow,editProfile};
