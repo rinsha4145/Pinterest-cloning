@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
     addressLine1: { type: String },
     addressLine2: { type: String },
     city: { type: String,  },
-    stateProvinceRegion: { type: String,  },
+    stateProvinceRegion: { type: String,}, 
     postalCode: { type: String },
     country: { type: String },
     isBlocked: { type: Boolean, default: false },

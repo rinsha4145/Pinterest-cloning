@@ -12,7 +12,7 @@ const { resetpass } = require("../Controller/resetPassword");
 
 router
  .post('/signup',tryCatch(userController.userReg))
- .post('/login',tryCatch(userController.userLogin)) 
+ .post('/login',tryCatch(userController.userLogin))   
  .post('/logout',userAuthMiddleware,tryCatch(userController.userLogout))
  .get('/me',userAuthMiddleware,tryCatch(userController.profileView))
  .patch('/editprofile',userAuthMiddleware,upload.single('profileimage'),tryCatch(userController.editProfile))

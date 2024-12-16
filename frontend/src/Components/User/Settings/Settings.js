@@ -8,7 +8,7 @@ function Settings() {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
   const [userdata, setUserData] = useState({
-    profileImage:'',
+    profileimage:'',
     firstname: '',
     lastname: '',
     about:'',
@@ -24,49 +24,32 @@ function Settings() {
         console.log("first",userdata)
     });
     fetchData();
-  }, []);
+  }, [userdata.email]);
   const handleChange = (event) => {
     const { name, value,type,files } = event.target;
     setUserData(prevProduct => ({...prevProduct,[name]:type === "file" ? files[0] : value, }));
   };
-  const handleSubmit = handleAsync(async (e) => {
-    e.preventDefault(); // Prevent default form submission
-  
+  const handleSubmit = handleAsync( (e) => {
+    const update=async()=>{
+    e.preventDefault();
     const formData = new FormData();
-  
-    // Iterate over the userdata object
     Object.keys(userdata).forEach((key) => {
       const value = userdata[key];
-      // Append file or handle non-file values (like objects or strings)
       if (value instanceof File) {
         formData.append(key, value); 
-        console.log("fcccirst",formData)
       } else if (typeof value === 'object') {
-        formData.append(key, JSON.stringify(value));
-        console.log("fcirst",formData)  
+        formData.append(key, JSON.stringify(value));  
       } else {
         formData.append(key, value);
-        console.log("first",formData)
       }
     });
-  
-    try {
-      // Make API call
-      const response = await axiosInstance.patch('/editprofile', formData);
-      console.log("fcccirst",formData)
-      // Check if the response is successful (status 200-299)
-      if (response.status >= 200 && response.status < 300) {
-        alert('Profile updated successfully');
-      } else {
-        alert('Failed to update profile');
-      }
-    } catch (error) {
-      // Handle error, e.g., network failure or server-side issue
-      console.error('Error updating profile:', error);
-      alert('An error occurred while updating the profile');
+    const response= await axiosInstance.patch('/editprofile', formData )
+    if (response.status >= 200 && response.status < 300) {
+     alert('Product updated successfully');
     }
+  }
+  update()
   });
-  
   return (
     
     <>
@@ -92,7 +75,7 @@ function Settings() {
     <p className="text-base mb-4">Keep your personal details private. Information you add here is<br/> visible to anyone who can view your profile.</p>
 
     <div className="flex items-center mb-4">
-      <img src={userdata.profileImage}alt="Profile" className="w-16 h-16 rounded-full object-cover mr-4" />
+      <img src={userdata.profileimage || ""}alt="Profile" className="w-16 h-16 rounded-full object-cover mr-4" />
       <button className="px-4 py-2 bg-gray-300 rounded-full text-sm" onClick={() => setShowModal(true)} >Change</button>
     </div>
     {showModal && (
@@ -121,26 +104,26 @@ function Settings() {
     <div className="grid grid-cols-2 gap-4">
       <div>
         <label className="block text-gray-700 mb-2" htmlFor="first-name">First name</label>
-        <input type="text" name="firstname" id="first-name" className="w-full p-2 border border-gray-300 rounded-md" value={userdata.firstname} onChange={handleChange}/>
+        <input type="text" name="firstname" id="first-name" className="w-full p-2 border border-gray-300 rounded-md" value={userdata.firstname || ""} onChange={handleChange}/>
       </div>
       <div>
         <label className="block text-gray-700 mb-2" htmlFor="surname">Surname</label>
-        <input type="text" id="surname" name="lastname" className="w-full p-2 border border-gray-300 rounded-md" value={userdata.lastname} onChange={handleChange} />
+        <input type="text" id="surname" name="lastname" className="w-full p-2 border border-gray-300 rounded-md" value={userdata.lastname || ""} onChange={handleChange} />
       </div>
     </div>
 
     <div className="mt-4">
       <label className="block text-gray-700 mb-2" htmlFor="about">About</label>
-      <textarea id="about" rows="4" name="about" className="w-full p-2 border border-gray-300 rounded-md" placeholder="Tell us about yourself" value={user.about} onChange={handleChange}></textarea>
+      <textarea id="about" rows="4" name="about" className="w-full p-2 border border-gray-300 rounded-md" placeholder="Tell us about yourself" value={user.about || ""} onChange={handleChange}></textarea>
     </div>
 
     <div className="mt-4">
       <label className="block text-gray-700 mb-2" htmlFor="website">Website</label>
-      <input type="text" id="website" name='website' className="w-full p-2 border border-gray-300 rounded-md" value={userdata.website} onChange={handleChange}/>
+      <input type="text" id="website" name='website' className="w-full p-2 border border-gray-300 rounded-md" value={userdata.website|| ""} onChange={handleChange}/>
     </div>
     <div className="mt-4">
       <label className="block text-gray-700 mb-2" htmlFor="website">Username</label>
-      <input type="text" id="username" name="username"className="w-full p-2 border border-gray-300 rounded-md" value={userdata.username} onChange={handleChange} />
+      <input type="text" id="username" name="username"className="w-full p-2 border border-gray-300 rounded-md" value={userdata.username|| ""} onChange={handleChange} />
     </div>
 
     <div className="mt-6 flex space-x-4">

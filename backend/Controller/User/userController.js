@@ -64,10 +64,10 @@ const editProfile = async (req,res,next) => {
         return next(new ValidationError('Validation failed', 400));
     }
     if (req.file) {
-        value.image = req.file.path;
+        value.profileimage = req.file.path;
     }
     
-    const updatedProfile = await User.findByIdAndUpdate(req.user.id, value, { new: true });   
+    const updatedProfile = await User.findByIdAndUpdate(req.userId, value, { new: true });   
     if (!updatedProfile) {
         return next(new NotFoundError('Post not found with this ID', 404));
     }
