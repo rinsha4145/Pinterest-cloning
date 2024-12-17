@@ -9,6 +9,7 @@ import {useClickHandler} from '../Context/ClickHandlerContext'
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [activeTab, setActiveTab] = useState("Home");
   const { user } = useSelector((state) => state.user);
   const { showLogin, showSignup,setShowLogin, setShowSignup } = useClickHandler()
   
@@ -44,13 +45,25 @@ const Navbar = () => {
    <Link to="" className="logo w-12 h-12 rounded-full flex items-center justify-center hover:bg-gray-200">
      <i className="fab fa-pinterest text-red-600 text-2xl"></i>
    </Link>
-   <Link to="/" className="home font-bold active:bg-black active:text-white  flex items-center justify-center px-4 py-2 rounded-full">
+   <Link to="/" className={`home font-bold  flex items-center justify-center px-4 py-2 rounded-full ${
+              activeTab === "Home"
+                ? "bg-black text-white "
+                :""}`}
+                onClick={() => setActiveTab("Home")}>
    Home
    </Link>
-   <Link to="/explore" className="home font-bold active:bg-black active:text-white flex items-center justify-center px-4 py-2 rounded-full">
+   <Link to="/explore" className={`home font-bold  flex items-center justify-center px-4 py-2 rounded-full ${
+              activeTab === "Explore"
+                ? "bg-black text-white "
+                :""}`}
+                onClick={() => setActiveTab("Explore")}>
    Explore
    </Link>
-   <Link to="/create" className="home font-bold active:bg-black active:text-white flex items-center justify-center px-4 py-2 rounded-full">
+   <Link to="/create" className={`home font-bold  flex items-center justify-center px-4 py-2 rounded-full ${
+              activeTab === "Create"
+                ? "bg-black text-white "
+                :""}`}
+                onClick={() => setActiveTab("Create")}>
    Create
    </Link>
  </div>
