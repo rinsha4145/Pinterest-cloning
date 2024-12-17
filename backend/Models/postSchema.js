@@ -8,8 +8,8 @@ const postSchema = new Schema({
   image: { type: String, required: true },
   link: { type: String },
   category: { 
-    type: String, 
-    enum: ['Fashion', 'Travel', 'DIY', 'Tech', 'Home', 'Other','Food'], 
+    type: Schema.Types.ObjectId, 
+    ref: "Category", // Reference to Category schema
     required: true 
   },
   tags: { type: [String] },

@@ -9,7 +9,6 @@ const {  forgotpass } = require("../Controller/forgotPassword");
 const { resetpass } = require("../Controller/resetPassword");
 
 
-
 router
  .post('/signup',tryCatch(userController.userReg))
  .post('/login',tryCatch(userController.userLogin))   

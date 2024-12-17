@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 // import { FaPlus } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import handleAsync from "../Utils/HandleAsync";
@@ -6,16 +6,25 @@ import axiosInstance from "../Utils/AxioaInstance";
 import { useDispatch } from 'react-redux';
 import { addPost } from '../Redux/PostSlice';
 const Create = () => {
+  const [categories,setCategories]=useState([])
   const [isImageUploaded, setIsImageUploaded] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
   const [post, setPost] = useState({
     title:'',description: '',
-    link: '',board:'',
+    link: '',category:'',
     tag: ''
   });
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
-
+  useEffect(() => {
+    const fetchData = handleAsync(async () => {
+        const response = await axiosInstance.get('/admin/category');
+        setCategories(response.data.category); 
+        console.log("vvv",categories)
+    });
+  
+    fetchData();
+  }, [categories.name]);
   const handleChange = (e) => {
     console.log(e)
     const { name, value } = e.target;
@@ -39,14 +48,8 @@ const Create = () => {
     setShow((prev) => !prev);
   }
   
-
   const [image, setImage] = useState(null);
-  const [product, setProduct] = useState({
-    title:'',productName: '',
-    price: '',actualPrice:'',
-    productDescription: '',category: '',
-  });
-
+  
   
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
@@ -85,8 +88,6 @@ const Create = () => {
       alert('Failed to create post. Please check the data and try again.');
   }
 });
-
-
 
 
   const inputRef = useRef(null);
@@ -217,16 +218,19 @@ const Create = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Board</label>
+            <label className="block text-sm font-medium text-gray-700">Category</label>
             <select
-  name="board"
-  value={post.board}
-  onChange={handleChange} // Ensure the post state gets updated
+  name="category"
+  value={post.category}
+  onChange={handleChange} // Updates the post state correctly
   className="w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
 >
-  <option value="">Choose a board</option>
-  <option value="board1">Board 1</option>
-  <option value="board2">Board 2</option>
+  <option value="">Choose a category</option> {/* Default placeholder option */}
+  {categories.map((category) => (
+    <option key={category._id} value={category._id}>
+      {category.name}
+    </option>
+  ))}
 </select>
           </div>
           <div>

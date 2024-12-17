@@ -222,7 +222,16 @@ const postValidationSchema = Joi.object({
   createdAt: Joi.date().default(Date.now)
 });
 
+const validateCategory = Joi.object({
+  name: Joi.string()
+    .required()
+    .valid("Fashion", "Travel", "DIY", "Tech", "Home", "Other", "Food") // Predefined categories
+    .messages({
+      "any.only": "Category name must be one of Fashion, Travel, DIY, Tech, Home, Other, or Food.",
+      "string.empty": "Category name is required."
+    }),
+});
 
 
 // Validation for registration
-module.exports = { userValidationSchema,loginValidationSchema,postValidationSchema };
+module.exports = { userValidationSchema,loginValidationSchema,postValidationSchema,validateCategory };

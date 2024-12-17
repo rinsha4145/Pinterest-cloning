@@ -1,6 +1,7 @@
 const Posts = require('../../Models/postSchema');
 const { postValidationSchema } = require('../../Models/validation');
 const { NotFoundError, ValidationError } = require('../../Utils/customeError');
+const Category = require('../../Models/Admin/categorySchema');
 
 // Get all posts
 const getAllPosts = async (req, res, next) => {
@@ -20,7 +21,11 @@ const getpostbyid = async (req, res, next) => {
 // Get posts by category
 const getbycategory = async (req, res, next) => {
     const { category } = req.params; 
-    const posts = await Posts.find({ category: category });
+    const categoryDoc = await Category.findOne({ name: category });
+    const posts = await Posts.find({ category: categoryDoc._id  });
+    if (!categoryDoc) {
+        return next(new NotFoundError('Category not found.'));
+    }
     if (!posts || posts.length === 0) {
         return next(new NotFoundError('Posts not found for this category.'));
     }
@@ -40,11 +45,16 @@ const addPost = async (req, res, next) => {
     if (!req.userId) {
         return res.status(401).json({ message: "Unauthorized: User ID not found" });
     }
+    const existingCategory = await Category.findOne({ name: category }); // Ensure category is an ObjectId
+    if (!existingCategory) {
+        return next(new ValidationError("Category does not exist"));
+    }
+
     const image = req.file?.path;
     const newPost = new Posts({
         title,
         description,
-        category,
+        category:existingCategory._id,
         image,
         tags, 
         owner: req.userId,
