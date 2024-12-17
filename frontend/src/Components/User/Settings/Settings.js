@@ -26,26 +26,33 @@ function Settings() {
     fetchData();
   }, [userdata.email]);
   const handleChange = (event) => {
-    const { name, value,type,files } = event.target;
+    const { name,value,type,files } = event.target;
     setUserData(prevProduct => ({...prevProduct,[name]:type === "file" ? files[0] : value, }));
   };
+  
+  
   const handleSubmit = handleAsync( (e) => {
     const update=async()=>{
     e.preventDefault();
     const formData = new FormData();
     Object.keys(userdata).forEach((key) => {
       const value = userdata[key];
+      console.log("asdfghj value",value);
+      
       if (value instanceof File) {
         formData.append(key, value); 
       } else if (typeof value === 'object') {
-        formData.append(key, JSON.stringify(value));  
+        formData.append(key, JSON.stringify(value)); 
       } else {
         formData.append(key, value);
       }
     });
-    const response= await axiosInstance.patch('/editprofile', formData )
+    
+    // Update logic here
+    const response= await axiosInstance.put("/editprofile", formData )
     if (response.status >= 200 && response.status < 300) {
-     alert('Product updated successfully');
+      alert('Product updated successfully');
+     
     }
   }
   update()
