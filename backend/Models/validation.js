@@ -9,7 +9,8 @@ const userValidationSchema = Joi.object({
 
   lastname: Joi.string()
     .min(2)
-    .max(50),
+    .max(50)
+    .allow(null, ''),
     
   profileimage: Joi.string()
     .uri()
@@ -21,21 +22,19 @@ const userValidationSchema = Joi.object({
   about: Joi.string()
     .max(500)
     .optional()
-    .messages({
-      'string.base': 'About should be a string.',
-      'string.max': 'About can have a maximum of 500 characters.',
-    }),
+    .allow(null, ''),
 
   pronounce: Joi.string()
     .valid('Mr', 'Ms', 'Mx', 'Other')
     .default('Other')
     .messages({
-      'any.only': 'Pronounce must be one of Mr, Ms, Mx, or Other.',
+      'any.only': 'Pronounce must be one of Mr, Ms, Mx, or Other.',    
     }),
 
   website: Joi.string()
     .uri()
     .optional()
+    .allow(null, '')
     .messages({
       'string.uri': 'Website must be a valid URL.',
     }),

@@ -1,61 +1,73 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import axiosInstance from '../../Utils/AxioaInstance';
 import handleAsync from '../../Utils/HandleAsync';
+import {  updateUser } from '../../Redux/UserSlice';
+import { useDispatch } from 'react-redux';
 
 function Settings() {
-  const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
   const [userdata, setUserData] = useState({
-    profileimage:'',
+    profileimage: '',
     firstname: '',
     lastname: '',
-    about:'',
+    about: '',
     website: '',
     username: '',
-  })
+  });
+  const dispatch = useDispatch();
+
   const [showModal, setShowModal] = useState(false);
- 
+   const [selectedFile, setSelectedFile] = useState(null);
+   const [originalData, setOriginalData] = useState(user);
+   
   useEffect(() => {
     const fetchData = handleAsync(async () => {
-        const response = await axiosInstance.get('/me');
-        setUserData(response.data.profile)
-        console.log("first",userdata)
+      const response = await axiosInstance.get('/me');
+      setUserData(response.data.profile);
+      
     });
     fetchData();
-  }, [userdata.email]);
+    
+  }, []);
+  const isFormChanged = JSON.stringify(userdata) !== JSON.stringify(user);
+ 
+
   const handleChange = (event) => {
-    const { name,value,type,files } = event.target;
-    setUserData(prevProduct => ({...prevProduct,[name]:type === "file" ? files[0] : value, }));
+    const { name, value, type, files } = event.target;
+    setUserData((prevData) => ({
+      ...prevData,
+      [name]: type === 'file' ? files[0] : value,
+    }));
   };
-  
-  
+  const handleReset = () => {
+      setUserData(originalData);
+
+  };
+ 
+   
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
     const update = async () => {
       const formData = new FormData();
-  
       Object.keys(userdata).forEach((key) => {
         const value = userdata[key];
-        const originalValue = user[key]; // Original data for comparison
-  
-        // Only add fields that have changed and are not server-controlled
+        const originalValue = user[key];
         if (value !== originalValue && !["followers", "following", "updatedAt"].includes(key)) {
           if (value instanceof File) {
             formData.append(key, value);
-          } else if (typeof value === 'object') {
-            formData.append(key, JSON.stringify(value));
           } else {
             formData.append(key, value);
           }
         }
       });
-  
+
       try {
         const response = await axiosInstance.put("/editprofile", formData);
         if (response.status >= 200 && response.status < 300) {
+          dispatch(updateUser(userdata));
+
           alert('Profile updated successfully');
         }
       } catch (error) {
@@ -63,97 +75,166 @@ function Settings() {
         alert('Failed to update profile. Please try again.');
       }
     };
-  
+
     update();
   };
-  
-  
+
   return (
-    
-    <>
-    <div className="flex">
-  <div className="w-1/4 p-6 space-y-4 mt-6">
-    
-    <ul className="space-y-4">
-      <li><Link to="">Edit profile</Link></li>
-      <li><Link to="">Account management</Link></li>
-      <li><Link to="">Profile visibility</Link></li>
-      <li><Link to="">Tune your home feed</Link></li>
-      <li><Link to="">Claimed accounts</Link></li>
-      <li><Link to="">Social permissions</Link></li>
-      <li><Link to="">Notifications</Link></li>
-      <li><Link to="">Privacy and data</Link></li>
-      <li><Link to="">Security</Link></li>
-      <li><Link to="">Branded Content</Link></li>
-    </ul>
-  </div>
+    <div className="flex min-h-screen bg-gray-50">
+      {/* Sidebar */}
+      <aside className="w-1/4 p-6 bg-white shadow-md">
+        <ul className="space-y-4">
+          <li><Link to="" className="text-gray-700 hover:text-blue-500">Edit profile</Link></li>
+          <li><Link to="" className="text-gray-700 hover:text-blue-500">Account management</Link></li>
+          <li><Link to="" className="text-gray-700 hover:text-blue-500">Profile visibility</Link></li>
+          <li><Link to="" className="text-gray-700 hover:text-blue-500">Tune your home feed</Link></li>
+          <li><Link to="" className="text-gray-700 hover:text-blue-500">Claimed accounts</Link></li>
+          <li><Link to="" className="text-gray-700 hover:text-blue-500">Social permissions</Link></li>
+          <li><Link to="" className="text-gray-700 hover:text-blue-500">Notifications</Link></li>
+          <li><Link to="" className="text-gray-700 hover:text-blue-500">Privacy and data</Link></li>
+          <li><Link to="" className="text-gray-700 hover:text-blue-500">Security</Link></li>
+          <li><Link to="" className="text-gray-700 hover:text-blue-500">Branded Content</Link></li>
+        </ul>
+      </aside>
 
+      {/* Main Content */}
+      <div className="flex-1 p-8 bg-white shadow-md">
+        <h2 className="text-3xl font-semibold mb-4">Edit Profile</h2>
+        <p className="text-gray-600 mb-6">
+          Keep your personal details private. Information you add here is visible to anyone who can view your profile.
+        </p>
 
-    
-  <div className="flex-1 bg-white p-6 font-sans w-[50px]">
-    <h2 className="text-3xl  mb-4">Edit profile</h2>
-    <p className="text-base mb-4">Keep your personal details private. Information you add here is<br/> visible to anyone who can view your profile.</p>
-
-    <div className="flex items-center mb-4">
-      <img src={userdata.profileimage || ""}alt="Profile" className="w-16 h-16 rounded-full object-cover mr-4" />
-      <button className="px-4 py-2 bg-gray-300 rounded-full text-sm" onClick={() => setShowModal(true)} >Change</button>
-    </div>
-    {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-[90%] max-w-sm">
-            <h3 className="text-xl font-semibold text-center mb-4">
-              Change your picture
-            </h3>
-            <input
-            type="file"
-            name="image"
-            onChange={handleChange}
-            className="w-full bg-red-500 text-white py-2 px-4 rounded-full hover:bg-red-600 text-center"
+        {/* Profile Image */}
+        <div className="flex items-center mb-6">
+          <img
+            src={userdata.profileimage || "https://via.placeholder.com/150"}
+            alt="Profile"
+            className="w-20 h-20 rounded-full object-cover border"
           />
-            
-            <button
-              className="mt-4 text-sm text-gray-500 hover:text-gray-700 block mx-auto"
-              onClick={() => setShowModal(false)}
-            >
-              Cancel
-            </button>
-          </div>
+          <button
+            className="ml-4 px-4 py-2 bg-gray-200  rounded-full hover:bg-gray-300"
+            onClick={() => setShowModal(true)}
+          >
+            Change
+          </button>
         </div>
-      )}
 
-    <div className="grid grid-cols-2 gap-4">
-      <div>
-        <label className="block text-gray-700 mb-2" htmlFor="first-name">First name</label>
-        <input type="text" name="firstname" id="first-name" className="w-full p-2 border border-gray-300 rounded-md" value={userdata.firstname || ""} onChange={handleChange}/>
+        {/* Modal */}
+        {showModal && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
+              <h3 className="text-lg font-semibold text-center mb-4">Change your picture</h3>
+              <input
+                type="file"
+                name="profileimage"
+                onChange={handleChange}
+                className="w-full border p-2 rounded"
+              />
+              <button
+                className="mt-4 w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                onClick={() => setShowModal(false)}
+              >
+                Upload
+              </button>
+              <button
+                className="mt-2 w-full text-center text-gray-600 hover:text-gray-800"
+                onClick={() => setShowModal(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Form */}
+        <form onSubmit={handleSubmit}>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-gray-700 mb-2">First Name</label>
+              <input
+                type="text"
+                name="firstname"
+                value={userdata.firstname || ""}
+                onChange={handleChange}
+                className="w-full p-2 border rounded"
+              />
+            </div>
+            <div>
+              <label className="block text-gray-700 mb-2">Last Name</label>
+              <input
+                type="text"
+                name="lastname"
+                value={userdata.lastname || ""}
+                onChange={handleChange}
+                className="w-full p-2 border rounded"
+              />
+            </div>
+          </div>
+
+          <div className="mt-4">
+            <label className="block text-gray-700 mb-2">About</label>
+            <textarea
+              name="about"
+              rows="3"
+              value={userdata.about || ""}
+              onChange={handleChange}
+              className="w-full p-2 border rounded"
+            />
+          </div>
+
+          <div className="mt-4">
+            <label className="block text-gray-700 mb-2">Website</label>
+            <input
+              type="text"
+              name="website"
+              value={userdata.website || ""}
+              onChange={handleChange}
+              className="w-full p-2 border rounded"
+            />
+          </div>
+
+          <div className="mt-4">
+            <label className="block text-gray-700 mb-2">Username</label>
+            <input
+              type="text"
+              name="username"
+              value={userdata.username || ""}
+              onChange={handleChange}
+              className="w-full p-2 border rounded"
+            />
+          </div>
+
+          {/* Buttons */}
+          <div className="mt-6 flex space-x-4">
+        <button
+          onClick={handleReset}
+          type="button"
+          disabled={!isFormChanged} // Disable if no changes
+          className={`px-6 py-2 rounded-full ${
+            isFormChanged
+              ? "bg-gray-200 hover:bg-gray-300"
+              : "bg-gray-100 text-gray-400 cursor-not-allowed"
+          }`}
+        >
+          Reset
+        </button>
+        <button
+          onClick={handleSubmit}
+          type="button"
+          disabled={!isFormChanged} // Disable if no changes
+          className={`px-6 py-2 rounded-full ${
+            isFormChanged
+              ? "bg-red-500 text-white hover:bg-red-600"
+              : "bg-gray-100 text-gray-400 cursor-not-allowed"
+          }`}
+        >
+          Save
+        </button>
       </div>
-      <div>
-        <label className="block text-gray-700 mb-2" htmlFor="surname">Surname</label>
-        <input type="text" id="surname" name="lastname" className="w-full p-2 border border-gray-300 rounded-md" value={userdata.lastname || ""} onChange={handleChange} />
+        </form>
       </div>
     </div>
-
-    <div className="mt-4">
-      <label className="block text-gray-700 mb-2" htmlFor="about">About</label>
-      <textarea id="about" rows="4" name="about" className="w-full p-2 border border-gray-300 rounded-md" placeholder="Tell us about yourself" value={user.about || ""} onChange={handleChange}></textarea>
-    </div>
-
-    <div className="mt-4">
-      <label className="block text-gray-700 mb-2" htmlFor="website">Website</label>
-      <input type="text" id="website" name='website' className="w-full p-2 border border-gray-300 rounded-md" value={userdata.website|| ""} onChange={handleChange}/>
-    </div>
-    <div className="mt-4">
-      <label className="block text-gray-700 mb-2" htmlFor="website">Username</label>
-      <input type="text" id="username" name="username"className="w-full p-2 border border-gray-300 rounded-md" value={userdata.username|| ""} onChange={handleChange} />
-    </div>
-
-    <div className="mt-6 flex space-x-4">
-      <button className="px-6 py-2 bg-gray-200 rounded-md text-sm">Reset</button>
-      <button className="px-6 py-2 bg-blue-500 text-white rounded-md text-sm" onClick={handleSubmit}>Save</button>
-    </div>
-  </div>
-</div>
-</>
-  )
+  );
 }
 
-export default Settings
+export default Settings;

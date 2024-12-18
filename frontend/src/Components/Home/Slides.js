@@ -12,11 +12,12 @@ const Slides = () => {
   const navigate=useNavigate()
   const { posts } = useSelector((state) => state.posts);
   const { showLogin, showSignup, } = useClickHandler()
-  
-  const foodPosts = posts.filter((post) => post.category === 'Food').slice(0, 10).map((post) => post.image); 
-  const DIYPosts = posts.filter((post) => post.category === 'DIY').slice(0, 10).map((post) => post.image);     
-  const homePosts = posts.filter((post) => post.category === 'Home').slice(0, 10).map((post) => post.image);     
-  const fashionPosts = posts.filter((post) => post.category === 'Fashion').slice(0, 10).map((post) => post.image);     
+  console.log("first",posts)
+  const foodPosts = posts.filter((post) => post.category.name === 'Food').slice(0, 10).map((post) => post.image); 
+
+  const DIYPosts = posts.filter((post) => post.category.name === 'DIY').slice(0, 10).map((post) => post.image);     
+  const homePosts = posts.filter((post) => post.category.name === 'Home').slice(0, 10).map((post) => post.image);     
+  const fashionPosts = posts.filter((post) => post.category.name === 'Fashion').slice(0, 10).map((post) => post.image);     
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [animationClass, setAnimationClass] = useState("animate-fadeInDown");

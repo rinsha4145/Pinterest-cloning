@@ -5,13 +5,13 @@ const Category = require('../../Models/Admin/categorySchema');
 
 // Get all posts
 const getAllPosts = async (req, res, next) => {
-        const posts = await Posts.find(); // Fetch posts without authentication checks
+        const posts = await Posts.find().populate("category") // Fetch posts without authentication checks
         res.status(200).json(posts);
 };
 
 // Get post by ID
 const getpostbyid = async (req, res, next) => {
-    const onepost = await Posts.findById(req.params.id);
+    const onepost = await Posts.findById(req.params.id).populate("category");
     if (!onepost) {
         return next(new NotFoundError('Post not found'));
     }
@@ -22,7 +22,7 @@ const getpostbyid = async (req, res, next) => {
 const getbycategory = async (req, res, next) => {
     const { category } = req.params; 
     const categoryDoc = await Category.findOne({ name: category });
-    const posts = await Posts.find({ category: categoryDoc._id  });
+    const posts = await Posts.find({ category: categoryDoc._id  }).populate("category");
     if (!categoryDoc) {
         return next(new NotFoundError('Category not found.'));
     }

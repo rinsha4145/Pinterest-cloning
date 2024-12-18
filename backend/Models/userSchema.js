@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema({
         default: function() {
         return this.email ? this.email.split('@')[0] : ''; 
     }  },
-    lastname: { type: String}, 
+    lastname: {type: String},  
     profileimage: { type: String },   
     about: { type: String, maxLength: 500 },
     pronounce: { type: String, enum: ['Mr', 'Ms', 'Mx', 'Other'], default: 'Other' },
@@ -34,4 +34,5 @@ const userSchema = new mongoose.Schema({
     googleId: { type: String },
   }, { timestamps: true }); 
 
-module.exports   = mongoose.model('Users', userSchema);
+module.exports   = mongoose.model('Users', userSchema); 
+ 

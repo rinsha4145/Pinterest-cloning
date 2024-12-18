@@ -17,6 +17,13 @@ const userSlice = createSlice({
       state.refreshtoken = action.payload.refreshtoken; 
       state.isAuthenticated = true; // Set user as authenticated
     },
+    updateUser: (state, action) => {
+      // Update specific user details in the state
+      state.user = {
+        ...state.user,
+        ...action.payload, // Merge the new details into the user object
+      }
+    },
     logoutUser: (state) => {
       state.user = null;
       state.token = null;
@@ -26,6 +33,6 @@ const userSlice = createSlice({
 });
 
 // Export actions to use in the component
-export const { setUser, logoutUser } = userSlice.actions;
+export const { setUser, logoutUser,updateUser } = userSlice.actions;
 // Export reducer to configure store
 export default userSlice.reducer;
