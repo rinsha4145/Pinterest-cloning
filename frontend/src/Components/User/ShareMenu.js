@@ -12,14 +12,10 @@ import {
   FacebookMessengerIcon,
 } from "react-share";
 
-const ShareMenu = ({ url,pro }) => {
+const ShareMenu = ({ url,isShareMenuVisible }) => {
   const shareUrl = url; // Replace with your website URL
   const title = "Check out this awesome image!";
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+  const [isOpen, setIsOpen] = useState(isShareMenuVisible);
 
   const handleCopyLink = (value) => {
     // Copy the URL to the clipboard
@@ -35,34 +31,7 @@ const ShareMenu = ({ url,pro }) => {
   return (
     <OutsideClickHandler onOutsideClick={() => setIsOpen(false)}>
       
-      <div className="absolute bottom-2 right-12">
-      {url ? (
-  // SVG Button
-  <button
-    onClick={toggleMenu}
-    className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 text-black"
-  >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      strokeWidth={2.5}
-      stroke="currentColor"
-      className="w-5 h-5"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"
-      />
-    </svg>
-  </button>
-) : (
-  // Share Button
-  <button className=" active:text-white active:bg-black px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-full mb-[370px] mr-[770px] hover:bg-gray-200" onClick={toggleMenu}>
-    Share
-  </button>
-)}
+      
         {/* Share Menu */}
         {isOpen && (
           <div className="absolute bottom-12 mr-[100px] top-6 left-0 bg-white shadow-lg rounded-lg pt-4 pl-4 w-[400px] h-[300px] z-50">
@@ -123,7 +92,6 @@ const ShareMenu = ({ url,pro }) => {
             </div>
           </div>
         )}
-      </div>
     </OutsideClickHandler>
   );
 };

@@ -12,7 +12,7 @@ const Create = () => {
   const [post, setPost] = useState({
     title:'',description: '',
     link: '',category:'',
-    tag: ''
+    tag: '',image:''
   });
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
@@ -34,13 +34,11 @@ const Create = () => {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
       const reader = new FileReader();
-  
       reader.onloadend = () => {
-        setIsImageUploaded(true);        // Set the image upload flag
+        setIsImageUploaded(event.target.files[0]);   
         setImagePreview(reader.result);  // Set the image preview URL
       };
-  
-      reader.readAsDataURL(file); // Read the file as a Data URL
+      reader.readAsDataURL(file);
     }
   };
   const handleToggle= (e)=>{
@@ -48,38 +46,27 @@ const Create = () => {
     setShow((prev) => !prev);
   }
   
-  const [image, setImage] = useState(null);
   
   
-  const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
-  };
+  
 
 
   //submit the form
   const handleSubmit = handleAsync(async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    
-    // Ensure image exists before appending
-    if (image) {
-        formData.append('image', image);
-    }
-
-    // Append post data
+    formData.append('image', isImageUploaded);
     Object.keys(post).forEach((key) => {
+      if (post[key]) { // Check for non-empty, non-falsy values
         formData.append(key, post[key]);
+      }
     });
-
-    // Debugging: Log the form data
-    for (let [key, value] of formData.entries()) {
-        console.log(`${key}: ${value}`);
-    }
-
     try {
       const response = await axiosInstance.post('/addpost', formData);
       if (response.status === 200 && response.status < 300) {
           alert('Post added successfully');
+          setImagePreview(null)
+          setPost({})
       } else {
           throw new Error(`Error: ${response.data.message || 'An unknown error occurred'}`);
       }
@@ -89,43 +76,20 @@ const Create = () => {
   }
 });
 
-
-  const inputRef = useRef(null);
+const fileInputRef = useRef(null);
 
   const handleClick = () => {
-    inputRef.current.click();
+    if (fileInputRef.current) {
+      fileInputRef.current.click(); // Trigger the file input click
+    }
+    if (imagePreview) {
+      setImagePreview(null)
+    }
   };
-
-  const [file, setFile] = useState("");
-  const [filePrev, setFilePrev] = useState("");
-  const [title, setTitle] = useState("");
-  const [pin, setPin] = useState("");
-
-  // const changeFileHandler = (e) => {
-  //   const file = e.target.files[0];
-  //   const reader = new FileReader();
-
-  //   reader.readAsDataURL(file);
-
-  //   reader.onloadend = () => {
-  //     setFilePrev(reader.result);
-  //     setFile(file);
-  //   };
-  // };
 
   const navigate = useNavigate();
 
-  // const addPinHandler = (e) => {
-  //   e.preventDefault();
-
-  //   const formData = new FormData();
-
-  //   formData.append("title", title);
-  //   formData.append("pin", pin);
-  //   formData.append("file", file);
-
-  //   // addPin(formData, setFilePrev, setFile, setTitle, setPin, navigate);
-  // };
+  
  
   return <>
   <div className="flex items-center justify-between w-full border-b border-gray-300 px-4 py-2">
@@ -137,7 +101,7 @@ const Create = () => {
     </div>
   <div className="flex flex-col lg:flex-row w-full h-screen p-6">
     {/* Left Section: Upload Image */}
-    <div className="lg:w-1/3 flex flex-col items-center p-4 bg-white" onClick={() => document.getElementById('file-input').click()}>
+    <div className="lg:w-1/3 flex flex-col items-center p-4 bg-white"  onClick={handleClick}>
       <div
         className={`flex flex-col justify-center items-center w-[400px] h-[400px] border-2  ${isImageUploaded ? "" : "border-gray-300 bg-gray-100"} rounded-lg`}
         style={{
@@ -145,14 +109,15 @@ const Create = () => {
           backgroundSize: 'cover', 
           backgroundPosition: 'center', 
         }}
+        
       >
         <div className="flex flex-col items-center">
           {imagePreview ? (
             <img
-            onChange={handleImageChange}
               src={imagePreview}
               alt="Uploaded Preview"
               className="h-full object-cover rounded-lg"
+             
             />
           ) : (
             <>
@@ -168,6 +133,7 @@ const Create = () => {
         <input
           type="file"
           id="file-input"
+          ref={fileInputRef}
           onChange={handleFileUpload}
           className="hidden"
         />
@@ -221,6 +187,7 @@ const Create = () => {
             <label className="block text-sm font-medium text-gray-700">Category</label>
             <select
   name="category"
+  required
   value={post.category}
   onChange={handleChange} // Updates the post state correctly
   className="w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"

@@ -29,7 +29,6 @@ const userSchema = new mongoose.Schema({
     admin: { type: Boolean, default: false },
     followers: {type: [mongoose.Schema.Types.ObjectId],ref: "Users", default: [],},
     following: {type: [mongoose.Schema.Types.ObjectId],ref: "Users", default: [],},
-    // saved: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
     // liked: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
     // commented: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
     googleId: { type: String },

@@ -152,7 +152,7 @@ const userValidationSchema = Joi.object({
     }),
 });
 const loginValidationSchema=Joi.object({ 
-  email:Joi.string().email().required(),
+  email:Joi.string().email().required(), 
   password:Joi.string().required()
 
 })
@@ -181,7 +181,6 @@ const postValidationSchema = Joi.object({
     }),
 
   category: Joi.string()
-    .valid('Food', 'Fashion', 'Travel', 'DIY', 'Tech', 'Home', 'Other')
     .messages({
       'any.only': 'Category must be one of the following: Food, Fashion, Travel, DIY, Tech, Home, Other',
       'any.required': 'Category is required'
@@ -225,9 +224,7 @@ const postValidationSchema = Joi.object({
 const validateCategory = Joi.object({
   name: Joi.string()
     .required()
-    .valid("Fashion", "Travel", "DIY", "Tech", "Home", "Other", "Food") // Predefined categories
     .messages({
-      "any.only": "Category name must be one of Fashion, Travel, DIY, Tech, Home, Other, or Food.",
       "string.empty": "Category name is required."
     }),
 });

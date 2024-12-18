@@ -31,32 +31,43 @@ function Settings() {
   };
   
   
-  const handleSubmit = handleAsync( (e) => {
-    const update=async()=>{
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    Object.keys(userdata).forEach((key) => {
-      const value = userdata[key];
-      console.log("asdfghj value",value);
-      
-      if (value instanceof File) {
-        formData.append(key, value); 
-      } else if (typeof value === 'object') {
-        formData.append(key, JSON.stringify(value)); 
-      } else {
-        formData.append(key, value);
+  
+    const update = async () => {
+      const formData = new FormData();
+  
+      Object.keys(userdata).forEach((key) => {
+        const value = userdata[key];
+        const originalValue = user[key]; // Original data for comparison
+  
+        // Only add fields that have changed and are not server-controlled
+        if (value !== originalValue && !["followers", "following", "updatedAt"].includes(key)) {
+          if (value instanceof File) {
+            formData.append(key, value);
+          } else if (typeof value === 'object') {
+            formData.append(key, JSON.stringify(value));
+          } else {
+            formData.append(key, value);
+          }
+        }
+      });
+  
+      try {
+        const response = await axiosInstance.put("/editprofile", formData);
+        if (response.status >= 200 && response.status < 300) {
+          alert('Profile updated successfully');
+        }
+      } catch (error) {
+        console.error('Error updating profile:', error);
+        alert('Failed to update profile. Please try again.');
       }
-    });
-    
-    // Update logic here
-    const response= await axiosInstance.put("/editprofile", formData )
-    if (response.status >= 200 && response.status < 300) {
-      alert('Product updated successfully');
-     
-    }
-  }
-  update()
-  });
+    };
+  
+    update();
+  };
+  
+  
   return (
     
     <>
@@ -76,6 +87,8 @@ function Settings() {
       <li><Link to="">Branded Content</Link></li>
     </ul>
   </div>
+
+
     
   <div className="flex-1 bg-white p-6 font-sans w-[50px]">
     <h2 className="text-3xl  mb-4">Edit profile</h2>

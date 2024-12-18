@@ -38,14 +38,15 @@ const addPost = async (req, res, next) => {
     if (error) {
         return next(new ValidationError(error.details[0].message)); 
     }
-    const { title, description, category, tags } = value;
+    const { title, description, category, tags,link } = value;
     if (!req.file) {
         return next(new ValidationError("No file uploaded"));
     }
     if (!req.userId) {
         return res.status(401).json({ message: "Unauthorized: User ID not found" });
     }
-    const existingCategory = await Category.findOne({ name: category }); // Ensure category is an ObjectId
+    const existingCategory = await Category.findOne({ category }); 
+    console.log("existingCategory",existingCategory)// Ensure category is an ObjectId
     if (!existingCategory) {
         return next(new ValidationError("Category does not exist"));
     }
@@ -57,11 +58,32 @@ const addPost = async (req, res, next) => {
         category:existingCategory._id,
         image,
         tags, 
+        link,
         owner: req.userId,
     });
     await newPost.save();
+    console.log(newPost)
     res.status(200).json({ status: "success", message: "Post added successfully", newPost });
 };
+
+//get the posts creted by the owner 
+
+const getPostByOwner=async(req,res,next)=>{
+    const userId = req.userId; // This should be set by an authentication middleware
+
+        if (!userId) {
+            return res.status(401).json({ message: "User not authenticated" });
+        }
+        const posts = await Posts.find({ owner: userId });
+    console.log("first",posts)
+    if (posts.length === 0) {
+        return res.status(404).json({ message: "No posts found for this user." });
+    }
+
+    // Return the posts in the response
+    return res.status(200).json({posts});
+   
+}
 
 //update a post by the owner
 const postUpdate = async (req, res, next) => {
@@ -108,5 +130,5 @@ const deletePost=async(req,res,next)=>{
 }
 
 
-module.exports = { getAllPosts, getpostbyid, addPost, getbycategory,postUpdate,deletePost };
+module.exports = { getAllPosts, getpostbyid, addPost, getbycategory,postUpdate,deletePost,getPostByOwner };
  

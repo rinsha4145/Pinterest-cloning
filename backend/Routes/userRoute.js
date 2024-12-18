@@ -1,13 +1,15 @@
 const express = require("express");
-const router = express.Router();
+const router = express.Router();  
 const userController = require('../Controller/User/userController');
 const postcontroller = require('../Controller/User/postController');
+const savedcontroller = require('../Controller/User/savedController');
+
 const tryCatch=require('../Middleware/tryCatch');
 const upload = require("../Middleware/imageUpload");
 const { userAuthMiddleware } = require("../Middleware/authentication");
 const {  forgotpass } = require("../Controller/forgotPassword");
 const { resetpass } = require("../Controller/resetPassword");
-
+ 
 
 router
  .post('/signup',tryCatch(userController.userReg))
@@ -26,7 +28,18 @@ router
  .get('/posts/:category',tryCatch(postcontroller.getbycategory)) 
  .post('/addpost',userAuthMiddleware,upload.single('image'),tryCatch(postcontroller.addPost))
  .put('/updatepost/:id',userAuthMiddleware,upload.single('image'),tryCatch(postcontroller.postUpdate)) 
- .delete('/deletepost/:id',userAuthMiddleware,tryCatch(postcontroller.deletePost)) 
+ .delete('/deletepost/:id',userAuthMiddleware,tryCatch(postcontroller.deletePost))
+ .get('/postss',userAuthMiddleware,tryCatch(postcontroller.getPostByOwner))
+
+ .get('/saves',userAuthMiddleware,tryCatch(savedcontroller.getSaved))   
+ .post('/addtosave',userAuthMiddleware,tryCatch(savedcontroller.addToSaved))  
+ .delete('/removesaved',userAuthMiddleware,tryCatch(savedcontroller.removeSaved))  
+
+
+
+
+
+
 
 
 
