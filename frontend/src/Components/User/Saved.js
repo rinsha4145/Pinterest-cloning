@@ -1,82 +1,96 @@
 import React, { useEffect, useState } from 'react'
 import handleAsync from '../Utils/HandleAsync';
 import axiosInstance from '../Utils/AxioaInstance';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  setSavedFolders,
+  addSavedFolder,
+  removeSavedFolder,
+  clearSavedFolders,
+} from '../Redux/SavedSlice';
+import {setBoards} from '../Redux/BoardSlice';
+
+import { useNavigate } from 'react-router-dom';
 
 function Saved() {
+  const savedFolders = useSelector((state) => state.saved.savedFolders);
+  const boards  = useSelector((state) => state.board.boards);
     const [saved,setsaved] = useState([])
     const [selectedFolder, setSelectedFolder] = useState(null);
-    const folders = [
-      {
-        id: 1,
-        title: "Wallpaper decor",
-        pins: 2,
-        time: "10m",
-        images: [
-          "https://via.placeholder.com/100", // Replace with your folder images
-          "https://via.placeholder.com/100",
-        ],
-        posts: [
-          { id: 1, image: "https://via.placeholder.com/300", title: "Wallpaper 1" },
-          { id: 2, image: "https://via.placeholder.com/300", title: "Wallpaper 2" },
-        ],
-      },
-      {
-        id: 2,
-        title: "Positive quotes",
-        pins: 3,
-        time: "1y",
-        images: [
-          "https://via.placeholder.com/100",
-          "https://via.placeholder.com/100",
-        ],
-        posts: [
-          { id: 1, image: "https://via.placeholder.com/300", title: "Quote 1" },
-          { id: 2, image: "https://via.placeholder.com/300", title: "Quote 2" },
-        ],
-      },
-    ];
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+
+// Extract only the 'image' property from each of these objects
+const lastFiveImages = savedFolders.slice(-5).map((post) => post.image);
+
+
+    
     useEffect(() => {
         const fetchData = handleAsync(async () => {
             const response = await axiosInstance.get('/saves');
-            setsaved(response.data.getsaved.posts); 
+            dispatch(setSavedFolders(response.data.getsaved.posts));
+            const res=await axiosInstance.get('/viewboards')
+            dispatch(setBoards(res.data.boards))
            
         });
         fetchData();
-      }, []);
-      console.log("saved",saved)
+      }, [dispatch]);
       
   return (
    
-      <div className="grid grid-cols-1 sm:grid-cols-6 lg:grid-cols-3 gap-6 p-8">
-  {saved && saved.length > 0 ? (
-    saved.map((folder) => (
-      <div
-        key={folder._id}
-        onClick={() => setSelectedFolder(folder)}
-        className="cursor-pointer bg-white rounded-lg p-4 hover:bg-gray-200 transition"
-      >
-        {/* Image Previews */}
-        <div className="flex -space-x-2 overflow-hidden mb-4">
-          {folder.images.map((img, index) => (
-            <img
-              key={index}
-              src={img}
-              alt="Folder"
-              className="w-16 h-16 rounded-md object-cover border border-gray-300"
-            />
-          ))}
-        </div>
-        {/* Folder Title and Info */}
-        <h2 className="text-lg font-semibold">{folder.title}</h2>
-        <p className="text-gray-500">{folder.pins} Pins · {folder.time}</p>
+    <div className="grid grid-cols-6 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-8">
+    <div
+      onClick={() => navigate('/pin')}
+      className="cursor-pointer bg-white w-[300px] rounded-lg p-4 hover:bg-gray-100 transition"
+    >
+      {/* Image Previews */}
+      <div className="flex -space-x-2 mb-4">
+        {lastFiveImages.slice(0, 5).map((img, index) => ( // Display up to 3 images for uniformity
+          <img
+            key={index}
+            src={img}
+            alt={`Preview ${index + 1}`}
+            className="w-[100px] h-[150px] rounded-md object-cover border border-gray-300"
+          />
+        ))}
       </div>
-    ))
-  ) : (
-    // Display when no folders are saved
-    <p className="text-gray-500 col-span-full text-center">
-      No folders found. Start saving your favorite posts!
-    </p>
-  )}
+      {/* Folder Title and Info */}
+      <h2 className="text-lg font-semibold truncate">All Pins</h2>
+      <p className="text-gray-500">
+        {savedFolders.length} Pins · 
+        {/* {new Date(folder.time).toLocaleDateString()} */}
+      </p>
+    </div>
+    
+     {boards.map((folder) => (
+        <div
+          key={folder._id}
+          onClick={() => navigate(`/viewboard/${folder._id}`)}
+          className="cursor-pointer bg-white w-[300px] rounded-lg p-4 hover:bg-gray-100 transition"
+        >
+          {/* Image Previews */}
+          <div className="flex -space-x-2 mb-4">
+            {folder.posts.slice(-3).map((img, index) => ( // Display up to 3 images for uniformity
+              <img
+                key={index}
+                src={img.image}
+                alt={`Preview ${index + 1}`}
+                className="grid grid-cols-2 grid-rows-2 w-[100px] h-[150px] rounded-md object-cover border border-gray-300"
+              />
+            ))}
+          </div>
+          {/* Folder Title and Info */}
+          <h2 className="text-lg font-semibold truncate">{folder.name}</h2>
+          <p className="text-gray-500">
+            {folder.posts.length} Pins · {new Date(folder.time).toLocaleDateString()}
+          </p>
+        </div>
+          
+      ))}
+    
+
 </div>
 
       

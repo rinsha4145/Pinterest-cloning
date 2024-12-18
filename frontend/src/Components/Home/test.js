@@ -46,3 +46,31 @@ fetchPexelsData();
 ))}        
         </div>
       </div> */}
+
+
+
+      // {folders.map((folder) => (
+      //   <div
+      //     key={folder._id}
+      //     onClick={() => navigate('/pin')}
+      //     className="cursor-pointer bg-white w-[300px] rounded-lg p-4 hover:bg-gray-100 transition"
+      //   >
+      //     {/* Image Previews */}
+      //     <div className="flex -space-x-2 mb-4">
+      //       {folder.images.slice(0, 3).map((img, index) => ( // Display up to 3 images for uniformity
+      //         <img
+      //           key={index}
+      //           src={img}
+      //           alt={`Preview ${index + 1}`}
+      //           className="w-[100px] h-[150px] rounded-md object-cover border border-gray-300"
+      //         />
+      //       ))}
+      //     </div>
+      //     {/* Folder Title and Info */}
+      //     <h2 className="text-lg font-semibold truncate">{folder.title}</h2>
+      //     <p className="text-gray-500">
+      //       {folder.pins} Pins · {new Date(folder.time).toLocaleDateString()}
+      //     </p>
+      //   </div>
+          
+      // ))}

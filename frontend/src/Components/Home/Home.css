@@ -27,17 +27,28 @@
 /* Responsive adjustments */
 @media (max-width: 1200px) {
     .container {
-        columns: 4; /* Reduce to 4 columns */
+        columns: 5; /* Reduce to 4 columns */
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 960px) {
     .container {
-        columns: 2; /* Reduce to 2 columns for tablets */
+        columns: 4; /* Reduce to 2 columns for tablets */
+    }
+}
+
+@media (max-width: 720px) {
+    .container {
+        columns: 3; /* Single column for small screens */
     }
 }
 
 @media (max-width: 480px) {
+    .container {
+        columns: 2; /* Single column for small screens */
+    }
+}
+@media (max-width: 240px) {
     .container {
         columns: 1; /* Single column for small screens */
     }

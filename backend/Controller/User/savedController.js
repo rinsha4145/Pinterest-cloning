@@ -21,28 +21,28 @@ const addToSaved = async (req, res,next) => {
     const { postId } = req.body;   
     let save = await Saved.findOne({ userId: req.userId })
 
-    if (!save) {
-        const newsaved = new Saved({
-            userId: req.userId,
-            posts: [postId]
-        });
-        await newsaved.save()
-       const updatedsave= await newsaved.populate("posts")
-        return res.status(201).json({message:"post saved",updatedsave});
-    }
-    const isPostISaved = save && Array.isArray(save.posts) && save.posts.some(post => post && post.equals && post.equals(postId));
+            if (!save) {
+                const newsaved = new Saved({
+                    userId: req.userId,
+                    posts: [postId]
+                });
+                await newsaved.save()
+            const updatedsave= await newsaved.populate("posts")
+                return res.status(201).json({message:"post saved",updatedsave});
+            }
+            const isPostISaved = save && Array.isArray(save.posts) && save.posts.some(post => post && post.equals && post.equals(postId));
 
-    if (!isPostISaved) {
-        // If not, push the product ID to the products array
-        save.posts.push(postId);
-        await save.save()
-        saved=await save.populate('posts')
-        return res.status(201).json({message:"post saved",save});
+            if (!isPostISaved) {
+                // If not, push the product ID to the products array
+                save.posts.push(postId);
+                await save.save()
+                saved=await save.populate('posts')
+                return res.status(201).json({message:"post saved",save});
 
-    }
-    return res.status(201).json({message:"post already saved"});
+            }
+            return res.status(201).json({message:"post already saved"});
 
-};
+        };
 
 const removeSaved = async (req, res,next) => {
     const { postId } = req.body;
