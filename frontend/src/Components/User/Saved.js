@@ -4,44 +4,84 @@ import axiosInstance from '../Utils/AxioaInstance';
 
 function Saved() {
     const [saved,setsaved] = useState([])
+    const [selectedFolder, setSelectedFolder] = useState(null);
+    const folders = [
+      {
+        id: 1,
+        title: "Wallpaper decor",
+        pins: 2,
+        time: "10m",
+        images: [
+          "https://via.placeholder.com/100", // Replace with your folder images
+          "https://via.placeholder.com/100",
+        ],
+        posts: [
+          { id: 1, image: "https://via.placeholder.com/300", title: "Wallpaper 1" },
+          { id: 2, image: "https://via.placeholder.com/300", title: "Wallpaper 2" },
+        ],
+      },
+      {
+        id: 2,
+        title: "Positive quotes",
+        pins: 3,
+        time: "1y",
+        images: [
+          "https://via.placeholder.com/100",
+          "https://via.placeholder.com/100",
+        ],
+        posts: [
+          { id: 1, image: "https://via.placeholder.com/300", title: "Quote 1" },
+          { id: 2, image: "https://via.placeholder.com/300", title: "Quote 2" },
+        ],
+      },
+    ];
     useEffect(() => {
         const fetchData = handleAsync(async () => {
             const response = await axiosInstance.get('/saves');
             setsaved(response.data.getsaved.posts); 
-            console.log("saved",saved)
+           
         });
         fetchData();
       }, []);
+      console.log("saved",saved)
       
   return (
-    <>
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div className="relative  p-4 rounded-lg">
-        {saved.map((post) => (
-  <div className="relative group box rounded-lg ">
-    <img src={post.image} alt={post.title} className="w-full h-48 object-cover rounded-3xl" />
-    <div className="absolute inset-0 bg-black border-radiusfull rounded-3xl bg-opacity-50 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
    
-    <button className="absolute bottom-2 right-2 bg-white hover:bg-gray-300 rounded-full p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black">
-    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32L19.513 8.2Z" />
-            </svg>
-            
-
-
-
-</button>
- 
-</div>
-  </div>
-))}
-            
+      <div className="grid grid-cols-1 sm:grid-cols-6 lg:grid-cols-3 gap-6 p-8">
+  {saved && saved.length > 0 ? (
+    saved.map((folder) => (
+      <div
+        key={folder._id}
+        onClick={() => setSelectedFolder(folder)}
+        className="cursor-pointer bg-white rounded-lg p-4 hover:bg-gray-200 transition"
+      >
+        {/* Image Previews */}
+        <div className="flex -space-x-2 overflow-hidden mb-4">
+          {folder.images.map((img, index) => (
+            <img
+              key={index}
+              src={img}
+              alt="Folder"
+              className="w-16 h-16 rounded-md object-cover border border-gray-300"
+            />
+          ))}
         </div>
-           
-
+        {/* Folder Title and Info */}
+        <h2 className="text-lg font-semibold">{folder.title}</h2>
+        <p className="text-gray-500">{folder.pins} Pins · {folder.time}</p>
       </div>
-    
-   </>
+    ))
+  ) : (
+    // Display when no folders are saved
+    <p className="text-gray-500 col-span-full text-center">
+      No folders found. Start saving your favorite posts!
+    </p>
+  )}
+</div>
+
+      
+
+      
   )
 }
 

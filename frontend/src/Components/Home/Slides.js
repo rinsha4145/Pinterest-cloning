@@ -5,19 +5,33 @@ import 'slick-carousel/slick/slick-theme.css';
 import { useNavigate } from "react-router-dom";
 import Signup from './Signup'
 import './Home.css'
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Login from "./Login";
 import {useClickHandler} from '../Context/ClickHandlerContext'
+import handleAsync from "../Utils/HandleAsync";
+import axiosInstance from "../Utils/AxioaInstance";
+import { setPosts } from '../Redux/PostSlice';
+
 const Slides = () => {
   const navigate=useNavigate()
+  const dispatch = useDispatch();
   const { posts } = useSelector((state) => state.posts);
+  
+  useEffect(() => {
+    const fetchData = handleAsync(async () => {
+        const response = await axiosInstance.get('/all');
+        dispatch(setPosts(response.data)); 
+        console.log("userdata",response.data)
+    });
+    fetchData();
+  }, []);
+ 
+  
   const { showLogin, showSignup, } = useClickHandler()
-  console.log("first",posts)
-  const foodPosts = posts.filter((post) => post.category.name === 'Food').slice(0, 10).map((post) => post.image); 
-
-  const DIYPosts = posts.filter((post) => post.category.name === 'DIY').slice(0, 10).map((post) => post.image);     
-  const homePosts = posts.filter((post) => post.category.name === 'Home').slice(0, 10).map((post) => post.image);     
-  const fashionPosts = posts.filter((post) => post.category.name === 'Fashion').slice(0, 10).map((post) => post.image);     
+  const foodPosts = posts.filter((post) => post.category?.name === "Food").slice(0, 10).map((post) => post.image); 
+  const DIYPosts = posts.filter((post) => post.category?.name === 'DIY').slice(0, 10).map((post) => post.image);     
+  const homePosts = posts.filter((post) => post.category?.name === 'Home').slice(0, 10).map((post) => post.image);     
+  const fashionPosts = posts.filter((post) => post.category?.name === 'Fashion').slice(0, 10).map((post) => post.image);     
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [animationClass, setAnimationClass] = useState("animate-fadeInDown");

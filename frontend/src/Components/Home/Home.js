@@ -1,25 +1,18 @@
 // Home.js
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setPosts } from '../Redux/PostSlice';
 import './Home.css'
 import axiosInstance from '../Utils/AxioaInstance';
 import handleAsync from '../Utils/HandleAsync';
 import ShareMenu from '../User/ShareMenu';
 const Home = () => {
+  const { posts } = useSelector((state) => state.posts);
+
   const [isShareMenuVisible, setShareMenuVisible] = useState(false); // State to control visibility of ShareMenu
   const videoRefs = useRef([]);
   const [isInteracted, setIsInteracted] = useState(false);
-    const dispatch = useDispatch();
-    const { posts } = useSelector((state) => state.posts);
 //post fetching
-useEffect(() => {
-  const fetchData = handleAsync(async () => {
-      const response = await axiosInstance.get('/all');
-      dispatch(setPosts(response.data)); 
-  });
-  fetchData();
-}, []);
+
 
 
 const handleMouseEnter = (videoElement) => {

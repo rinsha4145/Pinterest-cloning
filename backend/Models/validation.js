@@ -228,6 +228,25 @@ const validateCategory = Joi.object({
     }),
 });
 
+const validateBoard =  Joi.object({
+    name: Joi.string()
+      .min(3)
+      .max(100)
+      .required(),
+    description: Joi.string()
+      .max(500)
+      .allow(''),
+    userId: Joi.string()
+      .pattern(/^[0-9a-fA-F]{24}$/) ,
+    posts: Joi.array()
+      .items(
+        Joi.string()
+          .pattern(/^[0-9a-fA-F]{24}$/) 
+      ),
+  });
+
+  
+
 
 // Validation for registration
-module.exports = { userValidationSchema,loginValidationSchema,postValidationSchema,validateCategory };
+module.exports = { userValidationSchema,loginValidationSchema,postValidationSchema,validateCategory,validateBoard };

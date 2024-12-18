@@ -27,6 +27,7 @@ function Settings() {
       const response = await axiosInstance.get('/me');
       setUserData(response.data.profile);
       
+      
     });
     fetchData();
     

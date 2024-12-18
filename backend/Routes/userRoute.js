@@ -3,6 +3,7 @@ const router = express.Router();
 const userController = require('../Controller/User/userController');
 const postcontroller = require('../Controller/User/postController');
 const savedcontroller = require('../Controller/User/savedController');
+const boardcontroller = require('../Controller/User/boardController');
 
 const tryCatch=require('../Middleware/tryCatch');
 const upload = require("../Middleware/imageUpload");
@@ -33,7 +34,17 @@ router
 
  .get('/saves',userAuthMiddleware,tryCatch(savedcontroller.getSaved))   
  .post('/addtosave',userAuthMiddleware,tryCatch(savedcontroller.addToSaved))  
- .delete('/removesaved',userAuthMiddleware,tryCatch(savedcontroller.removeSaved))  
+ .delete('/removesaved',userAuthMiddleware,tryCatch(savedcontroller.removeSaved))
+ 
+ 
+ .post('/createboard',userAuthMiddleware,tryCatch(boardcontroller.createBoard))  
+ .post('/addtoboarad',userAuthMiddleware,tryCatch(boardcontroller.addToBoard))  
+ .get('/viewboardbyid/:id',userAuthMiddleware,tryCatch(boardcontroller.viewBoardById))  
+ .get('/viewboards',userAuthMiddleware,tryCatch(boardcontroller.getAllBoards))  
+
+
+
+
 
 
 
