@@ -114,17 +114,18 @@ import { useNavigate } from 'react-router-dom';
 function Saved() {
   const savedFolders = useSelector((state) => state.saved.savedFolders);
   const boards = useSelector((state) => state.board.boards);
-
+console.log("savedFolders",savedFolders)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   // Extract the last 5 images from savedFolders
-  const lastFiveImages = savedFolders.slice(-5).map((post) => post?.image || 'default-image.jpg'); // Fallback for missing images
+  // const lastFiveImages = savedFolders?.slice(-5).map((post) => post?.image || 'default-image.jpg'); // Fallback for missing images
 
   useEffect(() => {
     const fetchData = handleAsync(async () => {
       const response = await axiosInstance.get('/saves');
-      dispatch(setSavedFolders(response.data.getsaved.posts || [])); // Ensure posts fallback to an empty array
+      dispatch(setSavedFolders(response.data.getsaved.posts || []));
+      console.log(response.data.getsaved)// Ensure posts fallback to an empty array
       const res = await axiosInstance.get('/viewboards');
       dispatch(setBoards(res.data.boards || [])); // Ensure boards fallback to an empty array
     });
@@ -139,7 +140,7 @@ function Saved() {
         className="cursor-pointer bg-white w-[300px] rounded-lg p-4 hover:bg-gray-100 transition"
       >
         {/* Image Previews */}
-        <div className="flex -space-x-2 mb-4">
+        {/* <div className="flex -space-x-2 mb-4">
           {lastFiveImages.map((img, index) => (
             <img
               key={index}
@@ -148,7 +149,7 @@ function Saved() {
               className="w-[100px] h-[150px] rounded-md object-cover border border-gray-300"
             />
           ))}
-        </div>
+        </div> */}
         {/* Folder Title and Info */}
         <h2 className="text-lg font-semibold truncate">All Pins</h2>
         <p className="text-gray-500">{savedFolders.length} Pins</p>

@@ -3,15 +3,6 @@ const {NotFoundError,ValidationError}=require('../../Utils/customeError')
  
 const getSaved = async (req, res,next) => {
     const getsaved = await Saved.findOne({ userId: req.userId }).populate('posts');
-    if (!getsaved) {
-        const newSave = new Saved({
-            userId: req.userId,
-            posts: [],
-        });
-
-        await newSave.save(); 
-        return res.status(200).json({newSave});
-    }
     return res.status(200).json({getsaved});
 
 };
@@ -45,22 +36,42 @@ const addToSaved = async (req, res,next) => {
 
 
 };
+const removeSaved = async (req, res, next) => {
+    try {
+        const { postId } = req.body;
 
-const removeSaved = async (req, res,next) => {
-    const { postId } = req.body;
-    const data = await Saved.findOne({ userId: req.userId }).populate('posts')
-    if (!data) {
-        return next(new NotFoundError('Not found', 404))
+        // Check if postId is provided
+        if (!postId) {
+            return res.status(400).json({ message: 'Post ID is required' });
+        }
+
+        // Find the saved data using userId
+        const data = await Saved.findOne({ userId: req.userId }).populate('posts');
+        if (!data) {
+            return next(new NotFoundError('Not found', 404));
+        }
+
+        // Check if the postId exists in the saved posts array
+        const postIndex = data.posts.findIndex(post => post._id.toString() === postId.toString());
+
+        // If the post is not found
+        if (postIndex === -1) {
+            return res.status(404).json({ message: 'Item not found' });
+        }
+
+        // Remove the post from the saved posts array
+        data.posts.splice(postIndex, 1);
+
+        // Save the updated data
+        await data.save();
+
+        // Return success response
+        res.status(200).json({ message: 'Removed', data });
+    } catch (error) {
+        console.error(error);
+        next(error); // Forward the error to the error handling middleware
     }
-    const posttindex = data.posts.findIndex(pro => pro._id.toString() == postId.toString())
-    console.log("posttindex",posttindex)
-    if(posttindex === -1){return res.status(404).json({message:"item not found"})}
-    data.posts.splice(posttindex, 1)
-    
-
-    await data.save()
-    res.status(200).json({message:"removed",data})
-}
+};
 
 module.exports = {getSaved,addToSaved,removeSaved};
 

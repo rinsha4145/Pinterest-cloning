@@ -2,15 +2,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './Home.css' 
-import {addSavedFolder,removeSavedFolder} from '../Redux/SavedSlice'
+import {addSavedFolder,removeSavedFolder,setSavedFolders} from '../Redux/SavedSlice'
 import axiosInstance from '../Utils/AxioaInstance';
 import handleAsync from '../Utils/HandleAsync';
 import ShareMenu from '../User/ShareMenu';
 import { useNavigate } from 'react-router-dom';
 const Home = () => {
   const { posts } = useSelector((state) => state.posts);
-  const savedFolders = useSelector((state) => state.saved.savedFolders);
-  console.log(savedFolders)
+  const saved = useSelector((state) => state.saved.savedFolders);
+  console.log("savedFolders",saved)
   console.log(posts)
 
 
@@ -40,13 +40,16 @@ const handleMouseLeave = (videoElement) => {
 };
 const handleSave=handleAsync(async(id)=>{
   const response=await axiosInstance.post(`/addtosave`,{postId:id})
-  dispatch(addSavedFolder(response.data.saved))
+  const savedData = response.data.saved;
+  dispatch(addSavedFolder(savedData))
+  
 })
 
 const removesave=handleAsync(async(id)=>{
-  const response=await axiosInstance.post(`/removesaved`,{postId:id})
+  const response=await axiosInstance.delete(`/removesaved`,{postId:id})
+  const Data = response.data.data;
   console.log(response.data.data)
-  // dispatch(removeSavedFolder(response.data.data))
+  dispatch(removeSavedFolder(Data))
 })
 
 // const handleAddToCart = (item) => {
@@ -105,7 +108,7 @@ const handleShareClick = (post) => {
         <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
       </svg>
     </button>
-    {savedFolders?.some(item => item._id === post?._id) ? (
+    {/* {savedFolders?.some(item => item._id === post?._id) ? (
   <button
     className="absolute top-2 right-2 bg-black text-white px-4 py-3 rounded-full shadow"
     onClick={() => removesave(post?._id)}
@@ -120,7 +123,7 @@ const handleShareClick = (post) => {
   >
     Save
   </button>
-)}
+)} */}
 
 
     <div className='mt-[60px]  h-[240px]' onClick={()=>navigate(`/viewpost/${post._id}/${post.category.name}`)}></div>
