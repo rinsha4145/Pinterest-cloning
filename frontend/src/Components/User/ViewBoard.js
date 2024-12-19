@@ -6,7 +6,7 @@ import ShareMenu from './ShareMenu';
 
 function ViewBoard() {
     const {id}=useParams()
-    const [data, setData] = useState([]);   // State to store fetched data
+    const [data, setData] = useState(null);   // State to store fetched data
     const [isShareMenuVisible, setShareMenuVisible] = useState(false);
     const handleShareClick = (post) => {
   
@@ -16,20 +16,21 @@ function ViewBoard() {
 useEffect(() => {
     const fetchData = async () => {
         const response = await axiosInstance.get(`/viewboardbyid/${id}`);
-        setData(response.data.board.posts); 
-        console.log(response.data.board.posts) // Set the fetched data to the state
-     
+        setData(response.data.board);
+       
     };
 
     fetchData();
   }, []);
+
       
   return (
     <>
-    <h1 className='flex justify-center text-2xl'>All Pins</h1>
-   <div className="container ">
+    <h1 className='flex justify-center text-5xl'></h1>
+    <h1 className='flex justify-center text-2xl'>{data.posts.length} Pins</h1>
+   <div className="container">
    
-  {data.map((post) => (
+  {data.posts.map((post) => (
     <div
       className="relative group box" 
       key={post._id}
@@ -89,6 +90,7 @@ useEffect(() => {
   ))}
 </div>
    </>  
+
   )
 }
 
