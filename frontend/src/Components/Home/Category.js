@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import './Home.css'
 import axiosInstance from '../Utils/AxioaInstance';
 import ShareMenu from '../User/ShareMenu';
@@ -7,6 +7,7 @@ import ShareMenu from '../User/ShareMenu';
 function Category() {
     const {category} = useParams()
   const [isShareMenuVisible, setShareMenuVisible] = useState(false); // State to control visibility of ShareMenu
+const navigate = useNavigate()
 
   const [data, setData] = useState([]);   // State to store fetched data
 
@@ -15,7 +16,8 @@ function Category() {
           
             const response = await axiosInstance.get(`/posts/${category}`);
             setData(response.data.posts); 
-            console.log(response.data) // Set the fetched data to the state
+            console.log(response.data)
+             // Set the fetched data to the state
          
         };
     
@@ -54,6 +56,7 @@ function Category() {
     <button className="absolute top-2 right-2 bg-red-600 text-white px-4 py-3 rounded-full shadow hover:bg-red-700">
       Save
     </button>
+    <div className='mt-[60px]  h-[240px]' onClick={()=>navigate(`/viewpost/${post._id}/${post.category.name}`)}></div>
     <button
     className=" absolute p-2 bottom-2 right-12 bg-gray-100 rounded-full hover:bg-gray-200 text-black"
     onClick={() => handleShareClick(post)}
@@ -74,7 +77,7 @@ function Category() {
     </svg>
   </button>
   {isShareMenuVisible && (
-                <ShareMenu url={post.image} isShareMenuVisible={isShareMenuVisible}/>
+                <ShareMenu url={post.image} isShareMenuVisible={isShareMenuVisible}/> 
               )}
     <button className="absolute bottom-2 right-2 bg-white hover:bg-gray-300 rounded-full p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width={2.5} stroke="currentColor" className="size-4">

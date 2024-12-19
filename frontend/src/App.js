@@ -16,6 +16,7 @@ import Settings from './Components/User/Settings/Settings';
 import Created from './Components/User/Created';
 import Pinned from './Components/User/Pinned';
 import ViewBoard from './Components/User/ViewBoard';
+import ViewPost from './Components/Home/ViewPost';
 
 function App() {
   const { user } = useSelector((state) => state.user);
@@ -27,6 +28,7 @@ function App() {
     {!user ?<Route path='/' element={<Slides/>}/>:<Route path='/' element={<Home/>}/>}
     <Route path='/create' element={<Create/>}/>
     <Route path='/explore' element={<Explore/>}/>
+    <Route path='/viewpost/:_id/:category' element={<ViewPost/>}/>
     <Route path='/category/:category' element={<Category/>}/>
     <Route path='/forgot-password' element={<ForgotPassword/>}/>
     <Route path='/reset_password/:id/:token' element={<ResetPassword/>}/>

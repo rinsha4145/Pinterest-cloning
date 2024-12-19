@@ -11,18 +11,18 @@ const getAllPosts = async (req, res, next) => {
 
 // Get post by ID
 const getpostbyid = async (req, res, next) => {
-    const onepost = await Posts.findById(req.params.id).populate("category");
+    const onepost = await Posts.findById(req.params.id).populate("category owner");
     if (!onepost) {
         return next(new NotFoundError('Post not found'));
     }
-    res.json(onepost);
+    res.json({onepost});
 };
 
 // Get posts by category
 const getbycategory = async (req, res, next) => {
     const { category } = req.params; 
     const categoryDoc = await Category.findOne({ name: category });
-    const posts = await Posts.find({ category: categoryDoc._id  }).populate("category");
+    const posts = await Posts.find({ category: categoryDoc._id  }).populate("category"); 
     if (!categoryDoc) {
         return next(new NotFoundError('Category not found.'));
     }
@@ -40,12 +40,15 @@ const addPost = async (req, res, next) => {
     }
     const { title, description, category, tags,link } = value;
     if (!req.file) {
-        return next(new ValidationError("No file uploaded"));
+        return next(new ValidationError("No file uploaded")); 
     }
     if (!req.userId) {
         return res.status(401).json({ message: "Unauthorized: User ID not found" });
     }
-    const existingCategory = await Category.findOne({ category }); 
+    const data = await Category.findById(category);
+    let name=data.name
+    console.log("Category", data.name);
+    const existingCategory = await Category.findOne({ name }); 
     console.log("existingCategory",existingCategory)// Ensure category is an ObjectId
     if (!existingCategory) {
         return next(new ValidationError("Category does not exist"));
@@ -66,16 +69,15 @@ const addPost = async (req, res, next) => {
     res.status(200).json({ status: "success", message: "Post added successfully", newPost });
 };
 
-//get the posts creted by the owner 
+//get the posts created by the owner 
 
 const getPostByOwner=async(req,res,next)=>{
-    const userId = req.userId; // This should be set by an authentication middleware
+    const userId = req.userId;
 
         if (!userId) {
             return res.status(401).json({ message: "User not authenticated" });
         }
         const posts = await Posts.find({ owner: userId });
-    console.log("first",posts)
     if (posts.length === 0) {
         return res.status(404).json({ message: "No posts found for this user." });
     }

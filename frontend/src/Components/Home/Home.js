@@ -1,17 +1,24 @@
 // Home.js
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import './Home.css'
+import './Home.css' 
+import {addSavedFolder,removeSavedFolder} from '../Redux/SavedSlice'
 import axiosInstance from '../Utils/AxioaInstance';
 import handleAsync from '../Utils/HandleAsync';
 import ShareMenu from '../User/ShareMenu';
+import { useNavigate } from 'react-router-dom';
 const Home = () => {
   const { posts } = useSelector((state) => state.posts);
+  const savedFolders = useSelector((state) => state.saved.savedFolders);
+  console.log(savedFolders)
+  console.log(posts)
+
 
   const [isShareMenuVisible, setShareMenuVisible] = useState(false); // State to control visibility of ShareMenu
   const videoRefs = useRef([]);
   const [isInteracted, setIsInteracted] = useState(false);
-//post fetching
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
 
 
@@ -31,25 +38,45 @@ const handleMouseLeave = (videoElement) => {
     videoElement.muted = true; // Re-mute after pause
   }
 };
+const handleSave=handleAsync(async(id)=>{
+  const response=await axiosInstance.post(`/addtosave`,{postId:id})
+  dispatch(addSavedFolder(response.data.saved))
+})
 
+const removesave=handleAsync(async(id)=>{
+  const response=await axiosInstance.post(`/removesaved`,{postId:id})
+  console.log(response.data.data)
+  // dispatch(removeSavedFolder(response.data.data))
+})
+
+// const handleAddToCart = (item) => {
+//   if (addToCart) {
+//     addToCart(item); 
+//     removewish(item);
+//   } else {
+//     console.error('addToCart function is not available in context');
+//   }
+// };
 // Function to simulate a user interaction to allow autoplay
 const handleUserInteraction = () => {
-  setIsInteracted(true); // Simulate user interaction
+  setIsInteracted(true);
+   // Simulate user interaction
 };
 const handleShareClick = (post) => {
-  
     setShareMenuVisible((prev) => !prev); // Toggle visibility
   };
   return (
     <>
-    <div className="container overflow-hidden" onClick={handleUserInteraction}>
+    <div className="container overflow-hidden" onClick={handleUserInteraction} >
   {posts.map((post,index) => (
     <div
       className="relative group box" 
       key={post._id}
+      
     >
       {post.image.endsWith(".mp4") || post.image.endsWith(".mov") || post.image.endsWith(".avi") ? (
     <video
+    onClick={()=>navigate(`/viewpost/${post._id}`)}
     src={post.image}
     ref={(el) => (videoRefs.current[index] = el)} // Set ref for each video dynamically
     alt={post.title}
@@ -62,6 +89,7 @@ const handleShareClick = (post) => {
   />
   ) : (
     <img
+   
       src={post.image}
       alt={post.title}
       className="w-full h-auto object-cover "
@@ -69,7 +97,7 @@ const handleShareClick = (post) => {
   )}
 
       {/* Hover Content */}
-      <div className="absolute inset-0 bg-black border-radiusfull rounded-2xl bg-opacity-50 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+      <div className="absolute inset-0 bg-black border-radiusfull rounded-2xl bg-opacity-50 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"  >
   <div className="text-center relative w-full h-full">
   <button className="absolute top-4 left-2 text-base font-semibold text-white px-2 py-1 rounded flex items-center space-x-2 group-hover:bg-opacity-100 opacity-70 hover:opacity-100 transition-opacity duration-300">
       Quick saves
@@ -77,11 +105,25 @@ const handleShareClick = (post) => {
         <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
       </svg>
     </button>
+    {savedFolders?.some(item => item._id === post?._id) ? (
+  <button
+    className="absolute top-2 right-2 bg-black text-white px-4 py-3 rounded-full shadow"
+    onClick={() => removesave(post?._id)}
+    // You can keep this button non-clickable if already saved or handle other actions
+  >
+    Saved
+  </button>
+) : (
+  <button
+    className="absolute top-2 right-2 bg-red-600 text-white px-4 py-3 rounded-full shadow hover:bg-red-700"
+    onClick={() => handleSave(post?._id)}
+  >
+    Save
+  </button>
+)}
 
-    <button className="absolute top-2 right-2 bg-red-600 text-white px-4 py-3 rounded-full shadow hover:bg-red-700">
-      Save
-    </button>
-    
+
+    <div className='mt-[60px]  h-[240px]' onClick={()=>navigate(`/viewpost/${post._id}/${post.category.name}`)}></div>
     <button
     className=" absolute p-2 bottom-2 right-12 bg-gray-100 rounded-full hover:bg-gray-200 text-black"
     onClick={() => handleShareClick(post)}

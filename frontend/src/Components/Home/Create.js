@@ -66,7 +66,12 @@ const Create = () => {
       if (response.status === 200 && response.status < 300) {
           alert('Post added successfully');
           setImagePreview(null)
-          setPost({})
+          setPost({
+            title:'',description: '',
+            link: '',category:'',
+            tag: '',image:''
+          })
+          setIsImageUploaded(false)
       } else {
           throw new Error(`Error: ${response.data.message || 'An unknown error occurred'}`);
       }
@@ -108,6 +113,7 @@ const fileInputRef = useRef(null);
           backgroundImage: isImageUploaded ? `url(${imagePreview})` : 'none',
           backgroundSize: 'cover', 
           backgroundPosition: 'center', 
+          
         }}
         
       >
@@ -116,7 +122,7 @@ const fileInputRef = useRef(null);
             <img
               src={imagePreview}
               alt="Uploaded Preview"
-              className="h-full object-cover rounded-lg"
+              className="h-[100px] object-cover rounded-lg"
              
             />
           ) : (

@@ -39,7 +39,7 @@ router
  
  .post('/createboard',userAuthMiddleware,tryCatch(boardcontroller.createBoard))  
  .post('/addtoboarad',userAuthMiddleware,tryCatch(boardcontroller.addToBoard))  
- .get('/viewboardbyid/:id',userAuthMiddleware,tryCatch(boardcontroller.viewBoardById))  
+ .get('/viewbyid/:id',userAuthMiddleware,tryCatch(boardcontroller.viewBoardById))  
  .get('/viewboards',userAuthMiddleware,tryCatch(boardcontroller.getAllBoards))  
 
 

@@ -13,6 +13,7 @@ const savedSlice = createSlice({
       state.savedFolders = action.payload; // Set the saved folders
     },
     addSavedFolder: (state, action) => {
+       console.log('Adding saved folder:', action.payload);
       state.savedFolders.push(action.payload); // Add a new folder to saved
     },
     removeSavedFolder: (state, action) => {

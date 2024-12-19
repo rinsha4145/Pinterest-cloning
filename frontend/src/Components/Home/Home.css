@@ -7,7 +7,6 @@
 .container {
     width: 100vh; /* Use 100% to make it responsive */
     max-width: 160px; /* Limit max width for larger screens */
-   
     columns: 6; /* Default to 6 columns */
     column-gap: 20px;
     padding:20px ;
