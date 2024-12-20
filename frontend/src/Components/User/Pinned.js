@@ -18,12 +18,12 @@ function Pinned() {
   {saved?.map((post) => (
     <div
       className="relative group box" 
-      key={post._id}
+      key={post?._id}
     >
       {/* Image */}
       <img
-        src={post.image}
-        alt={post.title}
+        src={post?.image}
+        alt={post?.title}
         className="w-full h-auto object-cover"
       />
 
