@@ -5,10 +5,9 @@ import ShareMenu from '../User/ShareMenu';
 import { useDispatch, useSelector } from 'react-redux';
 
 function Pinned() {
-    const savedFolders = useSelector((state) => state.saved.savedFolders);
+    const saved = useSelector((state) => state.saved.saved);
     const [isShareMenuVisible, setShareMenuVisible] = useState(false);
     const handleShareClick = (post) => {
-  
         setShareMenuVisible((prev) => !prev); // Toggle visibility
       };
   return (
@@ -16,7 +15,7 @@ function Pinned() {
     <h1 className='flex justify-center text-2xl'>All Pins</h1>
    <div className="container ">
    
-  {savedFolders.map((post) => (
+  {saved?.map((post) => (
     <div
       className="relative group box" 
       key={post._id}

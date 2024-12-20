@@ -6,6 +6,8 @@ import axiosInstance from "../Utils/AxioaInstance";
 import handleAsync from "../Utils/HandleAsync";
 import OutsideClickHandler from 'react-outside-click-handler';
 import {useClickHandler} from '../Context/ClickHandlerContext'
+import {clearSavedFolders} from '../Redux/SavedSlice'
+
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -14,12 +16,15 @@ const Navbar = () => {
   const { showLogin, showSignup,setShowLogin, setShowSignup } = useClickHandler()
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const saved = useSelector((state) => state.saved.saved);
+
   
-  const handleLogout = handleAsync( async (e) => {
+  
+  const handleLogout = handleAsync( async (e,enqueueSnackbar) => {
     e.preventDefault();
       const  response=await axiosInstance.post('/logout',{},{withCredentials:true});
       dispatch(logoutUser(user));
-
+      dispatch(clearSavedFolders(saved))
       if (response.status >= 200 && response.status < 300) {
         navigate("/")
       } else {
@@ -46,7 +51,7 @@ const Navbar = () => {
        <Link to="" className="logo w-12 h-12 rounded-full flex items-center justify-center hover:bg-gray-200">
          <i className="fab fa-pinterest text-red-600 text-2xl"></i>
        </Link>
-       <div className="hidden lg:flex space-x-4">
+       <div className="hidden lg:flex md:space-x-1 space-x-4">
           <Link
             to="/"
             className={`home font-bold flex items-center justify-center px-4 py-2 rounded-full ${
@@ -83,7 +88,7 @@ const Navbar = () => {
           </div>
  
      {/* Search Section */}
-     <div className="search flex items-center bg-gray-200 hover:bg-gray-300 rounded-full px-4 h-12 w-full sm:w-[300px] md:w-[500px] lg:w-[800px]">
+     <div className="search flex items-center bg-gray-200 hover:bg-gray-300 rounded-full px-4 h-12 w-full sm:w-[300px] md:w-[400px] lg:w-[800px]">
        <i className="fas fa-search text-gray-500 w-12 flex justify-center items-center"></i>
        <input
          type="search"

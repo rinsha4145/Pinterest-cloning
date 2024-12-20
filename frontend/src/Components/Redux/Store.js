@@ -27,7 +27,12 @@ const store = configureStore({
     posts: persistedPostsReducer,
     saved: persistedSavedReducer,
     board: persistedBoardReducer, // Add persisted board reducer
-  }
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      immutableCheck: false, // Disable immutability check
+      serializableCheck: false, // Optionally disable serializable check
+    }),
 });
 
 // Persistor for persisting the store

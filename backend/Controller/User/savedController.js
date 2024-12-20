@@ -37,7 +37,7 @@ const addToSaved = async (req, res,next) => {
 
 };
 const removeSaved = async (req, res, next) => {
-    try {
+    
         const { postId } = req.body;
 
         // Check if postId is provided
@@ -67,10 +67,7 @@ const removeSaved = async (req, res, next) => {
 
         // Return success response
         res.status(200).json({ message: 'Removed', data });
-    } catch (error) {
-        console.error(error);
-        next(error); // Forward the error to the error handling middleware
-    }
+  
 };
 
 module.exports = {getSaved,addToSaved,removeSaved};

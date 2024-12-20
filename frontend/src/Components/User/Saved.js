@@ -112,27 +112,21 @@ import { setBoards } from '../Redux/BoardSlice';
 import { useNavigate } from 'react-router-dom';
 
 function Saved() {
-  const savedFolders = useSelector((state) => state.saved.savedFolders);
+  const saved = useSelector((state) => state.saved.saved);
   const boards = useSelector((state) => state.board.boards);
-console.log("savedFolders",savedFolders)
+console.log("savedFolders",saved)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   // Extract the last 5 images from savedFolders
-  // const lastFiveImages = savedFolders?.slice(-5).map((post) => post?.image || 'default-image.jpg'); // Fallback for missing images
+  const lastFiveImages = saved?.slice(-3).map((post) => post?.image || 'default-image.jpg'); // Fallback for missing images
 
-  useEffect(() => {
-    const fetchData = handleAsync(async () => {
-      const response = await axiosInstance.get('/saves');
-      dispatch(setSavedFolders(response.data.getsaved.posts || []));
-      console.log(response.data.getsaved)// Ensure posts fallback to an empty array
-      const res = await axiosInstance.get('/viewboards');
-      dispatch(setBoards(res.data.boards || [])); // Ensure boards fallback to an empty array
-    });
-    fetchData();
-  }, [dispatch]);
+
 
   return (
+    <>
+    {saved || boards ?(
+      <>
     <div className="grid grid-cols-6 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-8">
       {/* Static Folder for All Pins */}
       <div
@@ -140,7 +134,7 @@ console.log("savedFolders",savedFolders)
         className="cursor-pointer bg-white w-[300px] rounded-lg p-4 hover:bg-gray-100 transition"
       >
         {/* Image Previews */}
-        {/* <div className="flex -space-x-2 mb-4">
+        <div className="flex -space-x-2 mb-4">
           {lastFiveImages.map((img, index) => (
             <img
               key={index}
@@ -149,10 +143,10 @@ console.log("savedFolders",savedFolders)
               className="w-[100px] h-[150px] rounded-md object-cover border border-gray-300"
             />
           ))}
-        </div> */}
+        </div>
         {/* Folder Title and Info */}
         <h2 className="text-lg font-semibold truncate">All Pins</h2>
-        <p className="text-gray-500">{savedFolders.length} Pins</p>
+        <p className="text-gray-500">{saved.length} Pins</p>
       </div>
 
       {/* Dynamic Folders */}
@@ -188,6 +182,21 @@ console.log("savedFolders",savedFolders)
         </div>
       ))}
     </div>
+    </>
+    ):(
+      <>
+    <div className="flex flex-col items-center justify-center h-full text-center space-y-4 mt-10">
+  <h1 className="text-md ">
+    Nothing to show...yet! Pins you create will live here.
+  </h1>
+  <button className="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-full transition duration-300" onClick={()=>navigate('/create')}>
+    Create Pin
+  </button>
+</div>
+
+    </>
+    )}
+    </>
   );
 }
 

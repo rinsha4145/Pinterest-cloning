@@ -17,12 +17,12 @@ const savedSlice = createSlice({
     },
     removeSavedFolder: (state, action) => {
       // Remove a folder by its id
-      state.saved = state.savedFolders.filter(
+      state.saved = state.saved.filter(
         (folder) => folder.id !== action.payload
       );
     },
     clearSavedFolders: (state) => {
-      state.saved = []; // Clear all saved folders
+      state.saved = []; // Clear all saved folders  
     },
   },
 });

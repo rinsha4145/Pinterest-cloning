@@ -78,10 +78,10 @@ const getPostByOwner=async(req,res,next)=>{
             return res.status(401).json({ message: "User not authenticated" });
         }
         const posts = await Posts.find({ owner: userId });
-    if (posts.length === 0) {
-        return res.status(404).json({ message: "No posts found for this user." });
-    }
-
+    // if (posts.length === 0) {
+    //     return res.status(404).json({ message: "No posts found for this user." });
+    // }
+   
     // Return the posts in the response
     return res.status(200).json({posts});
    

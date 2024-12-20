@@ -3,7 +3,6 @@ const app = express();
 const mongoose = require("mongoose");
 require('dotenv').config();
 const cookieParser = require('cookie-parser');
-
 const errorHandler = require('./Middleware/errorHandler');
 const useRoutes = require('./Routes/userRoute'); 
 const adminRoutes = require('./Routes/adminRoutes'); 
