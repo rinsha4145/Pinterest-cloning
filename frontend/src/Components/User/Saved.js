@@ -101,7 +101,7 @@
 
 // export default Saved
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import handleAsync from '../Utils/HandleAsync';
 import axiosInstance from '../Utils/AxioaInstance';
 import { useDispatch, useSelector } from 'react-redux';
@@ -112,14 +112,11 @@ import { setBoards } from '../Redux/BoardSlice';
 import { useNavigate } from 'react-router-dom';
 
 function Saved() {
-   const saved = useSelector((state) => state.save.save);
- 
+  const saved = useSelector((state) => state.save.save);
   const boards = useSelector((state) => state.board.boards);
-console.log("savedFolders",saved)
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  // Extract the last 5 images from savedFolders
+  const [isopen,setOpen]=useState(false)
   const lastFiveImages = saved?.slice(-3).map((post) => post?.image || 'default-image.jpg'); // Fallback for missing images
   useEffect(() => {
     const fetchData = handleAsync(async () => {
@@ -129,6 +126,9 @@ console.log("savedFolders",saved)
     fetchData();
   }, [dispatch]);
 
+  const handleClick = (post) => {
+    setOpen((prev) => !prev); // Toggle visibility
+  };
 
   return (
     <>
@@ -204,10 +204,41 @@ console.log("savedFolders",saved)
     </>
     )}
 
+<div className="relative">
+  {/* Other content */}
+  <div className="fixed bottom-4 right-6 md:bottom-6 md:right-6 lg:bottom-8 lg:right-8">
+    <button
+    className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 text-black "
+    onClick={handleClick}>
+
 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
   <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-</svg>
-
+</svg></button>
+    {isopen && (
+        <div className="w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 ">
+          <p className="px-4 py-2 text-sm text-gray-500">
+            create
+          </p>
+          <div className="border-t border-gray-200">
+            <button
+              className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              onClick={()=>navigate("/create")}
+            >
+              Pin
+            </button>
+            <button
+              className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              
+            >
+              Board
+            </button>
+            
+          </div>
+        </div>
+      )}
+    </div>
+    </div>
+  
     </>
   );
 }

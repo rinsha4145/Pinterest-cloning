@@ -7,7 +7,7 @@ import Created from './Created';
 import Saved from './Saved';
 
 function ProfilePage() {
-  const [activeTab, setActiveTab] = useState("Created");
+  const [activeTab, setActiveTab] = useState("Saved");
   const [active, setActive] = useState("");
 
     const [data,setData] = useState({})
