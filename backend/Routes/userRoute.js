@@ -4,7 +4,7 @@ const userController = require('../Controller/User/userController');
 const postcontroller = require('../Controller/User/postController');
 const savedcontroller = require('../Controller/User/savedController');
 const boardcontroller = require('../Controller/User/boardController');
-
+const likecontroller = require('../Controller/User/likeController')
 const tryCatch=require('../Middleware/tryCatch');
 const upload = require("../Middleware/imageUpload");
 const { userAuthMiddleware } = require("../Middleware/authentication");
@@ -36,6 +36,9 @@ router
  .post('/addtosave',userAuthMiddleware,tryCatch(savedcontroller.addToSaved))  
  .delete('/removesaved',userAuthMiddleware,tryCatch(savedcontroller.removeSaved))
  
+ .get('/viewlike',userAuthMiddleware,tryCatch(likecontroller.getLike))   
+ .post('/like',userAuthMiddleware,tryCatch(likecontroller.addToLike))  
+ .delete('/unlike',userAuthMiddleware,tryCatch(likecontroller.removeLike))
  
  .post('/createboard',userAuthMiddleware,tryCatch(boardcontroller.createBoard))  
  .post('/addtoboarad',userAuthMiddleware,tryCatch(boardcontroller.addToBoard))  

@@ -112,6 +112,7 @@ import { setBoards } from '../Redux/BoardSlice';
 import { useNavigate } from 'react-router-dom';
 import ViewBoard from './ViewBoard';
 import CreateBoard from './CreateBoard';
+import { useClickHandler } from '../Context/ClickHandlerContext';
 
 function Saved() {
   const saved = useSelector((state) => state.save.save);
@@ -120,6 +121,8 @@ function Saved() {
   const navigate = useNavigate();
   const [isopen,setOpen]=useState(false)
   const [viewBoard,setViewBoard]=useState(false)
+    const { setIsOpen,isOpen} = useClickHandler()
+  
 
   const lastFiveImages = saved?.slice(-3).map((post) => post?.image || 'default-image.jpg'); // Fallback for missing images
   useEffect(() => {
@@ -134,7 +137,8 @@ function Saved() {
     setOpen((prev) => !prev); // Toggle visibility
   };
   const handleboard = (post) => {
-    setViewBoard((prev) => !prev); // Toggle visibility
+    setIsOpen((prev) => !prev);
+    setOpen((prev) => !prev); // Toggle visibility
   };
 
   return (
@@ -189,9 +193,9 @@ function Saved() {
           <h2 className="text-lg font-semibold truncate">
             {folder.name || 'Untitled Folder'}
           </h2>
-          <p className="text-gray-500">
+          <p className="text-gray-500 text-sm">
             {Array.isArray(folder.posts) ? folder.posts.length : 0} Pins ·{' '}
-            {folder.time ? new Date(folder.time).toLocaleDateString() : 'Unknown Date'}
+            {folder.updatedAt ? new Date(folder.updatedAt).toLocaleDateString() : 'Unknown Date'}
           </p>
         </div>
       ))}
@@ -245,7 +249,7 @@ function Saved() {
       )}
     </div>
     </div>
-  {viewBoard?<CreateBoard/>:""}
+  {isOpen?<CreateBoard/>:""}
     </>
   );
 }

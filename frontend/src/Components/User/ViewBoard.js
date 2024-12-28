@@ -16,13 +16,11 @@ function ViewBoard() {
         const fetchData = async () => {
             const response = await axiosInstance.get(`/viewbyid/${id}`);
             setData(response.data.board);
-            console.log("first",response.data.board)
            
         };
         fetchData();
     }, []);
     
-    console.log("ll",data)
       
   return (
    <>
@@ -55,7 +53,7 @@ function ViewBoard() {
  
     <div className="container">
    
-  {data.posts.map((post) => (
+  {data?.posts?.map((post) => (
     <div
       className="relative group box" 
       key={post._id}

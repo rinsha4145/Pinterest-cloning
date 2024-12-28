@@ -14,7 +14,7 @@ function Login() {
   const [datas, setDatas] = useState({email: '',password: ''});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [show, setShow] = useState(true);
-  const { setShowLogin,showLogin} = useClickHandler()
+  const { setIsOpen,isOpen} = useClickHandler()
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -72,8 +72,8 @@ function Login() {
   return (
      
       <>
-      {showLogin && (
-    <OutsideClickHandler onOutsideClick={() => setShowLogin(false)}>
+      {isOpen && (
+    <OutsideClickHandler onOutsideClick={() => setIsOpen(false)}>
     <form onSubmit={handleSubmit}>
       <div className="bg-transparent flex justify-center items-center h-[80vh] font-sans">
         <div className="w-[400px] max-w-md rounded-4xl ">

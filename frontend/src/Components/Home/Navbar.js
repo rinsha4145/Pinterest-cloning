@@ -13,7 +13,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState("");
   const { user } = useSelector((state) => state.user);
-  const { showLogin, showSignup,setShowLogin, setShowSignup } = useClickHandler()
+  const { isOpen, showSignup,setIsOpen, setShowSignup } = useClickHandler()
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const saved = useSelector((state) => state.save.save);
@@ -219,7 +219,7 @@ const Navbar = () => {
  
     ):(
       <>
-      <nav className={` flex flex-wrap justify-between items-center px-6 py-4 z-50 fixed top-0 left-0 right-0 bg-white ${showLogin || showSignup ? " bg-black bg-opacity-50 pointer-events-none" : ""}`}>
+      <nav className={` flex flex-wrap justify-between items-center px-6 py-4 z-50 fixed top-0 left-0 right-0 bg-white ${isOpen || showSignup ? " bg-black bg-opacity-50 pointer-events-none" : ""}`}>
         {/* Left Section - Logo */} 
         <div className="flex items-center space-x-3">
         <div className="flex items-center space-x-2">
@@ -280,7 +280,7 @@ const Navbar = () => {
             Blog
           </Link>
           
-          <button className="bg-red-600 text-white px-4 py-2 rounded-full hover:bg-red-700"  onClick={() => setShowLogin(true)}>
+          <button className="bg-red-600 text-white px-4 py-2 rounded-full hover:bg-red-700"  onClick={() => setIsOpen(true)}>
             Log in
           </button>
          

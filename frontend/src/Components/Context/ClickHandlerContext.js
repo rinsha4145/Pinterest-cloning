@@ -5,11 +5,11 @@ const clickHandlerContext = createContext();
 
 // Create a provider component
 export const ClickHandlerProvider = ({ children }) => {
-  const [showLogin, setShowLogin] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
 
   return (
-    <clickHandlerContext.Provider value={{ showLogin, showSignup, setShowLogin, setShowSignup }}>
+    <clickHandlerContext.Provider value={{ isOpen, showSignup, setIsOpen, setShowSignup }}>
       {children}
     </clickHandlerContext.Provider>
   );

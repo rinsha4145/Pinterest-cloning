@@ -1,8 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
+import OutsideClickHandler from "react-outside-click-handler";
+import { useClickHandler } from "../Context/ClickHandlerContext";
 
 const CreateBoard = () => {
+const { setIsOpen,isOpen} = useClickHandler() 
+console.log(isOpen) 
+const handleboard = () => {
+    setIsOpen(false);
+    console.log(isOpen) 
+  };
+
   return (
+
     <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+        <OutsideClickHandler onOutsideClick={handleboard}>
       <div className="bg-white w-full max-w-md mx-4 rounded-lg shadow-lg p-6">
         <h2 className="text-xl font-semibold text-center mb-4">Create board</h2>
         <form>
@@ -14,13 +25,13 @@ const CreateBoard = () => {
             <input
               type="text"
               id="board-name"
-              placeholder='E.g. "Places to go" or "Recipes to make"'
-              className="mt-1 w-full rounded border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              placeholder='    E.g. "Places to go" or "Recipes to make"'
+              className="mt-1 w-full h-10 rounded border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue"
             />
           </div>
 
           {/* Secret Board Toggle */}
-          <div className="mb-4 flex items-start">
+          {/* <div className="mb-4 flex items-start">
             <input
               type="checkbox"
               id="secret-board"
@@ -35,10 +46,10 @@ const CreateBoard = () => {
                 So only you and collaborators can see it. Learn more
               </p>
             </label>
-          </div>
+          </div> */}
 
           {/* Add Collaborators */}
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label
               htmlFor="add-collaborators"
               className="block text-sm font-medium text-gray-700"
@@ -51,10 +62,10 @@ const CreateBoard = () => {
               placeholder="Search by name or email address"
               className="mt-1 w-full rounded border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
             />
-          </div>
+          </div> */}
 
           {/* Collaborator Item */}
-          <div className="flex items-center justify-between bg-gray-100 rounded-lg p-2">
+          {/* <div className="flex items-center justify-between bg-gray-100 rounded-lg p-2">
             <div className="flex items-center">
               <img
                 src="https://via.placeholder.com/40"
@@ -72,7 +83,7 @@ const CreateBoard = () => {
             >
               Add
             </button>
-          </div>
+          </div> */}
 
           {/* Create Button */}
           <div className="mt-6">
@@ -85,7 +96,9 @@ const CreateBoard = () => {
           </div>
         </form>
       </div>
+      </OutsideClickHandler>
     </div>
+
   );
 };
 

@@ -27,7 +27,7 @@ const Slides = () => {
   }, []);
  
   
-  const { showLogin, showSignup, } = useClickHandler()
+  const { isOpen, showSignup, } = useClickHandler()
   const foodPosts = posts.filter((post) => post.category?.name === "Food").slice(0, 15).map((post) => post.image); 
   const DIYPosts = posts.filter((post) => post.category?.name === 'DIY').slice(0, 15).map((post) => post.image);     
   const homePosts = posts.filter((post) => post.category?.name === 'Home').slice(0, 15).map((post) => post.image);     
@@ -38,7 +38,7 @@ const Slides = () => {
   const [nextSlide, setNextSlide] = useState(currentSlide);
   
   useEffect(() => {
-    if (showLogin || showSignup) {
+    if (isOpen || showSignup) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'auto'; // Reset scrolling when the form is hidden
@@ -47,7 +47,7 @@ const Slides = () => {
     return () => {
       document.body.style.overflow = 'auto'; // Cleanup to reset when the component is unmounted
     };
-  }, [showLogin, showSignup]);
+  }, [isOpen, showSignup]);
 
   const settings = {
     dots: true,
@@ -95,7 +95,7 @@ const Slides = () => {
       </div>
     </div>
   )}
-    {showLogin && (
+    {isOpen && (
     <div className="absolute inset-0 z-50  flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white p-5 rounded-3xl shadow-lg">
         <Login/>
@@ -103,7 +103,7 @@ const Slides = () => {
     </div>
   )}
     
-    <div className={`mt-[72px] ${ showLogin || showSignup ? "opacity-50 pointer-events-none" : ""}`}>
+    <div className={`mt-[72px] ${ isOpen || showSignup ? "opacity-50 pointer-events-none" : ""}`}>
       {/* Hero Text */}
       <div className="flex justify-center text-center">
         <h1 className=" text-7xl md:text-6xl font-medium text-black ">
