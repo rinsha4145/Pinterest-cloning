@@ -110,6 +110,8 @@ import {
 } from '../Redux/SavedSlice';
 import { setBoards } from '../Redux/BoardSlice';
 import { useNavigate } from 'react-router-dom';
+import ViewBoard from './ViewBoard';
+import CreateBoard from './CreateBoard';
 
 function Saved() {
   const saved = useSelector((state) => state.save.save);
@@ -117,6 +119,8 @@ function Saved() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isopen,setOpen]=useState(false)
+  const [viewBoard,setViewBoard]=useState(false)
+
   const lastFiveImages = saved?.slice(-3).map((post) => post?.image || 'default-image.jpg'); // Fallback for missing images
   useEffect(() => {
     const fetchData = handleAsync(async () => {
@@ -128,6 +132,9 @@ function Saved() {
 
   const handleClick = (post) => {
     setOpen((prev) => !prev); // Toggle visibility
+  };
+  const handleboard = (post) => {
+    setViewBoard((prev) => !prev); // Toggle visibility
   };
 
   return (
@@ -206,7 +213,7 @@ function Saved() {
 
 <div className="relative">
   {/* Other content */}
-  <div className="fixed bottom-4 right-6 md:bottom-6 md:right-6 lg:bottom-8 lg:right-8">
+  <div className="mt-[-40vh] ml-[-65vh] md:bottom-6 md:right-6 lg:bottom-8 lg:right-8">
     <button
     className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 text-black "
     onClick={handleClick}>
@@ -215,7 +222,7 @@ function Saved() {
   <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
 </svg></button>
     {isopen && (
-        <div className="w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 ">
+        <div className="absolute w-38 bg-white border border-gray-200 rounded-lg shadow-lg z-50 ">
           <p className="px-4 py-2 text-sm text-gray-500">
             create
           </p>
@@ -228,7 +235,7 @@ function Saved() {
             </button>
             <button
               className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              
+              onClick={handleboard}
             >
               Board
             </button>
@@ -238,7 +245,7 @@ function Saved() {
       )}
     </div>
     </div>
-  
+  {viewBoard?<CreateBoard/>:""}
     </>
   );
 }
