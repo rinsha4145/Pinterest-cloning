@@ -2,27 +2,27 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // Initial state for saved folders or posts
 const initialState = {
-  saved: [], // Array to store saved folders/posts
+  save: [], // Array to store saved folders/posts
 };
 
 const savedSlice = createSlice({
-  name: 'saved',
+  name: 'save',
   initialState,
   reducers: {
     setSavedFolders: (state, action) => {
-      state.saved = action.payload; // Set the saved folders
+      state.save = action.payload; // Set the save folders
     },
     addSavedFolder: (state, action) => {
-      state.saved.push(action.payload); // Add a new folder to saved
+      state.save.push(action.payload); // Add a new folder to save
     },
     removeSavedFolder: (state, action) => {
       // Remove a folder by its id
-      state.saved = state.saved.filter(
+      state.save = state.save.filter(
         (folder) => folder.id !== action.payload
       );
     },
     clearSavedFolders: (state) => {
-      state.saved = []; // Clear all saved folders  
+      state.save = []; // Clear all save folders  
     },
   },
 });

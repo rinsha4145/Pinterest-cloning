@@ -32,7 +32,7 @@ const addToSaved = async (req, res,next) => {
         return res.status(201).json({message:"post saved",saved});
 
     }
-    return next(new ValidationError('post already saved', 404))
+    return next(new ValidationError('post already saved', 404))   
 
 
 };
@@ -46,7 +46,7 @@ const removeSaved = async (req, res, next) => {
         }
 
         // Find the saved data using userId
-        const data = await Saved.findOne({ userId: req.userId }).populate('posts');
+        const data = await Saved.findOne({ userId: req.userId }).populate('posts'); 
         if (!data) {
             return next(new NotFoundError('Not found', 404));
         }

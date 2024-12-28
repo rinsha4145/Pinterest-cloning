@@ -112,7 +112,8 @@ import { setBoards } from '../Redux/BoardSlice';
 import { useNavigate } from 'react-router-dom';
 
 function Saved() {
-  const saved = useSelector((state) => state.saved.saved);
+   const saved = useSelector((state) => state.save.save);
+ 
   const boards = useSelector((state) => state.board.boards);
 console.log("savedFolders",saved)
   const dispatch = useDispatch();
@@ -120,7 +121,13 @@ console.log("savedFolders",saved)
 
   // Extract the last 5 images from savedFolders
   const lastFiveImages = saved?.slice(-3).map((post) => post?.image || 'default-image.jpg'); // Fallback for missing images
-
+  useEffect(() => {
+    const fetchData = handleAsync(async () => {
+      const respond = await axiosInstance.get('/viewboards');
+      dispatch(setBoards(respond.data.boards || [])); // Ensure boards fallback to an empty array
+    });
+    fetchData();
+  }, [dispatch]);
 
 
   return (

@@ -16,15 +16,16 @@ const Navbar = () => {
   const { showLogin, showSignup,setShowLogin, setShowSignup } = useClickHandler()
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const saved = useSelector((state) => state.saved.saved);
+  const saved = useSelector((state) => state.save.save);
 
   
   
-  const handleLogout = handleAsync( async (e,enqueueSnackbar) => {
+  const handleLogout = handleAsync( async (e) => {
     e.preventDefault();
       const  response=await axiosInstance.post('/logout',{},{withCredentials:true});
       dispatch(logoutUser(user));
       dispatch(clearSavedFolders(saved))
+      console.log("saved2",saved)
       if (response.status >= 200 && response.status < 300) {
         navigate("/")
       } else {
@@ -38,6 +39,7 @@ const Navbar = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
   
+  // console.log("saved",saved)
 
   return (
     <>
@@ -108,9 +110,9 @@ const Navbar = () => {
        <Link to="/profilepage" className="avatar w-12 h-12 rounded-full flex items-center justify-center hover:bg-gray-200">
          <div className="img w-8 h-8 rounded-full overflow-hidden relative">
            <div className="flex items-center justify-center">
-             {user.profileImage ? (
+             {user.profileimage ? (
                <img
-                 src={user.profileImage}
+                 src={user.profileimage}
                  alt="User Profile"
                  className="w-12 h-12 rounded-full object-cover"
                />

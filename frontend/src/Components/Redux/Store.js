@@ -11,7 +11,7 @@ import boardReducer from './BoardSlice'; // Import BoardSlice
 // Persist configurations for different slices
 const userPersistConfig = { key: 'user', storage };
 const postsPersistConfig = { key: 'posts', storage };
-const savedPersistConfig = { key: 'saved', storage };
+const savedPersistConfig = { key: 'save', storage };
 const boardPersistConfig = { key: 'boards', storage };
 
 // Create persisted reducers
@@ -25,7 +25,7 @@ const store = configureStore({
   reducer: {
     user: persistedUserReducer,
     posts: persistedPostsReducer,
-    saved: persistedSavedReducer,
+    save: persistedSavedReducer,
     board: persistedBoardReducer, // Add persisted board reducer
   },
   middleware: (getDefaultMiddleware) =>

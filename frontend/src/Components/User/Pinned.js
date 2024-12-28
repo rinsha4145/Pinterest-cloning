@@ -5,7 +5,7 @@ import ShareMenu from '../User/ShareMenu';
 import { useDispatch, useSelector } from 'react-redux';
 
 function Pinned() {
-    const saved = useSelector((state) => state.saved.saved);
+    const saved = useSelector((state) => state.save.save);
     const [isShareMenuVisible, setShareMenuVisible] = useState(false);
     const handleShareClick = (post) => {
         setShareMenuVisible((prev) => !prev); // Toggle visibility

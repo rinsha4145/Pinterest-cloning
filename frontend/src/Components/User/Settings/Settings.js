@@ -17,7 +17,7 @@ function Settings() {
     username: '',
   });
   const dispatch = useDispatch();
-
+  const [preview, setPreview] = useState(null);
   const [showModal, setShowModal] = useState(false);
    const [selectedFile, setSelectedFile] = useState(null);
    const [originalData, setOriginalData] = useState(user);
@@ -37,6 +37,10 @@ function Settings() {
 
   const handleChange = (event) => {
     const { name, value, type, files } = event.target;
+    const file = files?.[0];
+    if (name === 'profileimage' && file) {
+      setPreview(URL.createObjectURL(file)); // Generate preview URL
+    }
     setUserData((prevData) => ({
       ...prevData,
       [name]: type === 'file' ? files[0] : value,
@@ -67,7 +71,8 @@ function Settings() {
       try {
         const response = await axiosInstance.put("/editprofile", formData);
         if (response.status >= 200 && response.status < 300) {
-          dispatch(updateUser(userdata));
+          dispatch(updateUser(response.data.updatedProfile));
+          console.log(response.data.updatedProfile)
 
           alert('Profile updated successfully');
         }
@@ -108,7 +113,7 @@ function Settings() {
         {/* Profile Image */}
         <div className="flex items-center mb-6">
           <img
-            src={userdata.profileimage || "https://via.placeholder.com/150"}
+            src={preview||userdata.profileimage}
             alt="Profile"
             className="w-20 h-20 rounded-full object-cover border"
           />
