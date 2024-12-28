@@ -11,7 +11,7 @@ import {clearSavedFolders} from '../Redux/SavedSlice'
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [activeTab, setActiveTab] = useState("Home");
+  const [activeTab, setActiveTab] = useState("");
   const { user } = useSelector((state) => state.user);
   const { showLogin, showSignup,setShowLogin, setShowSignup } = useClickHandler()
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -53,7 +53,7 @@ const Navbar = () => {
        <Link to="" className="logo w-12 h-12 rounded-full flex items-center justify-center hover:bg-gray-200">
          <i className="fab fa-pinterest text-red-600 text-2xl"></i>
        </Link>
-       <div className="hidden lg:flex md:space-x-1 space-x-4">
+       <div className="hidden lg:flex md:space-x-1 space-x-4 ">
           <Link
             to="/"
             className={`home font-bold flex items-center justify-center px-4 py-2 rounded-full ${
@@ -185,7 +185,7 @@ const Navbar = () => {
      </div>
    </div>
    {isMenuOpen && (
-        <div className="lg:hidden absolute top-16 left-0 w-full bg-white shadow-md z-80">
+        <div className="lg:hidden absolute top-16 left-0 w-full bg-white shadow-md z-50">
           <Link
             to="/"
             className={`home font-bold flex items-center justify-center px-4 py-2 rounded-full ${
