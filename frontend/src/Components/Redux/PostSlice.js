@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // Initial state for posts
 const initialState = {
-  posts: [], // Store posts fetched from the API
+  post: [], // Store posts fetched from the API
 };
 
 const postsSlice = createSlice({
@@ -11,19 +11,28 @@ const postsSlice = createSlice({
   initialState,
   reducers: {
     setPosts: (state, action) => {
-      state.posts = action.payload; // Set posts in the state
+      state.post = action.payload; // Set post in the state
     },
     addPost: (state, action) => {
-      state.posts.push(action.payload); // Add a new post to the list
+      state.post.push(action.payload); // Add a new post to the list
     },
+    updateLikedBy: (state, action) => {
+      const { postId, likedBy } = action.payload; // Extract postId and updated likedBy array
+      const postIndex = state.post.findIndex((post) => post.id === postId);
+
+      if (postIndex !== -1) {
+        state.post[postIndex].likedBy = likedBy; // Update the likedBy field
+      }
+    },
+    
     clearPosts: (state) => {
-      state.posts = []; // Clear all posts
+      state.post = []; // Clear all posts
     },
   },
 });
 
 // Export actions to use in the component
-export const { setPosts, addPost, clearPosts, setLoading, setError } = postsSlice.actions;
+export const { setPosts, addPost, clearPosts,updatePost,updateLikedBy } = postsSlice.actions;
 
 // Export reducer to configure store
 export default postsSlice.reducer;

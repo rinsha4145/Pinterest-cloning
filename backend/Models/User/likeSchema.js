@@ -1,8 +1,19 @@
-const mongoose=require('mongoose')
+const mongoose = require('mongoose');
 
-const likeSchema=new mongoose.Schema({
-    userId:{type:mongoose.Schema.ObjectId,ref:'Users'},
-    posts:[{type:mongoose.Schema.ObjectId,ref:'Post'}]
-})
+const likeSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Users',
+    required: true
+  },
+  postId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Post',
+    required: true
+  },
+});
 
-module.exports=mongoose.model('like',likeSchema)
+// Ensure a user cannot like the same post multiple times
+likeSchema.index({ userId: 1, postId: 1 }, { unique: true });
+
+module.exports = mongoose.model('Like', likeSchema);

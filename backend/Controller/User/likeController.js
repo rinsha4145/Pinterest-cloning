@@ -1,72 +1,75 @@
-const Like=require('../../Models/User/likeSchema')
-const {NotFoundError,ValidationError}=require('../../Utils/customeError')
- 
-const getLike = async (req, res,next) => {
-    const getlikedPosts = await Like.findOne({ userId: req.userId }).populate('posts');
-    return res.status(200).json({getlikedPosts});
+const Post = require('../../Models/postSchema'); // Import Post model
 
+const likePost = async (req, res, next) => {
+  const { postId } = req.body;  // Get postId from request body
+  const userId = req.userId;  // Assuming the userId is available in req.userId from authentication middleware
+
+  try {
+    const post = await Post.findById(postId);  // Find the post by ID
+
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    // Check if the user has already liked the post
+    if (post.likedBy.includes(userId)) {
+      return res.status(400).json({ message: 'You have already liked this post' });
+    }
+
+    // Add the userId to the likedBy array
+    post.likedBy.push(userId);
+    await post.save();  // Save the updated post
+
+    return res.status(200).json({ message: 'Post liked successfully', post });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Error liking the post' });
+  }
 };
 
-const addToLike = async (req, res,next) => {
-    const { postId } = req.body;   
-    let like = await Like.findOne({ userId: req.userId })
 
-    if (!like) {
-        const newLike = new Like({
-            userId: req.userId,
-            posts: [postId]
-        });
-        await newLike.save()
-       const updated= await newLike.populate("posts")
-        return res.status(201).json({message:"post saved",updated});
-        
-    }
-    const isPostILike = like && Array.isArray(like.posts) && like.posts.some(post => post && post.equals && post.equals(postId));
-
-    if (!isPostILike) {
-        // If not, push the product ID to the products array
-        like.posts.push(postId);
-        await like.save()
-        liked=await like.populate('posts')
-        return res.status(201).json({message:"post saved",liked});
-
-    }
-    return next(new ValidationError('post already saved', 404))   
-
-
-};
-const removeLike = async (req, res, next) => {
-        const { postId } = req.body;
-
-        // Check if postId is provided
-        if (!postId) {
-            return res.status(400).json({ message: 'Post ID is required' });
-        }
-
-        // Find the saved data using userId
-        const data = await Like.findOne({ userId: req.userId }).populate('posts'); 
-        if (!data) {
-            return next(new NotFoundError('Not found', 404));
-        }
-
-        // Check if the postId exists in the saved posts array
-        const postIndex = data.posts.findIndex(post => post._id.toString() === postId.toString());
-
-        // If the post is not found
-        if (postIndex === -1) {
-            return res.status(404).json({ message: 'Item not found' });
-        }
-
-        // Remove the post from the saved posts array
-        data.posts.splice(postIndex, 1);
-
-        // Save the updated data
-        await data.save();
-
-        // Return success response
-        res.status(200).json({ message: 'Removed', data });
+const unlikePost = async (req, res, next) => {
+    const { postId } = req.body;  // Get postId from request body
+    const userId = req.userId;  // Assuming the userId is available in req.userId from authentication middleware
   
-};
+    try {
+      const post = await Post.findById(postId);  // Find the post by ID
+  
+      if (!post) {
+        return res.status(404).json({ message: 'Post not found' });
+      }
+  
+      // Check if the user has liked the post
+      if (!post.likedBy.includes(userId)) {
+        return res.status(400).json({ message: 'You have not liked this post' });
+      }
+  
+      // Remove the userId from the likedBy array
+      post.likedBy.pull(userId);
+      await post.save();  // Save the updated post
+  
+      return res.status(200).json({ message: 'Post unliked successfully', post });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Error unliking the post' });
+    }
+  };
 
-module.exports = {getLike,addToLike,removeLike};
-
+  const getLikedPosts = async (req, res, next) => {
+    const userId = req.userId;  // Assuming the userId is available in req.userId from authentication middleware
+  
+    try {
+      const likedPosts = await Post.find({ likedBy: userId }).populate('owner', 'name email');  // Find posts where the userId is in the likedBy array
+  
+      if (likedPosts.length === 0) {
+        return res.status(404).json({ message: 'No liked posts found' });
+      }
+  
+      return res.status(200).json({ likedPosts });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Error fetching liked posts' });
+    }
+  };
+  
+module.exports = { getLikedPosts,likePost,unlikePost };

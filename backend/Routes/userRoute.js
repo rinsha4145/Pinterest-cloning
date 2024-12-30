@@ -36,9 +36,9 @@ router
  .post('/addtosave',userAuthMiddleware,tryCatch(savedcontroller.addToSaved))  
  .delete('/removesaved',userAuthMiddleware,tryCatch(savedcontroller.removeSaved))
  
- .get('/viewlike',userAuthMiddleware,tryCatch(likecontroller.getLike))   
- .post('/like',userAuthMiddleware,tryCatch(likecontroller.addToLike))  
- .delete('/unlike',userAuthMiddleware,tryCatch(likecontroller.removeLike))
+ .get('/viewlike',userAuthMiddleware,tryCatch(likecontroller.getLikedPosts))   
+ .post('/like',userAuthMiddleware,tryCatch(likecontroller.likePost))  
+ .delete('/unlike',userAuthMiddleware,tryCatch(likecontroller.unlikePost))
  
  .post('/createboard',userAuthMiddleware,tryCatch(boardcontroller.createBoard))  
  .post('/addtoboarad',userAuthMiddleware,tryCatch(boardcontroller.addToBoard))  

@@ -18,6 +18,7 @@ const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const saved = useSelector((state) => state.save.save);
 
+
   
   
   const handleLogout = handleAsync( async (e) => {
@@ -25,7 +26,6 @@ const Navbar = () => {
       const  response=await axiosInstance.post('/logout',{},{withCredentials:true});
       dispatch(logoutUser(user));
       dispatch(clearSavedFolders(saved))
-      console.log("saved2",saved)
       if (response.status >= 200 && response.status < 300) {
         navigate("/")
       } else {
@@ -39,7 +39,6 @@ const Navbar = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
   
-  // console.log("saved",saved)
 
   return (
     <>

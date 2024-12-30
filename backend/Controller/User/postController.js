@@ -45,7 +45,7 @@ const addPost = async (req, res, next) => {
     if (!req.userId) {
         return res.status(401).json({ message: "Unauthorized: User ID not found" });
     }
-    const data = await Category.findById(category);
+    const data = await Category.findById(category);  
     let name=data.name
     console.log("Category", data.name);
     const existingCategory = await Category.findOne({ name }); 
@@ -66,11 +66,10 @@ const addPost = async (req, res, next) => {
     });
     await newPost.save();
     console.log(newPost)
-    res.status(200).json({ status: "success", message: "Post added successfully", newPost });
+    res.status(200).json({ status: "success", message: "Post added successfully", newPost });  
 };
-
+ 
 //get the posts created by the owner 
-
 const getPostByOwner=async(req,res,next)=>{
     const userId = req.userId;
 

@@ -10,9 +10,9 @@ import { useNavigate } from 'react-router-dom';
 import { setBoards } from '../Redux/BoardSlice';
 
 const Home = () => {
-  const { posts } = useSelector((state) => state.posts);
+  const  posts  = useSelector((state) => state.post.post);
   const saved = useSelector((state) => state.save.save);
-  
+  console.log(posts)
 
 
   const [isShareMenuVisible, setShareMenuVisible] = useState(false); // State to control visibility of ShareMenu
@@ -79,16 +79,16 @@ const handleShareClick = (post) => {
   return (
     <>
     <div className="container overflow-hidden" onClick={handleUserInteraction} >
-  {posts.map((post,index) => (
+  {posts?.map((post,index) => (
     <div
       className="relative group box" 
-      key={post._id}
+      key={post?._id}
       
     >
-      {post.image.endsWith(".mp4") || post.image.endsWith(".mov") || post.image.endsWith(".avi") ? (
+      {post?.image.endsWith(".mp4") || post.image.endsWith(".mov") || post?.image.endsWith(".avi") ? (
     <video
     onClick={()=>navigate(`/viewpost/${post._id}`)}    
-    src={post.image}
+    src={post?.image}
     ref={(el) => (videoRefs.current[index] = el)} // Set ref for each video dynamically
     alt={post.title}
     className="w-full h-auto object-cover rounded-2xl "
