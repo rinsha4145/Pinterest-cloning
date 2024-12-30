@@ -119,9 +119,23 @@ const viewBoardById = async (req, res, next) => {
 
   //view all boards
   const getAllBoards = async (req, res, next) => {
-    const boards = await Boards.find().populate("posts") // Fetch posts without authentication checks
+    const boards = await Boards.find({ userId: req.userId }).populate("posts") // Fetch posts without authentication checks
     res.status(200).json({boards});
 };
 
+// View all boards for a specific user
+const getBoardsByUserId = async (req, res, next) => {
+    const boards = await Boards.findById({ userId: req.userId }).populate('posts');
+    console.log(boards)
+    if (boards.length === 0) {
+    return res.status(404).json({ message: "No boards found for this user" });
+    }
+    res.status(200).json({
+    message: "Boards fetched successfully",
+    boards,
+    });
+    
+  };
+  
 
-module.exports = { createBoard,addToBoard,viewBoardById,getAllBoards };
+module.exports = { createBoard,addToBoard,viewBoardById,getAllBoards,getBoardsByUserId };

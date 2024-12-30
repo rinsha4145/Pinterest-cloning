@@ -3,16 +3,14 @@ import React, { useEffect, useState } from 'react';
 import handleAsync from '../Utils/HandleAsync';
 import axiosInstance from '../Utils/AxioaInstance';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  setSavedFolders,
-} from '../Redux/SavedSlice';
+import {setSavedFolders,} from '../Redux/SavedSlice';
 import { setBoards } from '../Redux/BoardSlice';
 import { useNavigate } from 'react-router-dom';
 import ViewBoard from './ViewBoard';
 import CreateBoard from './CreateBoard';
 import { useClickHandler } from '../Context/ClickHandlerContext';
 
-function Saved() {
+function Saved({id}) {
   const saved = useSelector((state) => state.save.save);
   const boards = useSelector((state) => state.board.boards);
   const dispatch = useDispatch();

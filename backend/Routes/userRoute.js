@@ -44,6 +44,8 @@ router
  .post('/addtoboarad',userAuthMiddleware,tryCatch(boardcontroller.addToBoard))  
  .get('/viewbyid/:id',userAuthMiddleware,tryCatch(boardcontroller.viewBoardById))  
  .get('/viewboards',userAuthMiddleware,tryCatch(boardcontroller.getAllBoards))  
+ .get('/board',userAuthMiddleware,tryCatch(boardcontroller.getBoardsByUserId))  
+
 
 
 

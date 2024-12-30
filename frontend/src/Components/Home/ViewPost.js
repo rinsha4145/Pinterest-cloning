@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axiosInstance from "../Utils/AxioaInstance";
 import handleAsync from "../Utils/HandleAsync";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +16,7 @@ const ViewPost = () => {
   const posts = useSelector((state) => state.post.post);
   const  user  = useSelector((state) => state.user.user);
   const [isShareMenuVisible, setShareMenuVisible] = useState(false);
+  const navigate=useNavigate()
    // State to control visibility of ShareMenu
   const fetchData =handleAsync( async () => {
     const response = await axiosInstance.get(`/post/${_id}`);
@@ -138,8 +139,8 @@ const handleLikeToggle = handleAsync(async (postId,userid) => {
               <p className="text-gray-500">Likes</p>
             </div>
 
-            {/* User Info Section */}
-            <div className="flex items-center mt-6">
+          {/* User Info Section */}
+            <div className="flex items-center mt-6" onClick={()=>navigate(`/userpage/${data.owner._id}`)}>
             {data?.owner?.profileimage ? (
             <img src={data?.owner?.profileimage} alt="Profile"  className="h-10" />
                 ) : (

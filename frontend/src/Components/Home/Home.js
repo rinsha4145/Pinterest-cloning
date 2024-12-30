@@ -11,7 +11,8 @@ import { useNavigate } from 'react-router-dom';
 const Home = () => {
   const  posts  = useSelector((state) => state.post.post);
   const saved = useSelector((state) => state.save.save);
-
+  const boards = useSelector((state) => state.board.boards);
+  console.log(boards)
 
   const [isShareMenuVisible, setShareMenuVisible] = useState(false); // State to control visibility of ShareMenu
   const videoRefs = useRef([]);
@@ -22,7 +23,7 @@ const Home = () => {
  
   const fetchData = async () => {
     const response = await axiosInstance.get("/saves");
-    dispatch(setSavedFolders(response.data.getsaved.posts));
+    dispatch(setSavedFolders(response.data.getsaved?.posts));
   };
 
   // Call fetchData inside useEffect

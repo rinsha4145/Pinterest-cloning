@@ -17,6 +17,7 @@ import Created from './Components/User/Created';
 import Pinned from './Components/User/Pinned';
 import ViewBoard from './Components/User/ViewBoard';
 import ViewPost from './Components/Home/ViewPost';
+import ViewOtherUserProfile from './Components/User/ViewOtherUserProfile';
 
 function App() {
   const { user } = useSelector((state) => state.user);
@@ -33,6 +34,7 @@ function App() {
     <Route path='/forgot-password' element={<ForgotPassword/>}/>
     <Route path='/reset_password/:id/:token' element={<ResetPassword/>}/>
     <Route path='/profilepage' element={<ProfilePage/>}/>
+    <Route path='/userpage/:id' element={<ViewOtherUserProfile/>}/>
     <Route path='/settings' element={<Settings/>}/>
     <Route path='/created' element={<Created/>}/>
     <Route path='/pin' element={<Pinned/>}/>
