@@ -10,7 +10,7 @@ import Login from "./Login";
 import {useClickHandler} from '../Context/ClickHandlerContext'
 import handleAsync from "../Utils/HandleAsync";
 import axiosInstance from "../Utils/AxioaInstance";
-import { setPosts } from '../Redux/PostSlice';
+import { setPosts,clearPosts } from '../Redux/PostSlice';
 
 const Slides = () => {
   const navigate=useNavigate()

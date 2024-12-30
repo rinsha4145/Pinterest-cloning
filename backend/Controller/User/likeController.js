@@ -1,11 +1,16 @@
 const Post = require('../../Models/postSchema'); // Import Post model
+const mongoose = require("mongoose");
 
 const likePost = async (req, res, next) => {
   const { postId } = req.body;  // Get postId from request body
   const userId = req.userId;  // Assuming the userId is available in req.userId from authentication middleware
 
   try {
-    const post = await Post.findById(postId);  // Find the post by ID
+    if (!mongoose.Types.ObjectId.isValid(postId)) {
+      return res.status(400).json({ message: 'Invalid post ID' });
+    }
+    const post = await Post.findById(postId);   
+   
 
     if (!post) {
       return res.status(404).json({ message: 'Post not found' });

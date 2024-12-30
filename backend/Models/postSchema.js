@@ -13,7 +13,7 @@ const postSchema = new Schema({
     required: true 
   },
   tags: { type: [String] },
-  owner: { type: mongoose.Schema.ObjectId, ref: 'Users', required: true },
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: 'Users', required: true },
   boardId: { type: Schema.Types.ObjectId, ref: 'Board' },
   comments: [
     {

@@ -7,12 +7,10 @@ import axiosInstance from '../Utils/AxioaInstance';
 import handleAsync from '../Utils/HandleAsync';
 import ShareMenu from '../User/ShareMenu';
 import { useNavigate } from 'react-router-dom';
-import { setBoards } from '../Redux/BoardSlice';
 
 const Home = () => {
   const  posts  = useSelector((state) => state.post.post);
   const saved = useSelector((state) => state.save.save);
-  console.log(posts)
 
 
   const [isShareMenuVisible, setShareMenuVisible] = useState(false); // State to control visibility of ShareMenu

@@ -1,14 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
 import { useClickHandler } from "../Context/ClickHandlerContext";
-
+import axiosInstance from "../Utils/AxioaInstance";
+import handleAsync from "../Utils/HandleAsync";
+import {usesele}
 const CreateBoard = () => {
+  const dispatch=useDa()
 const { setIsOpen,isOpen} = useClickHandler() 
-console.log(isOpen) 
+const [data,setData]=useState({name:""})
 const handleboard = () => {
     setIsOpen(false);
     console.log(isOpen) 
   };
+
+  useEffect(()=>{
+    const fetchData = handleAsync(async () => {
+      const response = await axiosInstance.post('/createboard',data)
+      console.log(response.data.newBoard)
+    
+    })
+    fetchData()
+  },[])
 
   return (
 

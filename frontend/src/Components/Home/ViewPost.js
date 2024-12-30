@@ -13,53 +13,55 @@ import ShareMenu from "../User/ShareMenu";
 const ViewPost = () => {
   const {_id}=useParams()
   const [data, setData] = useState(null);   // State to store fetched data
-  const { posts } = useSelector((state) => state.post.post);
-    const [isShareMenuVisible, setShareMenuVisible] = useState(false); // State to control visibility of ShareMenu
-  
-  useEffect(() => {
-    const fetchData =handleAsync( async () => {
-        const response = await axiosInstance.get(`/post/${_id}`);
-        setData(response.data.onepost); 
-    });
+  const posts = useSelector((state) => state.post.post);
+  const  user  = useSelector((state) => state.user.user);
+  const [isShareMenuVisible, setShareMenuVisible] = useState(false);
+   // State to control visibility of ShareMenu
+  const fetchData =handleAsync( async () => {
+    const response = await axiosInstance.get(`/post/${_id}`);
+    setData(response.data.onepost);
     
-    fetchData();
+});
+  useEffect(() => {
+    const fetchDataWrapper = handleAsync(fetchData);
+  fetchDataWrapper(); 
 }, [_id]);
 const dispatch = useDispatch()
-const fetchData = async () => {
-  const response = await axiosInstance.get("/viewlike");
-  dispatch(updateLikedBy(response.data.likedPosts));
-  console.log(response.data.likedPosts)
-};
-console.log("posts.likedBy",data?.likedBy)
-// Call fetchData inside useEffect
+
+
+
 useEffect(() => {
-  const fetchDataWrapper = handleAsync(fetchData);
-  fetchDataWrapper();
+  const fetchData = async () => {
+    const response = await axiosInstance.get("/viewlike");
+    dispatch(updateLikedBy(response.data.likedPosts));
+  };
 }, [dispatch]);
 // const filteredPosts = posts.filter(post => post.category?.name === data?.category?.name);
 
 const handleShareClick = (post) => {
-  setShareMenuVisible((prev) => !prev); // Toggle visibility
+  setShareMenuVisible((prev) => !prev); 
 };
-const handleLikeToggle = handleAsync(async(postid) => {
-  const isPostLiked = posts.likedBy.some(item => item._id === postid);
-  if (!isPostLiked) {
-    const response=await axiosInstance.post(`/like`,{postId:postid})
-  const savedData = response.data.post;
-  console.log(savedData)
-  handleAsync(fetchData)()
-  dispatch(updateLikedBy(savedData))
-  } else {
-    const response=await axiosInstance.delete(`/unlike`, {
-      data: { postId: postid },
-    })
-    const Data = response.data.post;
-    console.log(response.data.post)
-    handleAsync(fetchData)()
-    dispatch(updateLikedBy(Data))
-   
+const handleLikeToggle = handleAsync(async (postId,userid) => {
+  try {
+    const isPostLiked = data?.likedBy.some(item => item === userid);
+    if (isPostLiked===false) {
+      const response = await axiosInstance.post(`/like`, { postId });
+      const savedData = response.data.post;
+      dispatch(updateLikedBy(savedData));
+      handleAsync(fetchData)();
+    } else {
+      const response = await axiosInstance.delete(`/unlike`, {
+        data: { postId },
+      });
+      const Data = response.data.post;
+      dispatch(updateLikedBy(Data));
+      handleAsync(fetchData)();
+    }
+  } catch (error) {
+    console.error('Error toggling like:', error);
   }
 });
+
   return (
     <div className="min-h-screen bg-gray-100 p-4 md:p-8">
       <div className="max-w-screen-lg h-[500px] w-[800px] mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
@@ -80,29 +82,25 @@ const handleLikeToggle = handleAsync(async(postid) => {
             {/* Icons Section */}
             <div className="flex justify-between items-center">
               <div className="flex space-x-4">
-              <div 
-  className={`absolute top-[140px] right-[420px] cursor-pointer ${data?.likedBy.some(item => item._id === data?.owner._id) ? 'text-red-500' : 'text-black-400'}`}
-  onClick={() => data && handleLikeToggle(data._id)}
+              <div className={`flex space-x-2 right-[430px] cursor-pointer ${data?.likedBy.some(item => item=== user._id) ? 'text-red-500' : 'text-black-400'}`}
+  
 >
-<div className="flex items-center space-x-2">
-  {data?.likedBy.length > 0 ? (
-    data.likedBy.some(item => item._id === data?.owner._id) ? (
-      <FaHeart className="w-5 h-5 text-red-500" />
-    ) : (
-      <FaRegHeart className="w-5 h-5 text-black-400" />
-    )
-  ) : (
-    <FaRegHeart className="w-5 h-5 text-black-400" />
-  )}
-  {data?.likedBy.length > 0 && (
-    <span className="text-gray-600">{data?.likedBy.length}</span>
-  )}
-</div>
+<div onClick={() => data && handleLikeToggle(data?._id,user?._id)}>
+{data?.likedBy.some(item => item === user._id) ? (
+  <FaHeart className="w-5 h-5 text-red-500 top-[150px]" />
+) : (
+  <FaRegHeart className="w-5 h-5 text-black-400 top-[150px]" />
+)}
 
-</div>
+   </div>
+  
+{data?.likedBy.length > 0 && (
+    <span className="text-black ">{data?.likedBy.length}</span>
+  )}
+ 
 
 <button
-    className=" absolute p-2 bottom-2 right-12 bg-gray-100 rounded-full hover:bg-gray-200 text-black"
+    className="p-2 top-[130px] bottom-2 right-12 rounded-full hover:bg-gray-200 text-black"
     onClick={() => handleShareClick(data)}
   >
     <svg
@@ -111,7 +109,7 @@ const handleLikeToggle = handleAsync(async(postid) => {
       viewBox="0 0 24 24"
       strokeWidth={2.5}
       stroke="currentColor"
-      className="w-4 h-4"
+      className="w-5 h-5"
     >
       <path
         strokeLinecap="round"
@@ -120,12 +118,14 @@ const handleLikeToggle = handleAsync(async(postid) => {
       />
     </svg>
   </button>
+  <div className="absolute">
   {isShareMenuVisible && (
                 <ShareMenu url={data.image} isShareMenuVisible={isShareMenuVisible}/>
-              )}
-                <button className="p-2 rounded-full hover:bg-gray-100">
-                  ...
-                </button>
+              )}</div>
+                
+</div>
+
+
               </div>
               <button className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">
                 Save
