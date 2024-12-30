@@ -28,8 +28,8 @@ function ViewBoard() {
       {/* Title and Subtitle */}
       <div className="flex flex-col items-start md:flex-row md:justify-between md:items-center">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold">Wallpaper decor</h1>
-          <p className="text-gray-500 mt-2 md:mt-0">3 Pins</p>
+          <h1 className="text-2xl md:text-3xl font-bold">{data?.name}</h1>
+          <p className="text-gray-500 mt-2 md:mt-0">{data?.posts.length}</p>
         </div>
 
         {/* Avatar and Collaborators */}

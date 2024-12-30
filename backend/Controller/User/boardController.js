@@ -2,6 +2,7 @@ const Boards = require('../../Models/User/boardSchema');
 const {NotFoundError,ValidationError}=require('../../Utils/customeError')
 const { validateBoard } = require('../../Models/validation');
 const Saved=require('../../Models/User/savedSchema')
+const mongoose = require("mongoose");
 
 
 //create a board
@@ -99,17 +100,15 @@ const addToBoard = async (req, res, next) => {
 
 //view board based on the id
 const viewBoardById = async (req, res, next) => {
-      const { boardId } = req.params; // Get boardId from request parameters
       const board = await Boards.findById(req.params.id).populate('posts') .exec();
-  
       if (!board) {
         throw new NotFoundError("Board not found");
       }
   
       
-      if (board.userId.toString() !== req.userId) {
-        return res.status(403).json({ message: "You do not have access to this board" });
-      }
+    //   if (board.userId.toString() !== req.userId) {
+    //     return res.status(403).json({ message: "You do not have access to this board" });
+    //   }
   
       res.status(200).json({
         message: "Board fetched successfully",
@@ -125,17 +124,19 @@ const viewBoardById = async (req, res, next) => {
 
 // View all boards for a specific user
 const getBoardsByUserId = async (req, res, next) => {
-    const boards = await Boards.findById({ userId: req.userId }).populate('posts');
-    console.log(boards)
-    if (boards.length === 0) {
-    return res.status(404).json({ message: "No boards found for this user" });
-    }
-    res.status(200).json({
-    message: "Boards fetched successfully",
-    boards,
-    });
-    
-  };
+    const { id } = req.params; // Extract id from req.params
+
+        const boards = await Boards.find({ userId: id }).populate("posts");
+
+
+        if (!boards) {
+            return res.status(404).json({ error: 'Boards not found' });
+        }
+
+        res.status(200).json({boards});
+   
+};
+
   
 
 module.exports = { createBoard,addToBoard,viewBoardById,getAllBoards,getBoardsByUserId };

@@ -31,6 +31,8 @@ router
  .put('/updatepost/:id',userAuthMiddleware,upload.single('image'),tryCatch(postcontroller.postUpdate)) 
  .delete('/deletepost/:id',userAuthMiddleware,tryCatch(postcontroller.deletePost))
  .get('/postss',userAuthMiddleware,tryCatch(postcontroller.getPostByOwner))
+ .get('/getposts/:id',userAuthMiddleware,tryCatch(postcontroller.getCreatedByUserId))
+
 
  .get('/saves',userAuthMiddleware,tryCatch(savedcontroller.getSaved))   
  .post('/addtosave',userAuthMiddleware,tryCatch(savedcontroller.addToSaved))  
@@ -42,9 +44,9 @@ router
  
  .post('/createboard',userAuthMiddleware,tryCatch(boardcontroller.createBoard))  
  .post('/addtoboarad',userAuthMiddleware,tryCatch(boardcontroller.addToBoard))  
- .get('/viewbyid/:id',userAuthMiddleware,tryCatch(boardcontroller.viewBoardById))  
+ .get('/viewbyid/:id',tryCatch(boardcontroller.viewBoardById))  
  .get('/viewboards',userAuthMiddleware,tryCatch(boardcontroller.getAllBoards))  
- .get('/board',userAuthMiddleware,tryCatch(boardcontroller.getBoardsByUserId))  
+ .get('/board/:id',userAuthMiddleware,tryCatch(boardcontroller.getBoardsByUserId))  
 
 
 

@@ -86,10 +86,25 @@ const getPostByOwner=async(req,res,next)=>{
    
 }
 
+// View all creted for a specific user
+const getCreatedByUserId = async (req, res, next) => {
+    const { id } = req.params; // Extract id from req.params
+
+        const posts = await Posts.find({ owner: id });
+
+
+        if (!posts) {
+            return res.status(404).json({ error: 'Posts not found' });
+        }
+
+        res.status(200).json({posts});
+   
+};
+
 //update a post by the owner
 const postUpdate = async (req, res, next) => {
     const { error, value } = postValidationSchema.validate(req.body);
-    if (error) {
+    if (error) { 
         console.log(error.details[0].message)
         return next(new ValidationError('Validation failed', 400));
     }
@@ -131,5 +146,5 @@ const deletePost=async(req,res,next)=>{
 }
 
 
-module.exports = { getAllPosts, getpostbyid, addPost, getbycategory,postUpdate,deletePost,getPostByOwner };
+module.exports = { getAllPosts, getpostbyid, addPost, getbycategory,postUpdate,deletePost,getPostByOwner,getCreatedByUserId };
  
