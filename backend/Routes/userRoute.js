@@ -52,8 +52,8 @@ router
 
 
 
- .post('/comment',userAuthMiddleware,tryCatch(commentcontroller.commentOnPin)) 
- .delete('/deletecomment',userAuthMiddleware,tryCatch(commentcontroller.deleteComment))
+ .post('/comment/:id',userAuthMiddleware,tryCatch(commentcontroller.commentOnPin)) 
+ .delete('/deletecomment/:id',userAuthMiddleware,tryCatch(commentcontroller.deleteComment))
 
 
 

@@ -18,7 +18,7 @@ const postSchema = new Schema({
   comments: [
     {
       user: { type: mongoose.Schema.Types.ObjectId, ref: "Users", required: true },
-      name: { type: String, required: true },
+      // name: { type: String, required: true },
       comment: { type: String, required: true },
       reply: { type: [String], required: false } // Made reply optional
     }

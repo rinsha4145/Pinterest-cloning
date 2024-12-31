@@ -11,17 +11,17 @@ const getAllPosts = async (req, res, next) => {
 
 // Get post by ID
 const getpostbyid = async (req, res, next) => {
-    const onepost = await Posts.findById(req.params.id).populate("category owner");
+    const onepost = await Posts.findById(req.params.id).populate("category owner comments.user");   
     if (!onepost) {
-        return next(new NotFoundError('Post not found'));
-    }
-    res.json({onepost});
-};
+        return next(new NotFoundError('Post not found'));  
+    }   
+    res.json({onepost});  
+};      
 
-// Get posts by category
+// Get posts by category 
 const getbycategory = async (req, res, next) => {
     const { category } = req.params; 
-    const categoryDoc = await Category.findOne({ name: category });
+    const categoryDoc = await Category.findOne({ name: category }); 
     const posts = await Posts.find({ category: categoryDoc._id  }).populate("category"); 
     if (!categoryDoc) {
         return next(new NotFoundError('Category not found.'));
@@ -82,7 +82,7 @@ const getPostByOwner=async(req,res,next)=>{
     // }
    
     // Return the posts in the response
-    return res.status(200).json({posts});
+    return res.status(200).json({posts});  
    
 }
 

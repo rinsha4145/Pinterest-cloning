@@ -1,30 +1,26 @@
 const Posts = require('../../Models/postSchema');
+const commentOnPin = async (req, res) => {
+    const { comment } = req.body;
+    if (!comment || comment.trim() === "") {
+      return res.status(400).json({ message: "Comment is required" });
+    }
+    const pin = await Posts.findById(req.params.id).populate('comments.user');
+    if (!pin) {
+      return res.status(404).json({ message: "No Pin found with this ID" });
+    }
 
-
-
-const commentOnPin = TryCatch(async (req, res) => {
-    const pin = await Posts.findById(req.params.id);
-  
-    if (!pin)
-      return res.status(400).json({
-        message: "No Pin with this id",
-      });
-  
     pin.comments.push({
-      user: req.req.userId,
-      name: req.user.name,
-      comment: req.body.comment,
+      user: req.userId,
+      comment,
     });
-  
     await pin.save();
-  
-    res.json({
-      message: "Comment Added",
-    });
-  });
 
- const deleteComment = TryCatch(async (req, res) => {
-    const pin = await Pin.findById(req.params.id);
+    res.status(200).json({ message: "Comment added successfully",pin });
+  
+};
+
+ const deleteComment = async (req, res) => {
+    const pin = await Posts.findById(req.params.id);
   
     if (!pin)
       return res.status(400).json({
@@ -60,6 +56,6 @@ const commentOnPin = TryCatch(async (req, res) => {
       message: "You are not owner of this comment",
     });
   }
-});
+};
 
 module.exports = {commentOnPin,deleteComment};
