@@ -10,7 +10,6 @@ const navigate=useNavigate()
         const fetchData = handleAsync(async () => {
             const response = await axiosInstance.get('/postss');
             setData(response.data.posts); 
-            console.log("vvv",data)
         });
         fetchData();
       }, [data.title]);

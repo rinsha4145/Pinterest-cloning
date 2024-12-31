@@ -4,7 +4,9 @@ const userController = require('../Controller/User/userController');
 const postcontroller = require('../Controller/User/postController');
 const savedcontroller = require('../Controller/User/savedController');
 const boardcontroller = require('../Controller/User/boardController');
-const likecontroller = require('../Controller/User/likeController')
+const likecontroller = require('../Controller/User/likeController');
+const commentcontroller = require('../Controller/User/commentController');
+
 const tryCatch=require('../Middleware/tryCatch');
 const upload = require("../Middleware/imageUpload");
 const { userAuthMiddleware } = require("../Middleware/authentication");
@@ -49,6 +51,9 @@ router
  .get('/board/:id',userAuthMiddleware,tryCatch(boardcontroller.getBoardsByUserId))  
 
 
+
+ .post('/comment',userAuthMiddleware,tryCatch(commentcontroller.commentOnPin)) 
+ .delete('/deletecomment',userAuthMiddleware,tryCatch(commentcontroller.deleteComment))
 
 
 
