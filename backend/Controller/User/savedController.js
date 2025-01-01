@@ -1,12 +1,11 @@
-const Saved=require('../../Models/User/savedSchema')
+const Saved=require('../../Models/User/savedSchema')  
 const {NotFoundError,ValidationError}=require('../../Utils/customeError')
  
 const getSaved = async (req, res,next) => {
-    const getsaved = await Saved.findOne({ userId: req.userId }).populate('posts');
-    return res.status(200).json({getsaved});
+    const getsaved = await Saved.findOne({ userId: req.userId }).populate('posts'); 
+    return res.status(200).json({getsaved}); 
 
 };
-
 
 const addToSaved = async (req, res,next) => {
     const { postId } = req.body;   

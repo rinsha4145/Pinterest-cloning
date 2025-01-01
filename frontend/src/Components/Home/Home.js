@@ -7,13 +7,16 @@ import axiosInstance from '../Utils/AxioaInstance';
 import handleAsync from '../Utils/HandleAsync';
 import ShareMenu from '../User/ShareMenu';
 import { useNavigate } from 'react-router-dom';
+import BoardPopup from './BoardPopup';
+import { setBoards } from '../Redux/BoardSlice';
 
 const Home = () => {
   const  posts  = useSelector((state) => state.post.post);
   const saved = useSelector((state) => state.save.save);
   const boards = useSelector((state) => state.board.boards);
-
   const [isShareMenuVisible, setShareMenuVisible] = useState(false); // State to control visibility of ShareMenu
+  const [isBoardMenuVisible, setBoardMenuVisible] = useState(false); // State to control visibility of ShareMenu
+
   const videoRefs = useRef([]);
   const [isInteracted, setIsInteracted] = useState(false);
   const navigate = useNavigate()
@@ -24,6 +27,13 @@ const Home = () => {
     const response = await axiosInstance.get("/saves");
     dispatch(setSavedFolders(response.data.getsaved?.posts));
   };
+  useEffect(() => {
+    const fetchData = handleAsync(async () => {
+      const respond = await axiosInstance.get('/viewboards');
+      dispatch(setBoards(respond.data.boards || [])); // Ensure boards fallback to an empty array
+    });
+    fetchData();
+  }, [dispatch]);
 
   // Call fetchData inside useEffect
   useEffect(() => {
@@ -74,6 +84,9 @@ const handleUserInteraction = () => {
 const handleShareClick = (post) => {
     setShareMenuVisible((prev) => !prev); // Toggle visibility
   };
+  const handleBoardClick = (post) => {
+    setBoardMenuVisible((prev) => !prev); // Toggle visibility
+  };
   return (
     <>
     <div className="container overflow-hidden" onClick={handleUserInteraction} >
@@ -108,14 +121,27 @@ const handleShareClick = (post) => {
       {/* Hover Content */}
       <div className="absolute inset-0 bg-black border-radiusfull rounded-2xl hover:bg-opacity-50 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"  >
   <div className="text-center relative w-full h-full">
-    <div className='absolute top-2 left-2 hover:bg-black bg-transparent border-white  rounded-full px-2 py-3 group-hover:bg-opacity-50 opacity-70 hover:opacity-100 transition-opacity duration-300'>
-  <button className="text-base font-semibold text-white  flex items-center space-x-2 ">
+    {saved?.some(item => item._id === post?._id) ? (
+      <>
+      <p className="absolute top-2 left-2  text-center">qadwsa</p>
+      </>
+
+    ):(
+      <>
+    <div className='absolute top-2 left-2 hover:bg-black bg-transparent border-white  rounded-full px-2 py-3 group-hover:bg-opacity-50 opacity-70 hover:opacity-100 transition-opacity duration-300'  onClick={() => handleBoardClick(post)}>
+
+  <button className="text-base font-semibold text-white  flex items-center space-x-2">
       Quick saves
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={4} stroke="currentColor" className="w-4 h-4">
         <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
       </svg>
     </button>
     </div>
+    </>
+    
+    )} 
+    
+  
     {saved?.some(item => item._id === post?._id) ? (
   <button
     className="absolute top-2 right-2 bg-black text-white px-4 py-3 rounded-full shadow"
@@ -130,7 +156,10 @@ const handleShareClick = (post) => {
   >
     Save
   </button>
-  )}  
+  )} 
+  {isBoardMenuVisible && (
+                <BoardPopup postid={post._id} isBoardMenuVisible={isBoardMenuVisible} setBoardMenuVisible={setBoardMenuVisible}/>
+              )} 
 
 
     <div className='mt-[60px]  h-[240px]' onClick={()=>navigate(`/viewpost/${post._id}/${post.category.name}`)}></div>

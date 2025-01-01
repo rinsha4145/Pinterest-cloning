@@ -8,11 +8,11 @@ import { addBoard } from "../Redux/BoardSlice";
 const CreateBoard = () => {
   const dispatch = useDispatch();
   const { setIsOpen, isOpen } = useClickHandler();
+  const { show, setShow } = useClickHandler();
+
   const [data, setData] = useState({ name: "" });
 
-  const handleBoardClose = () => {
-    setIsOpen(false);
-  };
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,21 +21,18 @@ const CreateBoard = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent form from reloading the page
-    try {
       const response = await axiosInstance.post("/createboard", data);
       dispatch(addBoard(response.data.newBoard));
       setIsOpen(false); // Close the modal after successful creation
-    } catch (error) {
-      console.error("Error creating board:", error);
-    }
   };
+ 
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-      <OutsideClickHandler onOutsideClick={handleBoardClose}>
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
+      {/* <OutsideClickHandler onOutsideClick={()=> setIsOpen(false)}> */}
         <div className="bg-white w-full max-w-md mx-4 rounded-lg shadow-lg p-6">
           <h2 className="text-xl font-semibold text-center mb-4">Create Board</h2>
-          <form onSubmit={handleSubmit}>
+          <form >
             {/* Name Input */}
             <div className="mb-4">
               <label htmlFor="board-name" className="block text-sm font-medium text-gray-700">
@@ -58,13 +55,14 @@ const CreateBoard = () => {
               <button
                 type="submit"
                 className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                onClick={handleSubmit}
               >
                 Create
               </button>
             </div>
           </form>
         </div>
-      </OutsideClickHandler>
+      {/* </OutsideClickHandler> */}
     </div>
   );
 };
