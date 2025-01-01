@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import ViewBoard from './ViewBoard';
 import CreateBoard from './CreateBoard';
 import { useClickHandler } from '../Context/ClickHandlerContext';
+import OutsideClickHandler from 'react-outside-click-handler';
+import { updateBoard } from '../Redux/BoardSlice';
 
 function Saved({id}) {
   const saved = useSelector((state) => state.save.save);
@@ -16,8 +18,12 @@ function Saved({id}) {
   const navigate = useNavigate();
   const [isopen,setOpen]=useState(false)
   const [viewBoard,setViewBoard]=useState(false)
-    const { setIsOpen,isOpen} = useClickHandler()
-  
+  const [viewEditBoard,setViewEditBoard]=useState(false)
+  const { setIsOpen,isOpen} = useClickHandler()
+  const [boardData, setBorardData] = useState({
+      name: '',
+      description: '',
+    });
 
   const lastFiveImages = saved?.slice(-3).map((post) => post?.image || 'default-image.jpg'); // Fallback for missing images
   
@@ -29,6 +35,54 @@ function Saved({id}) {
     setIsOpen((prev) => !prev);
     setOpen((prev) => !prev); // Toggle visibility
   };
+
+  const handleEdit = async(id) => {
+    setViewEditBoard((prev) => !prev);
+    const response = await axiosInstance.get(`/viewbyid/${id}`);
+    setBorardData(response.data.board);
+    console.log(response.data.board)
+  };
+
+  
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+  
+    setBorardData((prevData) => ({
+      ...prevData,
+      [name]: value, // Directly update the value for the given input's name
+    }));
+  };
+  
+  const handleSubmit = async (board) => {
+    console.log("Original Board:", board);
+    console.log("Updated Board Data:", boardData);
+  
+    const updatedData = {};
+    Object.keys(boardData).forEach((key) => {
+      if (boardData[key] && boardData[key] !== board[key]) {
+        updatedData[key] = boardData[key];
+      }
+    });
+  
+    console.log("Final Updated Data:", updatedData);
+  
+    try {
+      const response = await axiosInstance.put(`/updateboard/${board._id}`, updatedData);
+      if (response.status >= 200 && response.status < 300) {
+        console.log(response.data.board);
+  
+        dispatch(updateBoard(response.data.board));
+        alert('Board updated successfully');
+      }
+    } catch (error) {
+      console.error('Error updating board:', error);
+      alert('Failed to update board. Please try again.');
+    }
+  };
+  
+  
+  
 
   return (
     <>
@@ -58,13 +112,14 @@ function Saved({id}) {
 
       {/* Dynamic Folders */}
       {boards.map((folder) => (
+        
         <div
           key={folder._id}
-          onClick={() => navigate(`/viewboard/${folder._id}`)}
           className="cursor-pointer bg-white w-[300px] rounded-lg p-4 transition"
         >
+          <div onClick={() => navigate(`/viewboard/${folder._id}`)}>
           {/* Image Previews */}
-          <div>
+        
           <div className="flex -space-x-2 mb-4">
             {Array.isArray(folder.posts) &&
               folder.posts.slice(-3).map((img, index) => {
@@ -81,15 +136,7 @@ function Saved({id}) {
               })}
              
           </div>
-          <button
-    className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 text-black z-50 "
-   >
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-3">
-  <path fillRule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clipRule="evenodd" />
-</svg>
-</button>
-          </div>
-          
+         
 
           {/* Folder Title and Info */}
           <h2 className="text-lg font-semibold truncate">
@@ -99,9 +146,109 @@ function Saved({id}) {
             {Array.isArray(folder.posts) ? folder.posts.length : 0} Pins ·{' '}
             {folder.updatedAt ? new Date(folder.updatedAt).toLocaleDateString() : 'Unknown Date'}
           </p>
+</div>
+
           
+          <button
+    className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 text-black z-50 " onClick={()=>handleEdit(folder._id)}
+   >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-3">
+  <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32L19.513 8.2Z" />
+</svg></button>
+      
+
+{viewEditBoard && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    {/* Backdrop */}
+    {/* <OutsideClickHandler onOutsideClick={() => setViewEditBoard(false)}> */}
+      {/* Modal */}
+      <div className="bg-white rounded-lg shadow-lg w-11/12 max-w-lg p-6 md:p-8">
+        {/* Header */}
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-xl font-semibold">Edit your board</h2>
+          <button
+            className="text-gray-400 hover:text-gray-600"
+            onClick={() => setViewEditBoard(false)}
+          >
+            &times;
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="space-y-4">
+          {/* Board Cover */}
+          {/* <div className="flex items-center space-x-4">
+            <div className="w-16 h-16 bg-gray-200 rounded-md overflow-hidden">
+              <img
+                src="https://via.placeholder.com/64"
+                alt="Board Cover"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <button className="text-sm text-blue-500 hover:underline">
+              Change
+            </button>
+          </div> */}
+
+          {/* Name Input */}
+          <div>
+            <label
+              htmlFor="boardName"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Name
+            </label>
+            <input
+              id="boardName"
+              type="text"
+              name="name"
+              value={boardData.name || ""}
+              onChange={handleChange}
+              className="w-full mt-1 p-2 border rounded-md focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Board name"
+            />
+          </div>
+
+          {/* Description Input */}
+          <div>
+            <label
+              htmlFor="boardDescription"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Description
+            </label>
+            <textarea
+              id="boardDescription"
+              rows="4"
+              name="boardDescription"
+
+              className="w-full mt-1 p-2 border rounded-md focus:ring-blue-500 focus:border-blue-500"
+              placeholder="What's your board about?"
+              value={boardData.description || ""}
+              onChange={handleChange}
+            ></textarea>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="mt-6 flex justify-end">
+          <button
+            className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+            onClick={()=>handleSubmit(folder)}
+          >
+            Done
+          </button>
+        </div>
+      </div>
+    {/* </OutsideClickHandler> */}
+  </div>
+)}
+
+      
+
         </div>
       ))}
+      
     </div>
     </>
     ):(
@@ -153,6 +300,8 @@ function Saved({id}) {
     </div>
     </div>
   {isOpen?<CreateBoard/>:""}
+
+
     </>
   );
 }

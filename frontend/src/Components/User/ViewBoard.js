@@ -16,11 +16,11 @@ function ViewBoard() {
         const fetchData = async () => {
             const response = await axiosInstance.get(`/viewbyid/${id}`);
             setData(response.data.board);
-           
+            console.log(response.data.board)
         };
         fetchData();
     }, []);
-    
+   
       
   return (
    <>

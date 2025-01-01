@@ -45,10 +45,12 @@ router
  .delete('/unlike',userAuthMiddleware,tryCatch(likecontroller.unlikePost))
  
  .post('/createboard',userAuthMiddleware,tryCatch(boardcontroller.createBoard))  
- .post('/addtoboarad',userAuthMiddleware,tryCatch(boardcontroller.addToBoard))  
+ .post('/addtoboarad',userAuthMiddleware,tryCatch(boardcontroller.addToBoard))    
  .get('/viewbyid/:id',tryCatch(boardcontroller.viewBoardById))  
  .get('/viewboards',userAuthMiddleware,tryCatch(boardcontroller.getAllBoards))  
  .get('/board/:id',userAuthMiddleware,tryCatch(boardcontroller.getBoardsByUserId))  
+ .put('/updateboard/:id',userAuthMiddleware,tryCatch(boardcontroller.updateBoardById))  
+
 
 
 

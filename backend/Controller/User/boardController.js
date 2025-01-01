@@ -137,6 +137,38 @@ const getBoardsByUserId = async (req, res, next) => {
    
 };
 
+// Update board by its ID
+const updateBoardById = async (req, res, next) => {
+    const { id } = req.params; // Extract board ID from URL parameters
+    const { name, description } = req.body; // Extract updated fields from request body
+  
+    // Validate user input
+    if (!name && !description) { 
+      return res.status(400).json({ message: "At least one field (name or description) must be provided for update" });
+    }
+  
+    
+      // Find the board by ID and ensure it belongs to the logged-in user
+      let board = await Boards.findOne({ _id: id, userId: req.userId });
+      if (!board) {
+        return res.status(404).json({ message: "Board not found or you don't have access to this board" });
+      }
+  
+      // Update fields if provided
+      if (name) board.name = name;
+      if (description) board.description = description;
+  
+      // Save the updated board
+      await board.save();
+  
+      res.status(200).json({
+        message: "Board updated successfully",
+        board,
+      });
+    
+  };
+  
+  
   
 
-module.exports = { createBoard,addToBoard,viewBoardById,getAllBoards,getBoardsByUserId };
+module.exports = { createBoard,addToBoard,viewBoardById,getAllBoards,getBoardsByUserId,updateBoardById };

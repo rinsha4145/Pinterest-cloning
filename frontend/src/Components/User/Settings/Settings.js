@@ -33,8 +33,6 @@ function Settings() {
     
   }, []);
   const isFormChanged = JSON.stringify(userdata) !== JSON.stringify(user);
- 
-
   const handleChange = (event) => {
     const { name, value, type, files } = event.target;
     const file = files?.[0];
