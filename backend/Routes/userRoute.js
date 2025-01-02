@@ -58,7 +58,7 @@ router
 
 
 
-
+ .get('/viewcomment/:id',userAuthMiddleware,tryCatch(commentcontroller.getCommentById))  
  .post('/comment/:id',userAuthMiddleware,tryCatch(commentcontroller.commentOnPin)) 
  .delete('/deletecomment/:id',userAuthMiddleware,tryCatch(commentcontroller.deleteComment))
  .put('/editcomment/:id',userAuthMiddleware,tryCatch(commentcontroller.editComment))

@@ -101,7 +101,28 @@ const editComment = async (req, res) => {
     });
 };
 
+const getCommentById = async (req, res) => {
+
+    const pin = await Posts.findOne({ "comments._id": req.params.id }).populate('comments.user');
+
+    if (!pin) {
+      return res.status(404).json({ message: "No post found containing this comment" });
+    }
+
+    // Find the comment in the post by matching the comment ID
+    const comment = pin.comments.find(item => item._id.toString() === req.params.id.toString());
+
+    if (!comment) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
+
+    return res.status(200).json({ message: "Comment found", comment });
+  
+};
 
 
 
-module.exports = {commentOnPin,deleteComment,editComment};
+
+
+
+module.exports = {commentOnPin,deleteComment,editComment,getCommentById};

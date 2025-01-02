@@ -24,8 +24,8 @@ const ViewPost = () => {
   const [showPicker, setShowPicker] = useState(false); // State to toggle emoji picker
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [edit,setEdit] = useState(false)
-  const [editText, setEditText] = useState('');
-
+  const [commentData, setCommentData] = useState("");
+  
 
 
    // State to control visibility of ShareMenu
@@ -33,6 +33,13 @@ const ViewPost = () => {
     const response = await axiosInstance.get(`/post/${_id}`);
     setData(response.data.onepost);
     
+});
+
+const fetchComment =handleAsync( async (id) => {
+  const response = await axiosInstance.get(`/viewcomment/${id}`);
+  console.log(response.data.comment.comment)
+  setCommentData(response.data.comment.comment)
+  
 });
   useEffect(() => {
     const fetchDataWrapper = handleAsync(fetchPin);
@@ -53,6 +60,8 @@ const handleOpen = (id) => {
   if(id){
   setOpenCommentId((prevId) => (prevId === id ? null : id));
   setOpen((prev) => !prev); 
+  fetchComment(id)
+  
   }
 };
 
@@ -89,8 +98,13 @@ const addComment=async(id, comment)=> {
   setShowPicker(false)
 }
 const handleEmojiClick = (emojiObject) => {
-  setComment((prevComment) => prevComment + emojiObject.emoji); // Append emoji to the comment
+  if (edit) {
+    setCommentData((prevComment) => prevComment + emojiObject.emoji);
+  } else {
+    setComment((prevComment) => prevComment + emojiObject.emoji);
+  }
 };
+
 const deleteComment = async (postid, commentid) => {
     const response = await axiosInstance.delete(`/deletecomment/${commentid}`);
     setOpen(false);
@@ -98,20 +112,42 @@ const deleteComment = async (postid, commentid) => {
     dispatch(updateComments(response.data.pin));
 };
 
-
 const editComment = (id) => {
   setEditingCommentId(id)
   setEdit(true) 
   setOpen(false);
 };
-const handleSaveEdit = (commentId) => {
 
-  
+const handleChange = (event) => {
+  const { value } = event.target;
+  setCommentData(value);
+};;
+const handleSaveEdit = async () => {
+  console.log('Original comment ID:', editingCommentId);  // The ID of the comment you're editing
+  console.log('Edited comment data:', commentData);      // The updated data (e.g., comment text)
 
-  // API call to save edited comment
-  // updateComment(data._id, commentId, editText);
-  setEditingCommentId(null);
+  // Prepare updated data by checking if any field is changed
+  const updatedData = {};
+
+  // If commentData is just the comment text, directly assign it
+  if (commentData) {
+    updatedData.comment = commentData;  // Assuming you're only updating the comment text
+  }
+
+  try {
+    const response = await axiosInstance.put(`/editcomment/${editingCommentId}`, updatedData);
+    if (response.status >= 200 && response.status < 300) {
+      fetchPin(editingCommentId);
+      setEditingCommentId(null);
+      setEdit(false)   // Reset editing state
+    }
+  } catch (error) {
+    console.error('Error updating comment:', error);
+    alert('Failed to update comment. Please try again.');
+  }
 };
+
+
 
 
 
@@ -282,8 +318,9 @@ const handleSaveEdit = (commentId) => {
             <div className="relative flex border rounded-lg px-4 py-2">
             <input
         type="text"
-        value={editText}
-        onChange={(e) => setEditText(e.target.value) }
+        name="comment"
+        value={commentData || ""}
+        onChange={handleChange }
         className="w-full border-none focus:outline-none"
       />
       <button
@@ -300,13 +337,13 @@ const handleSaveEdit = (commentId) => {
             <div className="mt-2 flex gap-2">
               <button
                 className="bg-green-500 text-white px-4 py-1 rounded-md"
-                onClick={() =>  handleSaveEdit(comment._id)}
+                onClick={() =>  handleSaveEdit(comment.comment)}
               >
                 Save
               </button>
               <button
                 className="bg-gray-500 text-white px-4 py-1 rounded-md"
-                onClick={() => setEditingCommentId(null)}
+                onClick={() =>{setEdit(false) ; setEditingCommentId(null)}}
               >
                 Cancel
               </button>
@@ -414,14 +451,13 @@ const handleSaveEdit = (commentId) => {
     </div>
   </div>
 </div>
-    <OutsideClickHandler onOutsideClick={() => setShowPicker(false)}>
-
 {showPicker && (
-        <div className="absolute z-50 bg-white border rounded-md shadow-md">
-          <EmojiPicker onEmojiClick={handleEmojiClick} />
-        </div>
-      )}
-      </OutsideClickHandler>
+          <div className="absolute z-10">
+            <OutsideClickHandler onOutsideClick={() => setShowPicker(false)}>
+              <EmojiPicker onEmojiClick={handleEmojiClick} />
+            </OutsideClickHandler>
+          </div>
+        )}
 
           </div>
           
