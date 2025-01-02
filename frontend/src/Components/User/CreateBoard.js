@@ -27,12 +27,20 @@ const CreateBoard = () => {
       setShowBoard(false); // Close the modal after successful creation
   };
  
-
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
       <OutsideClickHandler onOutsideClick={()=> setShowBoard(false)}>
         <div className="bg-white w-full max-w-md mx-4 rounded-lg shadow-lg p-6">
-          <h2 className="text-xl font-semibold text-center mb-4">Create Board</h2>
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-xl font-semibold">Create Board</h2>
+          <button
+            className="text-gray-400 hover:text-gray-600"
+            onClick={() => setShowBoard(false)}
+          >
+            &times;
+          </button>
+        </div>
+
           <form >
             {/* Name Input */}
             <div className="mb-4">

@@ -2,6 +2,7 @@ const Posts = require('../../Models/postSchema');
 const { postValidationSchema } = require('../../Models/validation');
 const { NotFoundError, ValidationError } = require('../../Utils/customeError');
 const Category = require('../../Models/Admin/categorySchema');
+const mongoose = require("mongoose");
 
 // Get all posts
 const getAllPosts = async (req, res, next) => {
@@ -38,36 +39,52 @@ const addPost = async (req, res, next) => {
     if (error) {
         return next(new ValidationError(error.details[0].message)); 
     }
-    const { title, description, category, tags,link } = value;
+    const { title, description, category, tags, link } = value;
     if (!req.file) {
         return next(new ValidationError("No file uploaded")); 
     }
     if (!req.userId) {
         return res.status(401).json({ message: "Unauthorized: User ID not found" });
     }
-    const data = await Category.findById(category);  
-    let name=data.name
+
+    // Ensure category is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(category)) {
+        return next(new ValidationError("Invalid category ID"));
+    }
+
+    const data = await Category.findById(category);  // Use findById instead of findOne when passing an ObjectId directly
+    if (!data) {
+        return next(new ValidationError("Category not found"));
+    }
+
+    let name = data.name;
     console.log("Category", data.name);
-    const existingCategory = await Category.findOne({ name }); 
-    console.log("existingCategory",existingCategory)// Ensure category is an ObjectId
+
+    // Query by object with correct field name
+    const existingCategory = await Category.findOne({ _id: category });
+    console.log("existingCategory", existingCategory);
+
     if (!existingCategory) {
         return next(new ValidationError("Category does not exist"));
     }
 
+    const validatedTags = Array.isArray(tags) ? tags : tags.split(',').map(tag => tag.trim());
     const image = req.file?.path;
     const newPost = new Posts({
         title,
         description,
-        category:existingCategory._id,
+        category: existingCategory._id,  // Use the ObjectId of the category
         image,
-        tags, 
+        tags: validatedTags, 
         link,
         owner: req.userId,
     });
+
     await newPost.save();
-    console.log(newPost)
-    res.status(200).json({ status: "success", message: "Post added successfully", newPost });  
+    console.log(newPost);
+    res.status(200).json({ status: "success", message: "Post added successfully", newPost });
 };
+
  
 //get the posts created by the owner 
 const getPostByOwner=async(req,res,next)=>{
@@ -76,7 +93,7 @@ const getPostByOwner=async(req,res,next)=>{
         if (!userId) {
             return res.status(401).json({ message: "User not authenticated" });
         }
-        const posts = await Posts.find({ owner: userId });
+        const posts = await Posts.find({ owner: userId }).populate("category");
     // if (posts.length === 0) {
     //     return res.status(404).json({ message: "No posts found for this user." });
     // }

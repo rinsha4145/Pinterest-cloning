@@ -5,9 +5,9 @@ import axiosInstance from '../Utils/AxioaInstance';
 import ShareMenu from '../User/ShareMenu';
 
 function Category() {
-    const {category} = useParams()
+  const {category} = useParams()
   const [isShareMenuVisible, setShareMenuVisible] = useState(false); // State to control visibility of ShareMenu
-const navigate = useNavigate()
+  const navigate = useNavigate()
 
   const [data, setData] = useState([]);   // State to store fetched data
 

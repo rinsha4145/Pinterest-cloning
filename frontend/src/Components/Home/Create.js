@@ -12,7 +12,7 @@ const Create = () => {
   const [post, setPost] = useState({
     title:'',description: '',
     link: '',category:'',
-    tag: '',image:''
+    tags:[],image:''
   });
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
@@ -56,30 +56,41 @@ const Create = () => {
     e.preventDefault();
     const formData = new FormData();
     formData.append('image', isImageUploaded);
+  
+    // No need to split tags, it's already an array
+    formData.append('tags', JSON.stringify(post.tags)); // Send tags as JSON string
+  
+    // Append other fields
     Object.keys(post).forEach((key) => {
-      if (post[key]) { // Check for non-empty, non-falsy values
+      if (post[key] && key !== 'tags') { // Exclude 'tags' since it's handled separately
         formData.append(key, post[key]);
       }
     });
+  
     try {
       const response = await axiosInstance.post('/addpost', formData);
       if (response.status === 200 && response.status < 300) {
-          alert('Post added successfully');
-          setImagePreview(null)
-          setPost({
-            title:'',description: '',
-            link: '',category:'',
-            tag: '',image:''
-          })
-          setIsImageUploaded(false)
+        alert('Post added successfully');
+        setImagePreview(null);
+        setPost({
+          title: '',
+          description: '',
+          link: '',
+          category: '',
+          tags: [],
+          image: '',
+        });
+        setIsImageUploaded(false);
       } else {
-          throw new Error(`Error: ${response.data.message || 'An unknown error occurred'}`);
+        throw new Error(`Error: ${response.data.message || 'An unknown error occurred'}`);
       }
-  } catch (error) {
+    } catch (error) {
       console.error('API error:', error.response ? error.response.data : error.message);
       alert('Failed to create post. Please check the data and try again.');
-  }
-});
+    }
+  });
+  
+
 
 const fileInputRef = useRef(null);
 
@@ -210,8 +221,8 @@ const fileInputRef = useRef(null);
             <label className="block text-sm font-medium text-gray-700">Tagged topics</label>
             <input
               type="text"
-              name="tag"
-              value={post.tag}
+              name="tags"
+              value={post.tags}
               onChange={handleChange}
               placeholder="Search for a tag"
               className="w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"

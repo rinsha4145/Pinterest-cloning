@@ -185,9 +185,7 @@ const postValidationSchema = Joi.object({
       'any.required': 'Category is required'
     }),
 
-  tags: Joi.array()
-    .items(Joi.string())
-    .optional(),
+    tags: Joi.alternatives().try(Joi.array().items(Joi.string()), Joi.string()).optional(),
 
   likesCount: Joi.number()
     .min(0)
