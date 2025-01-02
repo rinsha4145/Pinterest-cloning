@@ -141,7 +141,7 @@ const getBoardsByUserId = async (req, res, next) => {
 const updateBoardById = async (req, res, next) => {
     const { id } = req.params; // Extract board ID from URL parameters
     const { name, description } = req.body; // Extract updated fields from request body
-  
+  console.log( req.body)
     // Validate user input
     if (!name && !description) { 
       return res.status(400).json({ message: "At least one field (name or description) must be provided for update" });
@@ -167,8 +167,69 @@ const updateBoardById = async (req, res, next) => {
       });
     
   };
+  const deleteBoardById = async (req, res, next) => {
+      const { id } = req.params; 
+      const board = await Boards.findOne({ _id: id, userId: req.userId });
+      if (!board) {
+        return res
+          .status(404)
+          .json({ message: "Board not found or you don't have access to this board" });
+      }
+  
+      // Delete the board using `findByIdAndDelete` or `deleteOne`
+      await Boards.deleteOne({ _id: id });
+  
+      res.status(200).json({
+        message: "Board deleted successfully",
+        boardId: id, // Optionally include the deleted board ID
+      });
+    
+  };
+  
+
+  const removeFromBoard = async (req, res, next) => {
+    const { boardId, postId } = req.body; // Accept both boardId and postId from the request body
+  
+    if (!boardId || !postId) {
+      return res.status(400).json({ message: "Board ID and Post ID are required" });
+    }
+  
+    // Find the board by ID and ensure it belongs to the logged-in user
+    let board = await Boards.findOne({ _id: boardId, userId: req.userId });
+    if (!board) {
+      return res.status(404).json({ message: "Board not found or you don't have access to this board" });
+    }
+  
+    // Check if the post exists in the board
+    const postIndex = board.posts.findIndex((post) => post.equals(postId));
+    if (postIndex === -1) {
+      return res.status(404).json({ message: "Post not found in this board" });
+    }
+  
+    // Remove the post from the board's posts array
+    board.posts.splice(postIndex, 1);
+  
+    // Save the updated board
+    await board.save();
+    const updatedBoard = await board.populate('posts');
+  
+    // Optionally, remove the post from the saved posts collection
+    let save = await Saved.findOne({ userId: req.userId });
+    if (save) {
+      const savedPostIndex = save.posts.findIndex((post) => post.equals(postId));
+      if (savedPostIndex !== -1) {
+        save.posts.splice(savedPostIndex, 1);
+        await save.save();
+      }
+    }
+  
+    res.status(200).json({
+      message: "Post successfully removed from the board",
+      board: updatedBoard,
+    });
+  };
   
   
   
 
-module.exports = { createBoard,addToBoard,viewBoardById,getAllBoards,getBoardsByUserId,updateBoardById };
+module.exports = { createBoard,addToBoard,viewBoardById,getAllBoards,getBoardsByUserId,updateBoardById,deleteBoardById,removeFromBoard };

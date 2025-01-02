@@ -50,12 +50,19 @@ router
  .get('/viewboards',userAuthMiddleware,tryCatch(boardcontroller.getAllBoards))  
  .get('/board/:id',userAuthMiddleware,tryCatch(boardcontroller.getBoardsByUserId))  
  .put('/updateboard/:id',userAuthMiddleware,tryCatch(boardcontroller.updateBoardById))  
+ .put('/updateboard/:id',userAuthMiddleware,tryCatch(boardcontroller.updateBoardById))  
+ .delete('/deleteboard/:id',userAuthMiddleware,tryCatch(boardcontroller.deleteBoardById))  
+ .delete('/removepost',userAuthMiddleware,tryCatch(boardcontroller.removeFromBoard))  
+
+
 
 
 
 
  .post('/comment/:id',userAuthMiddleware,tryCatch(commentcontroller.commentOnPin)) 
  .delete('/deletecomment/:id',userAuthMiddleware,tryCatch(commentcontroller.deleteComment))
+ .put('/editcomment/:id',userAuthMiddleware,tryCatch(commentcontroller.editComment))
+
 
 
 

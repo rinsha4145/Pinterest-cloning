@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import axiosInstance from "../Utils/AxioaInstance";
 import handleAsync from "../Utils/HandleAsync";
 import { useDispatch, useSelector } from "react-redux";
-import Home from "./Home";
 import Category from "./Category";
 import { FaHeart, FaRegHeart } from 'react-icons/fa'; 
 import {updateLikedBy,updateComments} from '../Redux/PostSlice'
@@ -16,15 +15,18 @@ const ViewPost = () => {
   const {_id}=useParams()
   const [data, setData] = useState(null);
   const [show, setShow] = useState(false);
-  const [open, setOpen] = useState(false);
-
-     // State to store fetched data
-  const posts = useSelector((state) => state.post.post);
+  const [Open, setOpen] = useState(false);
+  const [openCommentId, setOpenCommentId] = useState(null);
   const  user  = useSelector((state) => state.user.user);
   const [isShareMenuVisible, setShareMenuVisible] = useState(false);
   const navigate=useNavigate()
   const [comment, setComment] = useState("");
   const [showPicker, setShowPicker] = useState(false); // State to toggle emoji picker
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [edit,setEdit] = useState(false)
+  const [editText, setEditText] = useState('');
+
+
 
    // State to control visibility of ShareMenu
   const fetchPin =handleAsync( async () => {
@@ -40,23 +42,21 @@ const dispatch = useDispatch()
 
 
 
-useEffect(() => {
-  const fetchData = async () => {
-    const response = await axiosInstance.get("/viewlike");
-    dispatch(updateLikedBy(response.data.likedPosts));
-  };
-}, [dispatch]);
+
 // const filteredPosts = posts.filter(post => post.category?.name === data?.category?.name);
 
 const handleShareClick = (post) => {
   setShareMenuVisible((prev) => !prev); 
 };
 
-const handleOpen = () => {
+const handleOpen = (id) => {
+  if(id){
+  setOpenCommentId((prevId) => (prevId === id ? null : id));
   setOpen((prev) => !prev); 
+  }
 };
+
 const handleLikeToggle = handleAsync(async (postId,userid) => {
-  
     const isPostLiked = data?.likedBy.some(item => item === userid);
     if (isPostLiked===false) {
       const response = await axiosInstance.post(`/like`, { postId });
@@ -75,12 +75,15 @@ const handleLikeToggle = handleAsync(async (postId,userid) => {
 const handleToggle= (e)=>{
   e.preventDefault()
   setShow((prev) => !prev);
+  setOpen(false)
+
 }
 
 const addComment=async(id, comment)=> {
   const response = await axiosInstance.post(`/comment/${id}`, { comment });
   console.log("Updated pin:", response.data.pin);
   dispatch(updateComments(response.data.pin)) // Log updated pin data
+  setOpen(false)
   fetchPin(id);
   setComment("");
   setShowPicker(false)
@@ -88,12 +91,30 @@ const addComment=async(id, comment)=> {
 const handleEmojiClick = (emojiObject) => {
   setComment((prevComment) => prevComment + emojiObject.emoji); // Append emoji to the comment
 };
-// const deleteComment=async(id, commentId)=> {
-//     const { data } = await axiosInstance.delete( `/api/pin/comment/${id}?commentId=${commentId}`);
-//     alert(data.message);
-//     fetchPin(id);
+const deleteComment = async (postid, commentid) => {
+    const response = await axiosInstance.delete(`/deletecomment/${commentid}`);
+    setOpen(false);
+    fetchPin(postid);
+    dispatch(updateComments(response.data.pin));
+};
+
+
+const editComment = (id) => {
+  setEditingCommentId(id)
+  setEdit(true) 
+  setOpen(false);
+};
+const handleSaveEdit = (commentId) => {
+
   
-// }
+
+  // API call to save edited comment
+  // updateComment(data._id, commentId, editText);
+  setEditingCommentId(null);
+};
+
+
+
 
   return (
     <div className="min-h-screen bg-gray-100 p-4 md:p-8">
@@ -126,7 +147,6 @@ const handleEmojiClick = (emojiObject) => {
 )}
 
    </div>
-  
 {data?.likedBy.length > 0 && (
     <span className="text-black ">{data?.likedBy.length}</span>
   )}
@@ -222,6 +242,7 @@ const handleEmojiClick = (emojiObject) => {
         <>
   <div className="relative h-[200px] overflow-y-auto">
     {/* Comments Section with scrolling */}
+    
     {data?.comments?.slice().reverse().map((comment) => (
       <div
         key={comment._id}
@@ -255,37 +276,99 @@ const handleEmojiClick = (emojiObject) => {
 
         {/* Second Column: Text and SVG */}
         <div className="flex-grow">
-          {/* First Row: Name and Comment */}
+        {edit && editingCommentId === comment._id ? (
+          // Edit Mode
+          <div >
+            <div className="relative flex border rounded-lg px-4 py-2">
+            <input
+        type="text"
+        value={editText}
+        onChange={(e) => setEditText(e.target.value) }
+        className="w-full border-none focus:outline-none"
+      />
+      <button
+          type="button"
+          className="p-2  rounded-full"
+          onClick={() => setShowPicker((prev) => !prev)}
+        >
+         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
+  <path fillRule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-2.625 6c-.54 0-.828.419-.936.634a1.96 1.96 0 0 0-.189.866c0 .298.059.605.189.866.108.215.395.634.936.634.54 0 .828-.419.936-.634.13-.26.189-.568.189-.866 0-.298-.059-.605-.189-.866-.108-.215-.395-.634-.936-.634Zm4.314.634c.108-.215.395-.634.936-.634.54 0 .828.419.936.634.13.26.189.568.189.866 0 .298-.059.605-.189.866-.108.215-.395.634-.936.634-.54 0-.828-.419-.936-.634a1.96 1.96 0 0 1-.189-.866c0-.298.059-.605.189-.866Zm2.023 6.828a.75.75 0 1 0-1.06-1.06 3.75 3.75 0 0 1-5.304 0 .75.75 0 0 0-1.06 1.06 5.25 5.25 0 0 0 7.424 0Z" clipRule="evenodd" />
+</svg>
+
+        </button>
+      </div>
+            <div className="mt-2 flex gap-2">
+              <button
+                className="bg-green-500 text-white px-4 py-1 rounded-md"
+                onClick={() =>  handleSaveEdit(comment._id)}
+              >
+                Save
+              </button>
+              <button
+                className="bg-gray-500 text-white px-4 py-1 rounded-md"
+                onClick={() => setEditingCommentId(null)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        ) : (
+          // Normal Mode
           <div className="text-sm">
             <span
               className="font-semibold hover:underline cursor-pointer"
-              onClick={() => navigate(`/userpage/${data.owner._id}`)}
+              onClick={() => navigate(`/userpage/${comment.user._id}`)}
             >
               {comment?.user?.username}
             </span>{" "}
             {comment.comment}
           </div>
-          
+        )}
 
           {/* Second Row: SVG Button */}
-          <div className=" flex" onclick={handleOpen}>
-            <button className="bg-white hover:bg-gray-300 rounded-full  focus:outline-none focus:ring-2 focus:ring-blue-500 text-black" >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2.5}
-                stroke="currentColor"
-                className="h-4 w-4"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
-                />
-              </svg>
+          {comment?.user?._id===user._id &&(
+          <div className="relative"> 
+      <div className="flex" > {/* Use `onClick` instead of `onclick` */}
+        <button className="bg-white hover:bg-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+        onClick={()=>handleOpen(comment._id)}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2.5}
+            stroke="currentColor"
+            className="h-4 w-4"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+            />
+          </svg>
+        </button>
+      </div>
+
+      {Open && openCommentId === comment._id && (
+
+        <div className="absolute w-38 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+          <div className="border-t border-gray-200">
+            <button
+              className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              onClick={() => editComment(comment._id) }
+            >
+              Edit
+            </button>
+            <button
+              className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              onClick={() =>deleteComment(data._id,comment._id)}
+            >
+              Delete
             </button>
           </div>
+        </div>
+      )}
+    </div>
+          )}
         </div>
       </div>
     ))}
@@ -295,25 +378,7 @@ const handleEmojiClick = (emojiObject) => {
   </>
 )}
 
-{open && (
-        <div className="absolute w-38 bg-white border border-gray-200 rounded-lg shadow-lg z-50 ">
-          <div className="border-t border-gray-200">
-            <button
-              className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              // onClick={()=>navigate("/create")}
-            >
-              edit
-            </button>
-            <button
-              className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              // onClick={handleboard}
-            >
-              delete
-            </button>
-            
-          </div>
-        </div>
-      )}
+
 
   {/* Comment Input Section */}
   <div className="mt-4 z-50">

@@ -28,6 +28,10 @@ const boardSlice = createSlice({
         board._id === updatedBoard._id ? updatedBoard : board
       );
     },
+    deleteBoard: (state, action) => {
+      const boardId = action.payload;
+      state.boards = state.boards.filter((board) => board._id !== boardId);
+    },
 
     
     addPostToBoard: (state, action) => {
@@ -50,6 +54,7 @@ export const {
   setBoards,
   addBoard,
   updateBoard,
+  deleteBoard,
   addPostToBoard,
   clearBoards,
 } = boardSlice.actions;

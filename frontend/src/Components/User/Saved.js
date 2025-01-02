@@ -4,23 +4,26 @@ import handleAsync from '../Utils/HandleAsync';
 import axiosInstance from '../Utils/AxioaInstance';
 import { useDispatch, useSelector } from 'react-redux';
 import {setSavedFolders,} from '../Redux/SavedSlice';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ViewBoard from './ViewBoard';
 import CreateBoard from './CreateBoard';
 import { useClickHandler } from '../Context/ClickHandlerContext';
 import OutsideClickHandler from 'react-outside-click-handler';
-import { updateBoard } from '../Redux/BoardSlice';
+import { updateBoard,deleteBoard } from '../Redux/BoardSlice';
 
 function Saved({id}) {
   const saved = useSelector((state) => state.save.save);
-  const boards = useSelector((state) => state.board.boards);
+  const board = useSelector((state) => state.board.boards);
+  const [boards,setBoards]=useState(board)
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isopen,setOpen]=useState(false)
+  const [isOpenFilter,setOpenFilter]=useState(false)
+  const [sortOption, setSortOption] = useState("A to Z");
   const [viewBoard,setViewBoard]=useState(false)
   const [viewEditBoard,setViewEditBoard]=useState(false)
-  const { setIsOpen,isOpen} = useClickHandler()
-  const [boardData, setBorardData] = useState({
+  const {setIsOpen,isOpen} = useClickHandler()
+  const [boardData, setBoardData] = useState({
       name: '',
       description: '',
     });
@@ -31,6 +34,23 @@ function Saved({id}) {
   const handleClick = (post) => {
     setOpen((prev) => !prev); // Toggle visibility
   };
+  const handleFilter = (post) => {
+    setOpenFilter((prev) => !prev); // Toggle visibility
+  };
+
+  const handleSort = (option) => {
+    setSortOption(option);
+
+    let sortedBoards = [...boards]; // Create a copy of the boards array
+    if (option === "A to Z") {
+      sortedBoards.sort((a, b) => a.name.localeCompare(b.name)); // Sort alphabetically
+    } else if (option === "Last Pin added") {
+      sortedBoards.sort((a, b) => new Date(b.lastPinDate) - new Date(a.lastPinDate)); // Sort by last pin date
+    }
+
+    setBoards(sortedBoards); // Update the boards state with sorted boards
+    setOpenFilter(false); // Close the dropdown
+  };
   const handleboard = (post) => {
     setIsOpen((prev) => !prev);
     setOpen((prev) => !prev); // Toggle visibility
@@ -39,25 +59,24 @@ function Saved({id}) {
   const handleEdit = async(id) => {
     setViewEditBoard((prev) => !prev);
     const response = await axiosInstance.get(`/viewbyid/${id}`);
-    setBorardData(response.data.board);
+    setBoardData(response.data.board);
     console.log(response.data.board)
   };
-
-  
 
   const handleChange = (event) => {
     const { name, value } = event.target;
   
-    setBorardData((prevData) => ({
+    setBoardData((prevData) => ({
       ...prevData,
       [name]: value, // Directly update the value for the given input's name
     }));
   };
   
   const handleSubmit = async (board) => {
-    console.log("Original Board:", board);
-    console.log("Updated Board Data:", boardData);
-  
+    setViewEditBoard(false);
+    console.log('Original board:', board);
+  console.log('Edited board data:', boardData);
+    // Filter out unchanged or irrelevant fields
     const updatedData = {};
     Object.keys(boardData).forEach((key) => {
       if (boardData[key] && boardData[key] !== board[key]) {
@@ -65,20 +84,24 @@ function Saved({id}) {
       }
     });
   
-    console.log("Final Updated Data:", updatedData);
-  
     try {
-      const response = await axiosInstance.put(`/updateboard/${board._id}`, updatedData);
+      const response = await axiosInstance.put(`/updateboard/${boardData._id}`, updatedData);
       if (response.status >= 200 && response.status < 300) {
         console.log(response.data.board);
-  
+        
         dispatch(updateBoard(response.data.board));
-        alert('Board updated successfully');
+        alert('board updated successfully');
       }
     } catch (error) {
-      console.error('Error updating board:', error);
-      alert('Failed to update board. Please try again.');
+      console.error('Error updating profile:', error);
+      alert('Failed to update profile. Please try again.');
     }
+  };
+  const handleDelete = async() => {
+    setViewEditBoard((prev) => !prev);
+    const response = await axiosInstance.delete(`/deleteboard/${boardData._id}`);
+    dispatch(deleteBoard(response.data.boardId));
+    console.log(response.data.boardId)
   };
   
   
@@ -86,6 +109,81 @@ function Saved({id}) {
 
   return (
     <>
+    <div className="flex justify-between items-center w-full">
+    <button
+    className="p-2  rounded-full hover:bg-gray-200 text-black "
+    onClick={handleFilter}>
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
+  <path d="M18.75 12.75h1.5a.75.75 0 0 0 0-1.5h-1.5a.75.75 0 0 0 0 1.5ZM12 6a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 12 6ZM12 18a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 12 18ZM3.75 6.75h1.5a.75.75 0 1 0 0-1.5h-1.5a.75.75 0 0 0 0 1.5ZM5.25 18.75h-1.5a.75.75 0 0 1 0-1.5h1.5a.75.75 0 0 1 0 1.5ZM3 12a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 3 12ZM9 3.75a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5ZM12.75 12a2.25 2.25 0 1 1 4.5 0 2.25 2.25 0 0 1-4.5 0ZM9 15.75a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Z" />
+</svg>
+</button>
+<button
+    className="p-2  rounded-full hover:bg-gray-200 text-black "
+    onClick={handleClick}>
+
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+</svg></button>
+    {isopen && (
+        <div className="absolute right-0 bottom-[30px] w-38 bg-white border border-gray-200 rounded-lg shadow-lg z-50 ">
+          <p className="px-4 py-2 text-sm text-gray-500">
+            create
+          </p>
+          <div className="border-t border-gray-200">
+            <button
+              className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              onClick={()=>navigate("/create")}
+            >
+              Pin
+            </button>
+            <button
+              className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              onClick={handleboard}
+            >
+              Board
+            </button>
+            
+          </div>
+        </div>
+      )}
+      {isOpenFilter && (
+      <div className="absolute mt-2 w-56 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
+          <div className="py-1">
+            {/* Options */}
+            <Link
+              onClick={() => handleSort("A to Z")}
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-black"
+            >
+              A to Z
+            </Link>
+            <Link
+             onClick={() => handleSort("Last Pin added")}
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-black flex justify-between items-center"
+            >
+              Last Pin added
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 text-blue-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M5 12h14M12 5l7 7-7 7"
+                />
+              </svg>
+            </Link>
+           
+           
+          </div>
+        </div>
+          )}
+    </div>
+
     {saved || boards ?(
       <>
     <div className="grid grid-cols-6 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-8">
@@ -220,8 +318,7 @@ function Saved({id}) {
             <textarea
               id="boardDescription"
               rows="4"
-              name="boardDescription"
-
+              name="description"
               className="w-full mt-1 p-2 border rounded-md focus:ring-blue-500 focus:border-blue-500"
               placeholder="What's your board about?"
               value={boardData.description || ""}
@@ -231,7 +328,13 @@ function Saved({id}) {
         </div>
 
         {/* Footer */}
-        <div className="mt-6 flex justify-end">
+        <div className="mt-6 flex space-x-2 justify-end">
+        <button
+            className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+            onClick={()=>handleDelete(folder)}
+          >
+            Delete
+          </button>
           <button
             className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
             onClick={()=>handleSubmit(folder)}
@@ -267,40 +370,9 @@ function Saved({id}) {
 
 <div className="relative">
   {/* Other content */}
-  <div className="mt-[-40vh] ml-[-65vh] md:bottom-6 md:right-6 lg:bottom-8 lg:right-8">
-    <button
-    className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 text-black "
-    onClick={handleClick}>
-
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-</svg></button>
-    {isopen && (
-        <div className="absolute w-38 bg-white border border-gray-200 rounded-lg shadow-lg z-50 ">
-          <p className="px-4 py-2 text-sm text-gray-500">
-            create
-          </p>
-          <div className="border-t border-gray-200">
-            <button
-              className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              onClick={()=>navigate("/create")}
-            >
-              Pin
-            </button>
-            <button
-              className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              onClick={handleboard}
-            >
-              Board
-            </button>
-            
-          </div>
-        </div>
-      )}
-    </div>
+  
     </div>
   {isOpen?<CreateBoard/>:""}
-
 
     </>
   );
