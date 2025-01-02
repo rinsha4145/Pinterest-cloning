@@ -7,9 +7,11 @@ const clickHandlerContext = createContext();
 export const ClickHandlerProvider = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
+  const [showBoard, setShowBoard] = useState(false);
+
 
   return (
-    <clickHandlerContext.Provider value={{ isOpen, showSignup, setIsOpen, setShowSignup }}>
+    <clickHandlerContext.Provider value={{ isOpen, showSignup, setIsOpen, setShowSignup,showBoard,setShowBoard }}>
       {children}
     </clickHandlerContext.Provider>
   );

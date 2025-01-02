@@ -61,12 +61,13 @@ function Login() {
     e.preventDefault();
     if(validateForm()){
       const response = await axiosInstance.post('/login', {email: datas.email, password: datas.password});
+      console.log('//',response)
       if (response.status === 200) {
         setIsLoggedIn(true);
-        setIsOpen(false)
         navigate('/'); 
        
       }
+      
     }
   });
   return (

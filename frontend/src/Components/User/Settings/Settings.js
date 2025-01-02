@@ -89,7 +89,7 @@ function Settings() {
       <aside className="w-1/4 p-6 bg-white shadow-md">
         <ul className="space-y-4">
           <li><Link to="" className="text-gray-700 hover:text-blue-500">Edit profile</Link></li>
-          <li><Link to="" className="text-gray-700 hover:text-blue-500">Account management</Link></li>
+          <li><Link to="/settings/account-settings" className="text-gray-700 hover:text-blue-500">Account management</Link></li>
           <li><Link to="" className="text-gray-700 hover:text-blue-500">Profile visibility</Link></li>
           <li><Link to="" className="text-gray-700 hover:text-blue-500">Tune your home feed</Link></li>
           <li><Link to="" className="text-gray-700 hover:text-blue-500">Claimed accounts</Link></li>

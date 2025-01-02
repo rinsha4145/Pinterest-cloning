@@ -16,7 +16,7 @@ const Home = () => {
   const boards = useSelector((state) => state.board.boards);
   const [isShareMenuVisible, setShareMenuVisible] = useState(false); // State to control visibility of ShareMenu
   const [isBoardMenuVisible, setBoardMenuVisible] = useState(false); // State to control visibility of ShareMenu
-
+  
   const videoRefs = useRef([]);
   const [isInteracted, setIsInteracted] = useState(false);
   const navigate = useNavigate()
@@ -121,25 +121,43 @@ const handleShareClick = (post) => {
       {/* Hover Content */}
       <div className="absolute inset-0 bg-black border-radiusfull rounded-2xl hover:bg-opacity-50 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"  >
   <div className="text-center relative w-full h-full">
-    {saved?.some(item => item._id === post?._id) ? (
-      <>
-      <p className="absolute top-2 left-2  text-center">qadwsa</p>
-      </>
-
-    ):(
-      <>
-    <div className='absolute top-2 left-2 hover:bg-black bg-transparent border-white  rounded-full px-2 py-3 group-hover:bg-opacity-50 opacity-70 hover:opacity-100 transition-opacity duration-300'  onClick={() => handleBoardClick(post)}>
-
-  <button className="text-base font-semibold text-white  flex items-center space-x-2">
+  {boards?.some(board => board.posts?.some(p => p._id === post?._id)) ? (
+  // Case 1: Post is saved in a board, show the board name
+  <p className="absolute top-2 left-3 text-center items-center hover:underline text-lg" onClick={() => navigate(`/viewboard/${boards.find(board => board.posts?.some(p => p._id === post?._id))?._id}`
+  )}>
+    {boards.find(board => board.posts?.some(p => p._id === post?._id))?.name}
+  </p>
+) : saved?.some(item => item._id === post?._id) ? (
+  // Case 2: Post is saved in the saved list (profile), show "Profile"
+  <p className="absolute top-2 left-3 items-center hover:underline flex justify-center text-lg" onClick={()=>navigate('/pin')}>
+    Profile
+  </p>
+) : (
+  // Case 3: Post is not saved anywhere, show "Quick saves"
+  <div
+    className="absolute top-2 left-2 hover:bg-black bg-transparent border-white rounded-full px-2 py-3 group-hover:bg-opacity-50 opacity-70 hover:opacity-100 transition-opacity duration-300"
+    onClick={() => handleBoardClick(post)}
+  >
+    <button className="text-base font-semibold text-white flex items-center space-x-2">
       Quick saves
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={4} stroke="currentColor" className="w-4 h-4">
-        <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={4}
+        stroke="currentColor"
+        className="w-4 h-4"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="m19.5 8.25-7.5 7.5-7.5-7.5"
+        />
       </svg>
     </button>
-    </div>
-    </>
-    
-    )} 
+  </div>
+)}
+
     
   
     {saved?.some(item => item._id === post?._id) ? (

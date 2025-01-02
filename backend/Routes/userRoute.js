@@ -12,6 +12,8 @@ const upload = require("../Middleware/imageUpload");
 const { userAuthMiddleware } = require("../Middleware/authentication");
 const {  forgotpass } = require("../Controller/forgotPassword");
 const { resetpass } = require("../Controller/resetPassword");
+const { changePass } = require("../Controller/changePassword");
+
  
 
 router
@@ -24,6 +26,8 @@ router
  .post('/follow/:id',userAuthMiddleware,tryCatch(userController.followUnfollow)) 
  .post('/forgot-password',tryCatch(forgotpass))
  .post('/reset-password/:id/:token',tryCatch(resetpass))
+ .put('/change-password',userAuthMiddleware,tryCatch(changePass))
+
 
 
  .get('/all',tryCatch(postcontroller.getAllPosts))

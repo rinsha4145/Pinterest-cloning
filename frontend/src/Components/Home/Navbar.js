@@ -18,9 +18,6 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const saved = useSelector((state) => state.save.save);
-
-
-  
   
   const handleLogout = handleAsync( async (e) => {
     e.preventDefault();
@@ -157,8 +154,8 @@ const Navbar = () => {
                  <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
                    Add account
                  </button>
-                 <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
-                   Convert to business
+                 <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100" onClick={()=>navigate('/settings/account-settings')}>
+                   Change Passoword
                  </button>
                </div>
  

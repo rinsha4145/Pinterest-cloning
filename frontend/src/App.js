@@ -1,5 +1,5 @@
 import React from 'react'
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useParams } from 'react-router-dom';
 import Signup from './Components/Home/Signup';
 import Login from './Components/Home/Login';
 import Navbar from './Components/Home/Navbar';
@@ -18,10 +18,11 @@ import Pinned from './Components/User/Pinned';
 import ViewBoard from './Components/User/ViewBoard';
 import ViewPost from './Components/Home/ViewPost';
 import ViewOtherUserProfile from './Components/User/ViewOtherUserProfile';
+import AccountManagement from './Components/User/Settings/AccountManagement';
 
 function App() {
   const { user } = useSelector((state) => state.user);
-
+  
   return (
    <>
    <Navbar />
@@ -36,6 +37,8 @@ function App() {
     <Route path='/profilepage' element={<ProfilePage/>}/>
     <Route path='/userpage/:id' element={<ViewOtherUserProfile/>}/>
     <Route path='/settings' element={<Settings/>}/>
+    <Route path='/settings/account-settings' element={<AccountManagement/>}/>
+
     <Route path='/created' element={<Created/>}/>
     <Route path='/pin' element={<Pinned/>}/>
     <Route path='/viewboard/:id' element={<ViewBoard/>}/>

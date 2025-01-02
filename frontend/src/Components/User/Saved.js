@@ -22,13 +22,13 @@ function Saved({id}) {
   const [sortOption, setSortOption] = useState("A to Z");
   const [viewBoard,setViewBoard]=useState(false)
   const [viewEditBoard,setViewEditBoard]=useState(false)
-  const {setIsOpen,isOpen} = useClickHandler()
+  const {showBoard,setShowBoard} = useClickHandler()
   const [boardData, setBoardData] = useState({
       name: '',
       description: '',
     });
 
-  const lastFiveImages = saved?.slice(-3).map((post) => post?.image || 'default-image.jpg'); // Fallback for missing images
+  const lastFiveImages = saved?.slice(-3).map((post) => post?.image); // Fallback for missing images
   
 
   const handleClick = (post) => {
@@ -38,6 +38,7 @@ function Saved({id}) {
     setOpenFilter((prev) => !prev); // Toggle visibility
   };
 
+  
   const handleSort = (option) => {
     setSortOption(option);
 
@@ -52,16 +53,17 @@ function Saved({id}) {
     setOpenFilter(false); // Close the dropdown
   };
   const handleboard = (post) => {
-    setIsOpen((prev) => !prev);
+    setShowBoard((prev) => !prev);
     setOpen((prev) => !prev); // Toggle visibility
   };
 
-  const handleEdit = async(id) => {
+  const handleEdit =handleAsync( async(id) => {
     setViewEditBoard((prev) => !prev);
     const response = await axiosInstance.get(`/viewbyid/${id}`);
     setBoardData(response.data.board);
+    dispatch(updateBoard(response.data.board))
     console.log(response.data.board)
-  };
+  });
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -75,7 +77,7 @@ function Saved({id}) {
   const handleSubmit = async (board) => {
     setViewEditBoard(false);
     console.log('Original board:', board);
-  console.log('Edited board data:', boardData);
+    console.log('Edited board data:', boardData);
     // Filter out unchanged or irrelevant fields
     const updatedData = {};
     Object.keys(boardData).forEach((key) => {
@@ -88,25 +90,20 @@ function Saved({id}) {
       const response = await axiosInstance.put(`/updateboard/${boardData._id}`, updatedData);
       if (response.status >= 200 && response.status < 300) {
         console.log(response.data.board);
-        
         dispatch(updateBoard(response.data.board));
-        alert('board updated successfully');
       }
     } catch (error) {
       console.error('Error updating profile:', error);
       alert('Failed to update profile. Please try again.');
     }
   };
-  const handleDelete = async() => {
+  const handleDelete = handleAsync(async() => {
     setViewEditBoard((prev) => !prev);
     const response = await axiosInstance.delete(`/deleteboard/${boardData._id}`);
     dispatch(deleteBoard(response.data.boardId));
     console.log(response.data.boardId)
-  };
+  });
   
-  
-  
-
   return (
     <>
     <div className="flex justify-between items-center w-full">
@@ -372,7 +369,7 @@ function Saved({id}) {
   {/* Other content */}
   
     </div>
-  {isOpen?<CreateBoard/>:""}
+  {showBoard&&(<CreateBoard/>)}
 
     </>
   );

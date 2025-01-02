@@ -7,7 +7,8 @@ import { addBoard } from "../Redux/BoardSlice";
 
 const CreateBoard = () => {
   const dispatch = useDispatch();
-  const { setIsOpen, isOpen } = useClickHandler();
+    const {showBoard,setShowBoard} = useClickHandler()
+  
   const { show, setShow } = useClickHandler();
 
   const [data, setData] = useState({ name: "" });
@@ -23,13 +24,13 @@ const CreateBoard = () => {
     e.preventDefault(); // Prevent form from reloading the page
       const response = await axiosInstance.post("/createboard", data);
       dispatch(addBoard(response.data.newBoard));
-      setIsOpen(false); // Close the modal after successful creation
+      setShowBoard(false); // Close the modal after successful creation
   };
  
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
-      {/* <OutsideClickHandler onOutsideClick={()=> setIsOpen(false)}> */}
+      <OutsideClickHandler onOutsideClick={()=> setShowBoard(false)}>
         <div className="bg-white w-full max-w-md mx-4 rounded-lg shadow-lg p-6">
           <h2 className="text-xl font-semibold text-center mb-4">Create Board</h2>
           <form >
@@ -62,7 +63,7 @@ const CreateBoard = () => {
             </div>
           </form>
         </div>
-      {/* </OutsideClickHandler> */}
+      </OutsideClickHandler>
     </div>
   );
 };
