@@ -44,15 +44,11 @@ function ViewBoard() {
       <div className="flex flex-col items-start md:flex-row md:justify-between md:items-center">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold">{data?.name}</h1>
-          <p className="text-gray-500 mt-2 md:mt-0">{data?.posts.length}</p>
+          <p className="text-gray-500 mt-2 md:mt-0">{data?.description}</p>
+          <p className="text-gray-500 mt-2 md:mt-0">{data?.posts.length} pins</p>
         </div>
 
-        {/* Avatar and Collaborators */}
-        <div className="flex items-center space-x-2 mt-4 md:mt-0">
-          <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-            <span className="text-sm font-medium">+</span>
-          </div>
-        </div>
+        
       </div>
 
       {/* Action Buttons */}

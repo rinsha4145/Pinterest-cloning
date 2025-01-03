@@ -22,10 +22,26 @@ const CreateBoard = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent form from reloading the page
+  
+    try {
       const response = await axiosInstance.post("/createboard", data);
-      dispatch(addBoard(response.data.newBoard));
-      setShowBoard(false); // Close the modal after successful creation
+  
+      // Add the new board to Redux state
+      const newBoard = response.data.newBoard;
+      dispatch(addBoard(newBoard));
+  
+      // Close the modal after successful creation
+      setShowBoard(false);
+  
+      // Optionally reset form data
+      setData({ name: "" });
+    } catch (error) {
+      console.error("Error creating board:", error);
+      alert("Failed to create a new board. Please try again.");
+    }
   };
+  
+  
  
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">

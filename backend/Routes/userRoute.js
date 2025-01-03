@@ -10,7 +10,7 @@ const commentcontroller = require('../Controller/User/commentController');
 const tryCatch=require('../Middleware/tryCatch');
 const upload = require("../Middleware/imageUpload");
 const { userAuthMiddleware } = require("../Middleware/authentication");
-const {  forgotpass } = require("../Controller/forgotPassword");
+const { forgotpass } = require("../Controller/forgotPassword");
 const { resetpass } = require("../Controller/resetPassword");
 const { changePass } = require("../Controller/changePassword");
 

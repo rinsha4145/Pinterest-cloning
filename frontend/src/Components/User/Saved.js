@@ -30,7 +30,10 @@ function Saved({id}) {
 
   const lastFiveImages = saved?.slice(-3).map((post) => post?.image); // Fallback for missing images
   
-
+  useEffect(() => {
+    setBoards(board); // Sync local state with Redux state
+  }, [board]);
+  
   const handleClick = (post) => {
     setOpen((prev) => !prev); // Toggle visibility
   };
@@ -74,11 +77,12 @@ function Saved({id}) {
     }));
   };
   
+  
   const handleSubmit = async (board) => {
     setViewEditBoard(false);
     console.log('Original board:', board);
     console.log('Edited board data:', boardData);
-    // Filter out unchanged or irrelevant fields
+  
     const updatedData = {};
     Object.keys(boardData).forEach((key) => {
       if (boardData[key] && boardData[key] !== board[key]) {
@@ -90,19 +94,42 @@ function Saved({id}) {
       const response = await axiosInstance.put(`/updateboard/${boardData._id}`, updatedData);
       if (response.status >= 200 && response.status < 300) {
         console.log(response.data.board);
+  
+        // Update Redux state
         dispatch(updateBoard(response.data.board));
+  
+        // Update local state
+        setBoards((prevBoards) =>
+          prevBoards.map((b) =>
+            b._id === response.data.board._id ? response.data.board : b
+          )
+        );
       }
     } catch (error) {
       console.error('Error updating profile:', error);
       alert('Failed to update profile. Please try again.');
     }
   };
-  const handleDelete = handleAsync(async() => {
+  
+  const handleDelete = handleAsync(async () => {
     setViewEditBoard((prev) => !prev);
-    const response = await axiosInstance.delete(`/deleteboard/${boardData._id}`);
-    dispatch(deleteBoard(response.data.boardId));
-    console.log(response.data.boardId)
+    try {
+      const response = await axiosInstance.delete(`/deleteboard/${boardData._id}`);
+      if (response.status >= 200 && response.status < 300) {
+        console.log(response.data.boardId);
+  
+        dispatch(deleteBoard(response.data.boardId));
+  
+        setBoards((prevBoards) =>
+          prevBoards.filter((b) => b._id !== response.data.boardId)
+        );
+      }
+    } catch (error) {
+      console.error('Error deleting board:', error);
+      alert('Failed to delete board. Please try again.');
+    }
   });
+  
   
   return (
     <>
@@ -186,52 +213,93 @@ function Saved({id}) {
     <div className="grid grid-cols-6 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-8">
       {/* Static Folder for All Pins */}
       <div
-        onClick={() => navigate('/pin')}
-        className="cursor-pointer bg-white w-[300px] rounded-lg p-4 hover:bg-gray-100 transition"
-      >
-        {/* Image Previews */}
-        <div className="flex -space-x-2 mb-4">
-          {lastFiveImages?.map((img, index) => (
+  onClick={() => navigate('/pin')}
+  className="cursor-pointer bg-white w-[300px] mt-1 rounded-lg p-4 hover:bg-gray-100 transition"
+>
+  {/* Image Previews */}
+  <div className="flex gap-1 mb-4">
+    {Array.from({ length: 3 }).map((_, index) => {
+      const img = lastFiveImages?.[index];
+      return (
+        <div
+          key={index}
+          className="bg-gray-200 w-[100px] h-[150px] rounded-md border border-gray-300 flex items-center justify-center"
+        >
+          {img ? (
             <img
-              key={index}
               src={img}
               alt={`Preview ${index + 1}`}
-              className="w-[100px] h-[150px] rounded-md object-cover border border-gray-300"
+              className="w-full h-full object-cover rounded-md"
             />
-          ))}
+          ) : ""}
         </div>
-        {/* Folder Title and Info */}
-        <h2 className="text-lg font-semibold truncate">All Pins</h2>
-        <p className="text-gray-500">{saved?.length} Pins</p>
-      </div>
+      );
+    })}
+  </div>
+
+  {/* Folder Title and Info */}
+  <h2 className="text-lg font-semibold truncate">All Pins</h2>
+  <p className="text-gray-500">{saved?.length || 0} Pins</p>
+</div>
+
 
       {/* Dynamic Folders */}
       {boards.map((folder) => (
         
         <div
           key={folder._id}
-          className="cursor-pointer bg-white w-[300px] rounded-lg p-4 transition"
+          className="cursor-pointer bg-white w-[300px] rounded-lg p-4 transition group relative"
         >
           <div onClick={() => navigate(`/viewboard/${folder._id}`)}>
           {/* Image Previews */}
         
-          <div className="flex -space-x-2 mb-4">
-            {Array.isArray(folder.posts) &&
-              folder.posts.slice(-3).map((img, index) => {
-                if (!img || !img.image) return null; // Skip rendering if img or img.image is missing
-                return (
-                  <img
-                    key={index}
-                    src={img.image}
-                    alt={`Preview ${index + 1}`}
-                    className="w-[100px] h-[150px] rounded-md object-cover border border-gray-300"
-                  />
-                  
-                );
-              })}
-             
+          <div
+  key={folder._id}
+  
+ 
+>
+  <div className='z-50'>
+  <div  onClick={() => navigate(`/viewboard/${folder._id}`)}>
+    {/* Image Previews */}
+    <div className="flex gap-1 mb-4 ">
+      {Array.from({ length: 3 }).map((_, index) => {
+        const img = folder.posts && folder.posts[ index];
+        return (
+          <div
+            key={index}
+            className="bg-gray-200 w-[100px] h-[150px] rounded-md border border-gray-300 flex items-center justify-center"
+          >
+            {img ? (
+              <img
+                src={img.image}
+                alt={`Preview ${index + 1}`}
+                className="w-full h-full object-cover rounded-md"
+              />
+            ) :  ""}
           </div>
-         
+        );
+      })}
+    </div>
+    </div>
+    
+</div>
+<button
+      className="absolute text-black bottom-[90px] right-5 bg-black bg-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition"
+      onClick={(e) => {
+        e.stopPropagation(); // Prevent triggering the navigate action
+        handleEdit(folder._id);
+      }}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        className="size-4"
+      >
+        <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32L19.513 8.2Z" />
+      </svg>
+    </button>
+</div>
 
           {/* Folder Title and Info */}
           <h2 className="text-lg font-semibold truncate">
@@ -241,15 +309,10 @@ function Saved({id}) {
             {Array.isArray(folder.posts) ? folder.posts.length : 0} Pins ·{' '}
             {folder.updatedAt ? new Date(folder.updatedAt).toLocaleDateString() : 'Unknown Date'}
           </p>
+       
+          
 </div>
 
-          
-          <button
-    className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 text-black z-50 " onClick={()=>handleEdit(folder._id)}
-   >
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-3">
-  <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32L19.513 8.2Z" />
-</svg></button>
       
 
 {viewEditBoard && (
@@ -271,19 +334,7 @@ function Saved({id}) {
 
         {/* Content */}
         <div className="space-y-4">
-          {/* Board Cover */}
-          {/* <div className="flex items-center space-x-4">
-            <div className="w-16 h-16 bg-gray-200 rounded-md overflow-hidden">
-              <img
-                src="https://via.placeholder.com/64"
-                alt="Board Cover"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <button className="text-sm text-blue-500 hover:underline">
-              Change
-            </button>
-          </div> */}
+         
 
           {/* Name Input */}
           <div>

@@ -12,8 +12,7 @@ const userValidationSchema = Joi.object({
     .max(50)
     .allow(null, ''),
     
-  profileimage: Joi.string()
-    .uri()
+    profileimage: Joi.string()
     .optional()
     .messages({
       'string.uri': 'Profile image must be a valid URL.',

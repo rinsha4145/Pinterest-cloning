@@ -19,6 +19,7 @@ import ViewBoard from './Components/User/ViewBoard';
 import ViewPost from './Components/Home/ViewPost';
 import ViewOtherUserProfile from './Components/User/ViewOtherUserProfile';
 import AccountManagement from './Components/User/Settings/AccountManagement';
+import {ToastContainer} from 'react-toastify'
 
 function App() {
   const { user } = useSelector((state) => state.user);
@@ -43,12 +44,21 @@ function App() {
     <Route path='/pin' element={<Pinned/>}/>
     <Route path='/viewboard/:id' element={<ViewBoard/>}/>
 
-
-
-
-
-
    </Routes>
+   <ToastContainer   
+        autoClose={1000}  
+        position="top-center"  
+        hideProgressBar={true} 
+        closeOnClick 
+        pauseOnHover
+        draggable
+        toastStyle={{
+          width: 'auto', // Adjust width dynamically based on content
+          maxWidth: '90%', // Optional: Prevents overly wide toast on large screens
+          padding: '10px 20px', // Optional: Adds padding for better readability
+          wordBreak: 'break-word', // Handles long words gracefully
+        }}
+        />
    </>
   )
 }

@@ -5,6 +5,7 @@ import axiosInstance from '../../Utils/AxioaInstance';
 import handleAsync from '../../Utils/HandleAsync';
 import {  updateUser } from '../../Redux/UserSlice';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 
 function Settings() {
   const { user } = useSelector((state) => state.user);
@@ -76,7 +77,7 @@ function Settings() {
         }
       } catch (error) {
         console.error('Error updating profile:', error);
-        alert('Failed to update profile. Please try again.');
+        toast.error('Failed to update profile. Please try again.');
       }
     };
 

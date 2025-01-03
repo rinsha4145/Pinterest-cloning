@@ -167,26 +167,46 @@ function ViewOtherUserProfile() {
      
       {/* Dynamic Folders */}
       {boards.map((folder) => (
+        
         <div
           key={folder._id}
-          onClick={() => navigate(`/viewboard/${folder._id}`)}
-          className="cursor-pointer bg-white w-[300px] rounded-lg p-4 hover:bg-gray-100 transition"
+          className="cursor-pointer bg-white w-[300px] rounded-lg p-4 transition group relative"
         >
+          <div onClick={() => navigate(`/viewboard/${folder._id}`)}>
           {/* Image Previews */}
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-1 lg:grid-cols-2">
-  {Array.isArray(folder.posts) &&
-    folder.posts.slice(-3).map((img, index) => {
-      if (!img || !img.image) return null; // Skip rendering if img or img.image is missing
-      return (
-        <div className="relative w-full pt-[75%] bg-gray-400 overflow-hidden rounded-lg" key={index}>
-          <img
-            src={img.image}
-            alt={`Preview ${index + 1}`}
-            className="absolute top-0 left-0 w-full h-full object-cover rounded-lg"
-          />
-        </div>
-      );
-    })}
+        
+          <div
+  key={folder._id}
+  
+ 
+>
+  <div className='z-50'>
+  <div  onClick={() => navigate(`/viewboard/${folder._id}`)}>
+    {/* Image Previews */}
+    <div className="flex gap-1 mb-4 ">
+      {Array.from({ length: 3 }).map((_, index) => {
+        const img = folder.posts && folder.posts[ index];
+        return (
+          <div
+            key={index}
+            className="bg-gray-200 w-[100px] h-[150px] rounded-md border border-gray-300 flex items-center justify-center"
+          >
+            {img ? (
+              <img
+                src={img.image}
+                alt={`Preview ${index + 1}`}
+                className="w-full h-full object-cover rounded-md"
+              />
+            ) :  ""}
+          </div>
+        );
+      })}
+    </div>
+    </div>
+    
+</div>
+
+        
 </div>
 
           {/* Folder Title and Info */}
@@ -197,6 +217,16 @@ function ViewOtherUserProfile() {
             {Array.isArray(folder.posts) ? folder.posts.length : 0} Pins ·{' '}
             {folder.updatedAt ? new Date(folder.updatedAt).toLocaleDateString() : 'Unknown Date'}
           </p>
+       
+          
+</div>
+
+      
+
+
+
+      
+
         </div>
       ))}
     </div>
