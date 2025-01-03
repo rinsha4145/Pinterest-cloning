@@ -115,7 +115,7 @@ const followUnfollow= async (req,res,next)=>{
       await user.save();
   
       res.json({
-        message: "User Unfollowed",
+        message: "User Unfollowed",loggedInUser  
       });
     } else {
       loggedInUser.following.push(user._id);
@@ -125,7 +125,7 @@ const followUnfollow= async (req,res,next)=>{
       await user.save();
   
       res.json({
-        message: "User followed",
+        message: "User followed",loggedInUser
       });
     }
 }

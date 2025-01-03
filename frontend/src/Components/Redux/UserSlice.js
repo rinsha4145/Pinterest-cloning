@@ -24,6 +24,15 @@ const userSlice = createSlice({
         ...action.payload, // Merge the new details into the user object
       }
     },
+
+    updateFollowing: (state, action) => {
+      const { following } = action.payload;
+
+      // Ensure the user object exists
+      if (state.user) {
+        state.user.following = following; // Update the following array
+      }
+    },
     logoutUser: (state) => {
       state.user = null;
       state.token = null;
@@ -33,6 +42,6 @@ const userSlice = createSlice({
 });
 
 // Export actions to use in the component
-export const { setUser, logoutUser,updateUser } = userSlice.actions;
+export const { setUser, logoutUser,updateUser,updateFollowing } = userSlice.actions;
 // Export reducer to configure store
 export default userSlice.reducer;

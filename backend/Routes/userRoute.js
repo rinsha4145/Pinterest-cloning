@@ -21,7 +21,7 @@ router
  .post('/login',tryCatch(userController.userLogin))   
  .post('/logout',userAuthMiddleware,tryCatch(userController.userLogout))
  .get('/me',userAuthMiddleware,tryCatch(userController.profileView))
- .put('/editprofile',userAuthMiddleware,tryCatch(userController.editProfile))
+ .put('/editprofile',userAuthMiddleware,upload.single('profileimage'),tryCatch(userController.editProfile))
  .get('/profile/:id',userAuthMiddleware,tryCatch(userController.userProfile))
  .post('/follow/:id',userAuthMiddleware,tryCatch(userController.followUnfollow)) 
  .post('/forgot-password',tryCatch(forgotpass))

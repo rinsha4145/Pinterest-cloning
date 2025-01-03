@@ -5,12 +5,12 @@ import handleAsync from "../Utils/HandleAsync";
 import { useDispatch, useSelector } from "react-redux";
 import Category from "./Category";
 import { FaHeart, FaRegHeart } from 'react-icons/fa'; 
-import {updateLikedBy,updateComments} from '../Redux/PostSlice'
+import {updateLikedBy,updateComments,updateFollowers} from '../Redux/PostSlice'
 import ShareMenu from "../User/ShareMenu";
 import EmojiPicker from "emoji-picker-react";
 import OutsideClickHandler from "react-outside-click-handler";
 import {addSavedFolder,removeSavedFolder,setSavedFolders} from '../Redux/SavedSlice'
-
+import {updateFollowing} from '../Redux/UserSlice'
 
 const ViewPost = () => {
   const {_id}=useParams()
@@ -28,8 +28,6 @@ const ViewPost = () => {
   const [commentData, setCommentData] = useState("");
   const saved = useSelector((state) => state.save.save);
   
-
-
    // State to control visibility of ShareMenu
   const fetchPin =handleAsync( async () => {
     const response = await axiosInstance.get(`/post/${_id}`);
@@ -81,6 +79,15 @@ const handleLikeToggle = handleAsync(async (postId,userid) => {
       handleAsync(fetchPin)();
     }
 });
+
+const handleFollowUnfollow = async (userId) => {
+    const response = await axiosInstance.post(`/follow/${userId}`);
+    console.log(response.data.loggedInUser); // Display the response message (User followed/unfollowed)
+    handleAsync(fetchPin)();
+    dispatch(updateFollowing(response.data.loggedInUser)) 
+    
+  
+};
 const handleToggle= (e)=>{
   e.preventDefault()
   setShow((prev) => !prev);
@@ -272,7 +279,7 @@ const removesave=handleAsync(async(postid)=>{
             
 
           {/* User Info Section */}
-            <div className="flex items-center mt-6" onClick={()=>navigate(`/userpage/${data.owner._id}`)}>
+            <div className="flex items-center mt-6" >
             {data?.owner?.profileimage ? (
             <img src={data?.owner?.profileimage} alt="Profile"  className="h-10" />
                 ) : (
@@ -280,14 +287,22 @@ const removesave=handleAsync(async(postid)=>{
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                   </svg>
                 )}
-              <div className="ml-4">
+              <div className="ml-4" onClick={()=>navigate(`/userpage/${data.owner._id}`)}>
                 <h3 className="font-bold">{data?.owner?.firstname}</h3>
                 <p className="text-gray-500">{data?.owner?.followers?.length || 0} followers</p>
 
               </div>
-              <button className="ml-auto px-4 py-2 border rounded-lg hover:bg-gray-100">
-                Follow
+              {data?.owner._id!==user._id ?(
+                <>
+              {data?.owner?.followers?.some(follow=>follow===user._id )?(
+              <button className="ml-auto px-4 py-2 border rounded-lg hover:bg-gray-100" onClick={()=>handleFollowUnfollow(data?.owner?._id)}>
+                Following
               </button>
+              ):(<button className="ml-auto px-4 py-2 border rounded-lg hover:bg-gray-100" onClick={()=>handleFollowUnfollow(data?.owner?._id)}>
+              Follow
+            </button>)}
+            </>
+              ):""}
             </div>
 
             {/* Comments Section */}

@@ -58,7 +58,7 @@ function Settings() {
       Object.keys(userdata).forEach((key) => {
         const value = userdata[key];
         const originalValue = user[key];
-        if (value !== originalValue && !["followers", "following", "updatedAt"].includes(key)) {
+        if (value !== originalValue && !["followers", "following", "updatedAt","__v"].includes(key)) {
           if (value instanceof File) {
             formData.append(key, value);
           } else {
@@ -72,8 +72,6 @@ function Settings() {
         if (response.status >= 200 && response.status < 300) {
           dispatch(updateUser(response.data.updatedProfile));
           console.log(response.data.updatedProfile)
-
-          alert('Profile updated successfully');
         }
       } catch (error) {
         console.error('Error updating profile:', error);

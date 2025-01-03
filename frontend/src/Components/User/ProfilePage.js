@@ -36,7 +36,7 @@ function ProfilePage() {
     <p className="text-gray-500 mt-1 text-sm sm:text-base">{data.about}</p>
     <p className="text-gray-500 mt-1 text-sm sm:text-base">@{data.username}</p>
     {data.followers? (
-  <p className="mt-2 text-sm sm:text-base text-gray-600">{data.followers.length} following</p>
+  <p className="mt-2 text-sm sm:text-base text-gray-600">{data.following.length} following</p>
 ) : (
   <p className="mt-2 text-sm sm:text-base text-gray-600">0 following</p> 
 )}

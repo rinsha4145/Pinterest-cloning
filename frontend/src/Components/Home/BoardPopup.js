@@ -56,7 +56,7 @@ const Popup = ({postid,isBoardMenuVisible}) => {
   const handleboard = () => {
     setIsOpen(true);
     setShow(false); 
-  };
+  }; 
   
 
   return (

@@ -16,11 +16,11 @@ app.use(cors(
   }
 ))
 app.use(cookieParser())
-app.use(errorHandler)
+
 app.use('/', useRoutes);
 app.use('/admin',adminRoutes);
 
-
+app.use(errorHandler)
 mongoose.connect(process.env.MONGODB_URL)
   .then(() => app.listen(PORT, () => console.log(`Server Running on Port: http://localhost:${PORT}`)))
   .catch((error) => console.log(`${error} did not connect`)); 
