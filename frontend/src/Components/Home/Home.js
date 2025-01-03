@@ -16,7 +16,7 @@ const Home = () => {
   const saved = useSelector((state) => state.save.save);
   const boards = useSelector((state) => state.board.boards);
   const [isShareMenuVisible, setShareMenuVisible] = useState(false); // State to control visibility of ShareMenu
-  const [isBoardMenuVisible, setBoardMenuVisible] = useState(false); // State to control visibility of ShareMenu
+  const [isBoardMenuVisible, setBoardMenuVisible] = useState(""); // State to control visibility of ShareMenu
   
   const videoRefs = useRef([]);
   const [isInteracted, setIsInteracted] = useState(false);
@@ -82,11 +82,12 @@ const handleUserInteraction = () => {
   setIsInteracted(true);
    // Simulate user interaction
 };
-const handleShareClick = (post) => {
-    setShareMenuVisible((prev) => !prev); // Toggle visibility
+const handleShareClick = (id) => {
+    setShareMenuVisible(id); // Toggle visibility
   };
-  const handleBoardClick = (post) => {
-    setBoardMenuVisible((prev) => !prev); // Toggle visibility
+  const handleBoardClick = (id) => {
+    
+    setBoardMenuVisible(id); // Toggle visibility
   };
   return (
     <>
@@ -137,7 +138,7 @@ const handleShareClick = (post) => {
   // Case 3: Post is not saved anywhere, show "Quick saves"
   <div
     className="absolute top-2 left-2 hover:bg-black bg-transparent border-white rounded-full px-2 py-3 group-hover:bg-opacity-50 opacity-70 hover:opacity-100 transition-opacity duration-300"
-    onClick={() => handleBoardClick(post)}
+    onClick={() => handleBoardClick(post?._id)}
   >
     <button className="text-base font-semibold text-white flex items-center space-x-2">
       Quick saves
@@ -176,15 +177,15 @@ const handleShareClick = (post) => {
     Save
   </button>
   )} 
-  {isBoardMenuVisible && (
-                <BoardPopup postid={post._id} isBoardMenuVisible={isBoardMenuVisible} setBoardMenuVisible={setBoardMenuVisible}/>
+  {isBoardMenuVisible===post._id && (
+                <BoardPopup  postid={post._id} isBoardMenuVisible={isBoardMenuVisible} setBoardMenuVisible={setBoardMenuVisible}/>
               )} 
 
 
     <div className='mt-[60px]  h-[240px]' onClick={()=>navigate(`/viewpost/${post._id}/${post.category.name}`)}></div>
     <button
     className=" absolute p-2 bottom-2 right-12 bg-gray-100 rounded-full hover:bg-gray-200 text-black"
-    onClick={() => handleShareClick(post)}
+    onClick={() => handleShareClick(post._id)}
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -201,7 +202,7 @@ const handleShareClick = (post) => {
       />
     </svg>
   </button>
-  {isShareMenuVisible && (
+  {isShareMenuVisible===post._id && (
             <OutsideClickHandler onOutsideClick={() => setShareMenuVisible(false)}>
             <div className="absolute top-1 bg-white shadow-lg rounded-lg pt-4 pl-4 w-[400px] h-[300px] z-50">
             <ShareMenu url={post.image} isShareMenuVisible={isShareMenuVisible}/>

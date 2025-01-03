@@ -3,7 +3,7 @@ import OutsideClickHandler from "react-outside-click-handler";
 import handleAsync from '../Utils/HandleAsync'
 import axiosInstance from '../Utils/AxioaInstance'
 import {addSavedFolder,setSavedFolders} from '../Redux/SavedSlice'
-import {setBoards,addBoard} from '../Redux/BoardSlice'
+import {setBoards} from '../Redux/BoardSlice'
 
 import { useDispatch,useSelector } from 'react-redux';
 import CreateBoard from "../User/CreateBoard";
@@ -64,7 +64,7 @@ const Popup = ({postid,isBoardMenuVisible}) => {
        <OutsideClickHandler onOutsideClick={() =>setShow(false)}>
       {/* Popup Modal */}
       {show && (
-        <div className="absolute top-10 left-0 bg-white shadow-lg rounded-md w- z-10">
+        <div className="absolute top-10 left-0 bg-white shadow-lg rounded-md w-[300px] z-10">
           <div className="p-4 border-b">
             <h2 className="text-lg font-semibold">Save</h2>
             <input

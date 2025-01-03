@@ -73,7 +73,7 @@ const editProfile = async (req,res,next) => {
     }
     
 
-    return res.status(200).json({updatedProfile});
+    return res.status(200).json({updatedProfile}); 
 };
 
 //view other user profile
@@ -82,7 +82,7 @@ const userProfile = async (req, res, next) => {
     if (!userProfile) {
         return res.status(404).json({ message: "Profile not found" }); 
     }
-    res.json({userProfile});
+    res.json({userProfile});    
 };
 
 

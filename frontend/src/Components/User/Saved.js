@@ -49,7 +49,7 @@ function Saved({id}) {
     if (option === "A to Z") {
       sortedBoards.sort((a, b) => a.name.localeCompare(b.name)); // Sort alphabetically
     } else if (option === "Last Pin added") {
-      sortedBoards.sort((a, b) => new Date(b.lastPinDate) - new Date(a.lastPinDate)); // Sort by last pin date
+      sortedBoards.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)); // Sort by last pin date
     }
 
     setBoards(sortedBoards); // Update the boards state with sorted boards
@@ -138,7 +138,7 @@ function Saved({id}) {
     className="p-2  rounded-full hover:bg-gray-200 text-black "
     onClick={handleFilter}>
 
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-7">
   <path d="M18.75 12.75h1.5a.75.75 0 0 0 0-1.5h-1.5a.75.75 0 0 0 0 1.5ZM12 6a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 12 6ZM12 18a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 12 18ZM3.75 6.75h1.5a.75.75 0 1 0 0-1.5h-1.5a.75.75 0 0 0 0 1.5ZM5.25 18.75h-1.5a.75.75 0 0 1 0-1.5h1.5a.75.75 0 0 1 0 1.5ZM3 12a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 3 12ZM9 3.75a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5ZM12.75 12a2.25 2.25 0 1 1 4.5 0 2.25 2.25 0 0 1-4.5 0ZM9 15.75a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Z" />
 </svg>
 </button>
@@ -146,7 +146,7 @@ function Saved({id}) {
     className="p-2  rounded-full hover:bg-gray-200 text-black "
     onClick={handleClick}>
 
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-6">
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-7">
   <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
 </svg></button>
     {isopen && (
@@ -210,7 +210,7 @@ function Saved({id}) {
 
     {saved || boards ?(
       <>
-    <div className="grid grid-cols-6 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-8">
+    <div className="grid grid-cols-6 sm:grid-cols-1 lg:grid-cols-4 gap-6 p-8">
       {/* Static Folder for All Pins */}
       <div
   onClick={() => navigate('/pin')}
