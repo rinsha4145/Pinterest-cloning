@@ -9,6 +9,7 @@ import {updateLikedBy,updateComments} from '../Redux/PostSlice'
 import ShareMenu from "../User/ShareMenu";
 import EmojiPicker from "emoji-picker-react";
 import OutsideClickHandler from "react-outside-click-handler";
+import {addSavedFolder,removeSavedFolder,setSavedFolders} from '../Redux/SavedSlice'
 
 
 const ViewPost = () => {
@@ -25,6 +26,7 @@ const ViewPost = () => {
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [edit,setEdit] = useState(false)
   const [commentData, setCommentData] = useState("");
+  const saved = useSelector((state) => state.save.save);
   
 
 
@@ -52,9 +54,7 @@ const dispatch = useDispatch()
 
 // const filteredPosts = posts.filter(post => post.category?.name === data?.category?.name);
 
-const handleShareClick = (post) => {
-  setShareMenuVisible((prev) => !prev); 
-};
+
 
 const handleOpen = (id) => {
   if(id){
@@ -147,7 +147,34 @@ const handleSaveEdit = async () => {
   }
 };
 
+const fetchData = async () => {
+  const response = await axiosInstance.get("/saves");
+  dispatch(setSavedFolders(response.data.getsaved?.posts));
+};
 
+useEffect(() => {
+  const fetchDataWrapper = handleAsync(fetchData);
+  fetchDataWrapper();
+}, [dispatch]);
+
+const handleSave=handleAsync(async(id)=>{
+  const response=await axiosInstance.post(`/addtosave`,{postId:id})
+  const savedData = response.data.saved;
+  console.log(savedData)
+  handleAsync(fetchData)()
+  dispatch(addSavedFolder(savedData))
+  
+})
+
+const removesave=handleAsync(async(postid)=>{
+  const response=await axiosInstance.delete(`/removesaved`, {
+    data: { postId: postid },
+  })
+  const Data = response.data.data;
+  console.log(response.data.data)
+  handleAsync(fetchData)()
+  dispatch(removeSavedFolder(Data))
+})
 
 
 
@@ -189,8 +216,8 @@ const handleSaveEdit = async () => {
  
 
 <button
-    className="p-2 top-[130px] bottom-2 right-12 rounded-full hover:bg-gray-200 text-black"
-    onClick={() => handleShareClick(data)}
+    className=" p-2 top-[-8px] rounded-full hover:bg-gray-200 text-black"
+    onClick={()=>setShareMenuVisible((prev) => !prev)}
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -207,25 +234,42 @@ const handleSaveEdit = async () => {
       />
     </svg>
   </button>
-  <div className="absolute">
-  {isShareMenuVisible && (
-                <ShareMenu url={data.image} isShareMenuVisible={isShareMenuVisible}/>
-              )}</div>
-                
+  
 </div>
 
 
               </div>
-              <button className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">
-                Save
-              </button>
+              {saved?.some(item => item._id === data?._id) ? (
+  <button
+    className=" top-2 right-12 bg-black text-white px-4 py-3 rounded-full shadow"
+    onClick={() => removesave(data?._id)}
+  >
+    Saved
+  </button>
+) : (
+  <button
+    className=" top-2 right-2 bg-red-600 text-white px-4 py-3 rounded-full shadow hover:bg-red-700"
+    onClick={() => handleSave(data?._id)}
+  >
+    Save
+  </button>
+  )} 
             </div>
-
+            {isShareMenuVisible && (
+            <OutsideClickHandler onOutsideClick={() => setShareMenuVisible(false)}>
+            <div className="absolute top-[200px] bg-white shadow-lg rounded-lg pt-4 pl-4 w-[400px] h-[300px] z-50">
+            <ShareMenu url={data.image} isShareMenuVisible={isShareMenuVisible}/>
+                
+                </div> 
+                </OutsideClickHandler>
+                
+              )}
             {/* Details Section */}
             <div className="mt-6">
               <h2 className="text-xl font-bold mb-2">{data?.title}</h2>
               <p className="text-gray-500 text-sm">{data?.description}</p>
             </div>
+            
 
           {/* User Info Section */}
             <div className="flex items-center mt-6" onClick={()=>navigate(`/userpage/${data.owner._id}`)}>
@@ -266,6 +310,7 @@ const handleSaveEdit = async () => {
       </svg>
     </button>
   </div>
+  
 
   {show && (
     <>
@@ -384,6 +429,7 @@ const handleSaveEdit = async () => {
           </svg>
         </button>
       </div>
+      
 
       {Open && openCommentId === comment._id && (
 
@@ -412,6 +458,7 @@ const handleSaveEdit = async () => {
   </div>
   </>
       )}
+      
   </>
 )}
 
@@ -451,6 +498,7 @@ const handleSaveEdit = async () => {
     </div>
   </div>
 </div>
+
 {showPicker && (
           <div className="absolute z-10">
             <OutsideClickHandler onOutsideClick={() => setShowPicker(false)}>
@@ -471,6 +519,8 @@ const handleSaveEdit = async () => {
         <h3 className="flex justify-center text-lg font-bold mb-4">More to explore</h3>
       <Category category={data?.category?.name}/>
       </div>
+      
+                
     </div>
   );
 };

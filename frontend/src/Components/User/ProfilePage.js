@@ -5,16 +5,14 @@ import ShareMenu from './ShareMenu';
 import { useNavigate, useParams } from 'react-router-dom';
 import Created from './Created';
 import Saved from './Saved';
+import OutsideClickHandler from 'react-outside-click-handler';
 
 function ProfilePage() {
   const [activeTab, setActiveTab] = useState("Saved");
   const [active, setActive] = useState("");
-
-    const [data,setData] = useState({})
-    const [currentUrl,setCurrentUrl] = useState(window.location.href);
-    const navigate =useNavigate()
-    // console.log(currentUrl)
-    const {profile}=useParams()
+  const [isShareMenuVisible, setShareMenuVisible] = useState(false); 
+  const [data,setData] = useState({})
+  const navigate =useNavigate()
 
     useEffect(() => {
         const fetchData = handleAsync(async () => {
@@ -27,18 +25,18 @@ function ProfilePage() {
     <>
      <div className=" min-h-screen flex flex-col items-center">
      <div className="w-full max-w-4xl text-center mt-10 px-4 sm:px-6">
-     <div className="flex justify-center">
+     <div className="flex justify-center  ">
       <img
         src={data.profileimage}
         alt="Profile"
-        className="w-32 h-32 mx-auto rounded-full md:w-32 md:h-32 object-cover"
+        className="w-32 h-32 mx-auto rounded-full md:w-32 md:h-32 object-cover border"
       />
     </div>
     <h1 className="mt-4 text-xl sm:text-2xl md:text-3xl font-semibold text-gray-800 leading-tight">{data.firstname}</h1>
     <p className="text-gray-500 mt-1 text-sm sm:text-base">{data.about}</p>
     <p className="text-gray-500 mt-1 text-sm sm:text-base">@{data.username}</p>
     {data.followers? (
-  <p className="mt-2 text-sm sm:text-base text-gray-600">{data.followers} following</p>
+  <p className="mt-2 text-sm sm:text-base text-gray-600">{data.followers.length} following</p>
 ) : (
   <p className="mt-2 text-sm sm:text-base text-gray-600">0 following</p> 
 )}
@@ -57,9 +55,18 @@ function ProfilePage() {
               active === "Share"
                 ? "bg-black text-white"
                 :"bg-gray-200   hover:bg-gray-100 transition duration-300"}`}
-                onClick={() => setActive("Share") }>
+                onClick={() =>{setShareMenuVisible((prev) => !prev); setActive("Share") }}>
             Share
           </button>
+          {isShareMenuVisible && (
+            <OutsideClickHandler onOutsideClick={() =>{ setActive(""); setShareMenuVisible(false)}}>
+            <div className="absolute  mr-[200px] top-[400px] bg-white shadow-lg rounded-lg pt-4 pl-4 w-[400px] h-[300px] z-50">
+                <ShareMenu url={`http://localhost:3000/userpage/${data._id}`} isShareMenuVisible={isShareMenuVisible}/>
+                
+                </div> 
+                </OutsideClickHandler>
+                
+              )}
           <button  onClick={() => navigate('/settings')} className="px-4 sm:px-6 py-2 bg-gray-200  rounded-full hover:bg-gray-300 transition duration-300">
             Edit profile
           </button>

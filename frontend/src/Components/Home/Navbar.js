@@ -47,7 +47,7 @@ const Navbar = () => {
    <div className="pinterest flex items-center justify-between bg-white px-4 py-3">
      {/* Left Section */}
      <div className="left flex items-center space-x-4 w-full sm:w-1/5 md:w-1/4 lg:w-1/5">
-       <Link to="" className="logo w-12 h-12 rounded-full flex items-center justify-center hover:bg-gray-200">
+       <Link to="" className="logo w-12 h-12 rounded-full flex items-center justify-center rs">
          <i className="fab fa-pinterest text-red-600 text-2xl"></i>
        </Link>
        <div className="hidden lg:flex md:space-x-1 space-x-4 ">

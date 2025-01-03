@@ -29,12 +29,11 @@ const ShareMenu = ({ url,isShareMenuVisible }) => {
   };
 
   return (
-    <OutsideClickHandler onOutsideClick={() => setIsOpen(false)}>
+    
+      <>
       
-      
-        {/* Share Menu */}
         {isOpen && (
-          <div className="absolute bottom-12 mr-[100px] top-6 left-0 bg-white shadow-lg rounded-lg pt-4 pl-4 w-[400px] h-[300px] z-50">
+          <div >
             <h3 className="text-lg font-semibold text-gray-700 mb-4">Share</h3>
             <div className="flex flex-wrap gap-3">
               {/* Share options */}
@@ -92,7 +91,7 @@ const ShareMenu = ({ url,isShareMenuVisible }) => {
             </div>
           </div>
         )}
-    </OutsideClickHandler>
+    </>
   );
 };
 

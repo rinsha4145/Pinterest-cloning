@@ -35,6 +35,7 @@ const Search = () => {
     setSearchTerm(suggestion.title); // Set the title in the input field
     setShowDropdown(false);
     navigate(`/viewpost/${id}/${category}`)
+    setSearchTerm('')
   };
 
   return (

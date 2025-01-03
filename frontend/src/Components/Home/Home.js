@@ -9,6 +9,7 @@ import ShareMenu from '../User/ShareMenu';
 import { useNavigate } from 'react-router-dom';
 import BoardPopup from './BoardPopup';
 import { setBoards } from '../Redux/BoardSlice';
+import OutsideClickHandler from 'react-outside-click-handler';
 
 const Home = () => {
   const  posts  = useSelector((state) => state.post.post);
@@ -201,7 +202,13 @@ const handleShareClick = (post) => {
     </svg>
   </button>
   {isShareMenuVisible && (
-                <ShareMenu url={post.image} isShareMenuVisible={isShareMenuVisible}/>
+            <OutsideClickHandler onOutsideClick={() => setShareMenuVisible(false)}>
+            <div className="absolute top-1 bg-white shadow-lg rounded-lg pt-4 pl-4 w-[400px] h-[300px] z-50">
+            <ShareMenu url={post.image} isShareMenuVisible={isShareMenuVisible}/>
+                
+                </div> 
+                </OutsideClickHandler>
+                
               )}
     <button className="absolute bottom-2 right-2 bg-white hover:bg-gray-300 rounded-full p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="size-4">
