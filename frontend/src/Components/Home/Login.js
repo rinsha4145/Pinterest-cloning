@@ -1,41 +1,41 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import handleAsync from '../Utils/HandleAsync';
-import Cookies from 'js-cookie'
 import { useDispatch } from 'react-redux';
-import {  setUser } from '../Redux/UserSlice';
+import handleAsync from '../Utils/HandleAsync';
 import axiosInstance from '../Utils/AxioaInstance';
+import Cookies from 'js-cookie'
+import {  setUser } from '../Redux/UserSlice';
+import { useClickHandler } from '../Context/ClickHandlerContext';
 import OutsideClickHandler from 'react-outside-click-handler';
 
-import { useClickHandler } from '../Context/ClickHandlerContext';
-
-
 function Login() {
-  const [datas, setDatas] = useState({email: '',password: ''});
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [show, setShow] = useState(true);
+
+  const [datas, setDatas] = useState({email: '',password: ''}); // email and password
+  const [isLoggedIn, setIsLoggedIn] = useState(false);  // check if user is logged in
+  const [errors, setErrors] = useState({}); // error message
+
   const { setIsOpen,isOpen} = useClickHandler()
-  const [errors, setErrors] = useState({});
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // Validate form
   const validateForm = () => {
     const errors = {};
     if (!datas.email ) {
       errors.email="You missed a spot! Don't forget to add your email.";
     }else if(!/\S+@\S+\.\S+/.test(datas.email)){
       errors.email="Hmm...that doesn't look like an email address";
-
     }
-
     // Password (required, min 6 characters)
     if (!datas.password || datas.password.length < 6) {
       errors.password="The password you entered is incorrect. Try again or Reset your password";
     }
-
     setErrors(errors);
     return Object.keys(errors).length === 0;
   }
 
+  // Check if user is logged in
   useEffect(() => {
     const userCookie = Cookies.get('user');
     if (userCookie) {
@@ -52,11 +52,13 @@ function Login() {
     }
   }, [isLoggedIn]);
 
+  // Handle change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setDatas({ ...datas, [name]: value });
   };
 
+    // User login
   const handleSubmit = handleAsync(async (e) => {
     e.preventDefault();
     if(validateForm()){
@@ -65,13 +67,10 @@ function Login() {
       if (response.status === 200) {
         setIsLoggedIn(true);
         navigate('/'); 
-       
       }
-      
     }
   });
   return (
-     
       <>
       {isOpen && (
     <OutsideClickHandler onOutsideClick={() => setIsOpen(false)}>

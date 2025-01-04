@@ -1,35 +1,37 @@
 import React, { useEffect, useRef, useState } from "react";
-// import { FaPlus } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
 import handleAsync from "../Utils/HandleAsync";
 import axiosInstance from "../Utils/AxioaInstance";
-import { useDispatch } from 'react-redux';
-import { addPost } from '../Redux/PostSlice';
+import { toast } from "react-toastify";
 const Create = () => {
-  const [categories,setCategories]=useState([])
-  const [isImageUploaded, setIsImageUploaded] = useState(false);
-  const [imagePreview, setImagePreview] = useState(null);
+  const [categories,setCategories]=useState([]) //category
+  const [isImageUploaded, setIsImageUploaded] = useState(false); // Image upload state
+  const [imagePreview, setImagePreview] = useState(null); // Image preview URL
+  const [show, setShow] = useState(false);  // Show/hide more options
   const [post, setPost] = useState({
     title:'',description: '',
     link: '',category:'',
-    tags:[],image:''
-  });
-  const [show, setShow] = useState(false);
-  const dispatch = useDispatch();
+    tags:[],image:''});  // Post data
+
+  const fileInputRef = useRef(null);
+
+  //fetch category
   useEffect(() => {
     const fetchData = handleAsync(async () => {
         const response = await axiosInstance.get('/admin/category');
         setCategories(response.data.category); 
-        console.log("vvv",categories)
     });
   
     fetchData();
   }, [categories.name]);
+
+  //handle change
   const handleChange = (e) => {
     console.log(e)
     const { name, value } = e.target;
     setPost({ ...post, [name]: value });
   };
+
+  //handle file upload
   const handleFileUpload = (event) => {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
@@ -41,26 +43,19 @@ const Create = () => {
       reader.readAsDataURL(file);
     }
   };
+
+  //toggle more options
   const handleToggle= (e)=>{
     e.preventDefault()
     setShow((prev) => !prev);
   }
-  
-  
-  
-  
-
 
   //submit the form
   const handleSubmit = handleAsync(async (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append('image', isImageUploaded);
-  
-    // No need to split tags, it's already an array
     formData.append('tags', JSON.stringify(post.tags)); // Send tags as JSON string
-  
-    // Append other fields
     Object.keys(post).forEach((key) => {
       if (post[key] && key !== 'tags') { // Exclude 'tags' since it's handled separately
         formData.append(key, post[key]);
@@ -73,12 +68,9 @@ const Create = () => {
         alert('Post added successfully');
         setImagePreview(null);
         setPost({
-          title: '',
-          description: '',
-          link: '',
-          category: '',
-          tags: [],
-          image: '',
+          title: '',description: '',
+          link: '',category: '',
+          tags: [],image: '',
         });
         setIsImageUploaded(false);
       } else {
@@ -86,14 +78,11 @@ const Create = () => {
       }
     } catch (error) {
       console.error('API error:', error.response ? error.response.data : error.message);
-      alert('Failed to create post. Please check the data and try again.');
+      toast.error('Failed to create post. Please check the data and try again.');
     }
   });
-  
 
-
-const fileInputRef = useRef(null);
-
+  //handle click
   const handleClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click(); // Trigger the file input click
@@ -102,12 +91,9 @@ const fileInputRef = useRef(null);
       setImagePreview(null)
     }
   };
-
-  const navigate = useNavigate();
-
-  
  
-  return <>
+  return( 
+  <>
   <div className="flex items-center justify-between w-full border-b border-gray-300 px-4 py-2">
       <h1 className="text-lg font-semibold">Create Pin</h1>
       {/* <p className="hidden md:block text-gray-500 text-sm">Changes stored!</p> */}
@@ -145,8 +131,6 @@ const fileInputRef = useRef(null);
               <p className=" text-xs text-center ">
                 We recommend using high-quality .jpg files less<br/> than 20MB or .mp4 files less than 200MB.
               </p>
-              
-
         <input
           type="file"
           id="file-input"
@@ -158,7 +142,6 @@ const fileInputRef = useRef(null);
           )}
         </div>
 
-        {/* File input trigger button */}
         
       </div>
     </div>
@@ -277,6 +260,7 @@ const fileInputRef = useRef(null);
     </div>
   </div>
 </>
+  )
 
 };
 
