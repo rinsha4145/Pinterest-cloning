@@ -3,7 +3,7 @@ import OutsideClickHandler from "react-outside-click-handler";
 import handleAsync from '../Utils/HandleAsync'
 import axiosInstance from '../Utils/AxioaInstance'
 import {addSavedFolder,setSavedFolders} from '../Redux/SavedSlice'
-import {setBoards} from '../Redux/BoardSlice'
+import {setBoards,addPostToBoard} from '../Redux/BoardSlice'
 
 import { useDispatch,useSelector } from 'react-redux';
 import CreateBoard from "../User/CreateBoard";
@@ -11,7 +11,6 @@ import { useClickHandler } from "../Context/ClickHandlerContext";
 
 const Popup = ({postid,isBoardMenuVisible}) => {
   const boards = useSelector((state) => state.board.boards);
-
     const [show, setShow] = useState(isBoardMenuVisible);
     const [data, setData] = useState({ name: "" });
     const { setIsOpen, isOpen } = useClickHandler();
@@ -37,7 +36,7 @@ const Popup = ({postid,isBoardMenuVisible}) => {
     console.log(savedData)
     handleAsync(fetchData)()
     setShow(false)
-    // dispatch(addSavedFolder(savedData))
+    dispatch(addPostToBoard(savedData))
 
   })
   

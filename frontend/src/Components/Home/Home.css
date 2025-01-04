@@ -5,11 +5,11 @@
 }
 
 .container {
-    width: 100vh; /* Use 100% to make it responsive */
-    max-width: 160px; /* Limit max width for larger screens */
-    columns: 6; /* Default to 6 columns */
+    width: 100%; /* Responsive width */
+    max-width: 1600px; /* Limit max width for larger screens */
+    column-count: 6; /* Default to 6 columns */
     column-gap: 20px;
-    padding:20px ;
+    padding: 20px;
 }
 
 .container .box {
@@ -18,37 +18,64 @@
     break-inside: avoid; /* Prevent column breaks inside elements */
 }
 
-.container .box img {
+.container .box img,
+.container .box video {
     width: 100%;
     border-radius: 15px;
+    object-fit: cover;
 }
 
 /* Responsive adjustments */
 @media (max-width: 1200px) {
     .container {
-        columns: 5; /* Reduce to 4 columns */
+        column-count: 5; /* Reduce to 5 columns */
     }
 }
 
 @media (max-width: 960px) {
     .container {
-        columns: 4; /* Reduce to 2 columns for tablets */
+        column-count: 4; /* Reduce to 4 columns */
     }
 }
 
 @media (max-width: 720px) {
     .container {
-        columns: 3; /* Single column for small screens */
+        column-count: 3; /* Reduce to 3 columns */
     }
 }
 
 @media (max-width: 480px) {
     .container {
-        columns: 2; /* Single column for small screens */
+        column-count: 2; /* Reduce to 2 columns */
     }
 }
-@media (max-width: 240px) {
+
+@media (max-width: 320px) {
     .container {
-        columns: 1; /* Single column for small screens */
+        column-count: 1; /* Single column for very small screens */
     }
+}
+
+.absolute {
+    position: absolute;
+}
+
+.relative {
+    position: relative;
+}
+
+.group:hover .group-hover\:opacity-100 {
+    opacity: 1;
+}
+
+.transition-opacity {
+    transition: opacity 0.3s ease;
+}
+
+.bg-black {
+    background-color: black;
+}
+
+.bg-opacity-50 {
+    background-color: rgba(0, 0, 0, 0.5);
 }

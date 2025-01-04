@@ -42,100 +42,93 @@ const Navbar = () => {
     <>
     { user ? (
    <>
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
- 
-   <div className="pinterest flex items-center justify-between bg-white px-4 py-3">
+   <link
+     rel="stylesheet"
+     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+   />
+   <div className="pinterest flex items-center justify-between bg-white px-4 py-3 lg:px-8 lg:py-4">
      {/* Left Section */}
-     <div className="left flex items-center space-x-4 w-full sm:w-1/5 md:w-1/4 lg:w-1/5">
-       <Link to="" className="logo w-12 h-12 rounded-full flex items-center justify-center rs">
-         <i className="fab fa-pinterest text-red-600 text-2xl"></i>
+     <div className="left flex items-center space-x-4 w-full sm:w-1/3 md:w-1/4 lg:w-1/5">
+       <Link to="" className="logo w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center">
+         <i className="fab fa-pinterest text-red-600 text-xl sm:text-2xl"></i>
        </Link>
-       <div className="hidden lg:flex md:space-x-1 space-x-4 ">
-          <Link
-            to="/"
-            className={`home font-bold flex items-center justify-center px-4 py-2 rounded-full ${
-              activeTab === "Home" ? "bg-black text-white" : ""
-            }`}
-            onClick={() => setActiveTab("Home")}
-          >
-            Home
-          </Link>
-          <Link
-            to="/explore"
-            className={`home font-bold flex items-center justify-center px-4 py-2 rounded-full ${
-              activeTab === "Explore" ? "bg-black text-white" : ""
-            }`}
-            onClick={() => setActiveTab("Explore")}
-          >
-            Explore
-          </Link>
-          <Link
-            to="/create"
-            className={`home font-bold flex items-center justify-center px-4 py-2 rounded-full ${
-              activeTab === "Create" ? "bg-black text-white" : ""
-            }`}
-            onClick={() => setActiveTab("Create")}
-          >
-            Create
-          </Link>
-        </div>
-        <div className="lg:hidden flex items-center">
-            <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
-              <i className="fas fa-bars text-gray-600"></i>
-            </button>
-          </div>
-          </div>
+       <div className="hidden lg:flex md:space-x-2 space-x-4">
+         <Link
+           to="/"
+           className={`home font-bold flex items-center justify-center px-3 py-2 rounded-full ${
+             activeTab === "Home" ? "bg-black text-white" : ""
+           }`}
+           onClick={() => setActiveTab("Home")}
+         >
+           Home
+         </Link>
+         <Link
+           to="/explore"
+           className={`home font-bold flex items-center justify-center px-3 py-2 rounded-full ${
+             activeTab === "Explore" ? "bg-black text-white" : ""
+           }`}
+           onClick={() => setActiveTab("Explore")}
+         >
+           Explore
+         </Link>
+         <Link
+           to="/create"
+           className={`home font-bold flex items-center justify-center px-3 py-2 rounded-full ${
+             activeTab === "Create" ? "bg-black text-white" : ""
+           }`}
+           onClick={() => setActiveTab("Create")}
+         >
+           Create
+         </Link>
+       </div>
+       <div className="lg:hidden flex items-center">
+         <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
+           <i className="fas fa-bars text-gray-600 text-xl"></i>
+         </button>
+       </div>
+     </div>
  
      {/* Search Section */}
-     <div className="search flex items-center bg-gray-200 hover:bg-gray-300 rounded-full px-4 h-12 w-full sm:w-[300px] md:w-[400px] lg:w-[800px]">
-        <i className="fas fa-search text-gray-500 w-12 flex justify-center items-center"></i>
-       {/* <input
-         type="search"
-         placeholder="Search for"
-         className="w-full bg-transparent border-none outline-none text-base text-gray-700 placeholder-gray-500 pl-[-15px]"
-       />  */}
-       <Search/>
+     <div className="search flex items-center bg-gray-200 hover:bg-gray-300 rounded-full px-4 h-10 sm:h-12 w-full sm:w-[300px] md:w-[400px] lg:w-[600px] xl:w-[800px]">
+       <i className="fas fa-search text-gray-500 w-8 sm:w-12 flex justify-center items-center"></i>
+       <Search />
      </div>
  
      {/* Right Section */}
-     <div className="right flex items-center space-x-4 w-full sm:w-1/5 md:w-1/4 lg:w-1/5 justify-end">
-       <Link to="" className="items w-12 h-12 rounded-full flex items-center justify-center hover:bg-gray-200">
-         <i className="fas fa-bell text-gray-500 text-2xl"></i>
+     <div className="right flex items-center space-x-3 sm:space-x-4 w-full sm:w-1/3 md:w-1/4 lg:w-1/5 justify-end">
+       <Link to="" className="items w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center hover:bg-gray-200">
+         <i className="fas fa-bell text-gray-500 text-xl sm:text-2xl"></i>
        </Link>
-       <Link to="" className="items w-12 h-12 rounded-full flex items-center justify-center hover:bg-gray-200">
-         <i className="far fa-comment-dots text-gray-500 text-2xl"></i>
+       <Link to="" className="items w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center hover:bg-gray-200">
+         <i className="far fa-comment-dots text-gray-500 text-xl sm:text-2xl"></i>
        </Link>
-       <Link to="/profilepage" className="avatar w-12 h-12 rounded-full flex items-center justify-center hover:bg-gray-200">
-         <div className="img w-8 h-8 rounded-full overflow-hidden relative">
-           <div className="flex items-center justify-center">
-             {user.profileimage ? (
-               <img
-                 src={user.profileimage}
-                 alt="User Profile"
-                 className="w-12 h-12 rounded-full object-cover"
-               />
-             ) : (
-               <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center pb-3 justify-center text-black text-lg">
-                 {user.firstname ? user.firstname[0].toUpperCase() : ''}
-               </div>
-             )}
-           </div>
+       <Link to="/profilepage" className="avatar w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center hover:bg-gray-200">
+         <div className="img w-8 h-8 sm:w-10 sm:h-10 rounded-full overflow-hidden relative">
+           {user.profileimage ? (
+             <img
+               src={user.profileimage}
+               alt="User Profile"
+               className="w-full h-full object-cover"
+             />
+           ) : (
+             <div className="bg-gray-200 flex items-center justify-center w-full h-full text-lg text-black">
+               {user.firstname ? user.firstname[0].toUpperCase() : ""}
+             </div>
+           )}
          </div>
        </Link>
        <OutsideClickHandler onOutsideClick={() => setIsDropdownOpen(false)}>
          <div className="relative inline-block text-left">
-           {/* Trigger Button */}
            <button
              onClick={toggleDropdown}
-             className="flex items-center gap-3 px-1 py-1 text-gray-800 rounded-full shadow-sm hover:bg-gray-200"
+             className="flex items-center gap-2 px-2 py-1 text-gray-800 rounded-full hover:bg-gray-200"
            >
-             <i className="fas fa-chevron-down text-sm text-gray-500"></i>
+             <i className="fas fa-chevron-down text-sm"></i>
            </button>
-           {/* Dropdown Menu */}
            {isDropdownOpen && (
-             <div className="absolute overflow-y-auto right-0 mt-2 w-[250px] h-[600px] bg-white rounded-lg shadow-lg ring-1 ring-gray-200 z-50">
-               <div className="p-4 ">
-                 <p className="text-xs">Currently in</p>
+             <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg ring-1 ring-gray-200 z-50">
+               <div className="p-4">
+               <p className="text-xs">Currently in</p>
                  <div className="flex items-center justify-between mt-2 bg-gray-100 px-3 py-2 rounded-md">
                    <div className="w-12 h-12 pr-6 pt-4 rounded-full flex items-center pb-3 justify-center text-black text-2xl">
                      {user.firstname ? user.firstname[0].toUpperCase() : ''}
@@ -183,37 +176,47 @@ const Navbar = () => {
      </div>
    </div>
    {isMenuOpen && (
-        <div className="lg:hidden absolute top-16 left-0 w-full bg-white shadow-md z-50">
-          <Link
-            to="/"
-            className={`home font-bold flex items-center justify-center px-4 py-2 rounded-full ${
-              activeTab === "Home" ? "bg-black text-white" : ""
-            }`}
-            onClick={() =>{setIsMenuOpen(false); setActiveTab("Home")}}
-          >
-            Home
-          </Link>
-          <Link
-            to="/explore"
-            className={`home font-bold flex items-center justify-center px-4 py-2 rounded-full ${
-              activeTab === "Explore" ? "bg-black text-white" : ""
-            }`}
-            onClick={() =>{setIsMenuOpen(false); setActiveTab("Explore")}}
-          >
-            Explore
-          </Link>
-          <Link
-            to="/create"
-            className={`home font-bold flex items-center justify-center px-4 py-2 rounded-full ${
-              activeTab === "Create" ? "bg-black text-white" : ""
-            }`}
-            onClick={() =>{setIsMenuOpen(false);setActiveTab("Create")}}
-          >
-            Create
-          </Link>
-        </div>
-      )}
+     <div className="lg:hidden absolute top-16 left-0 w-full bg-white shadow-md z-50">
+       <Link
+         to="/"
+         className={`block font-bold px-4 py-2 rounded-full ${
+           activeTab === "Home" ? "bg-black text-white" : ""
+         }`}
+         onClick={() => {
+           setIsMenuOpen(false);
+           setActiveTab("Home");
+         }}
+       >
+         Home
+       </Link>
+       <Link
+         to="/explore"
+         className={`block font-bold px-4 py-2 rounded-full ${
+           activeTab === "Explore" ? "bg-black text-white" : ""
+         }`}
+         onClick={() => {
+           setIsMenuOpen(false);
+           setActiveTab("Explore");
+         }}
+       >
+         Explore
+       </Link>
+       <Link
+         to="/create"
+         className={`block font-bold px-4 py-2 rounded-full ${
+           activeTab === "Create" ? "bg-black text-white" : ""
+         }`}
+         onClick={() => {
+           setIsMenuOpen(false);
+           setActiveTab("Create");
+         }}
+       >
+         Create
+       </Link>
+     </div>
+   )}
  </>
+ 
  
     ):(
       <>
