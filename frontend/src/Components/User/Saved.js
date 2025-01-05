@@ -253,17 +253,13 @@ function Saved({id}) {
           <div onClick={() => navigate(`/viewboard/${folder._id}`)}>
           {/* Image Previews */}
         
-          <div
-  key={folder._id}
-  
- 
->
+          <div key={folder._id}>
   <div className='z-50'>
-  <div  onClick={() => navigate(`/viewboard/${folder._id}`)}>
+  <div onClick={() => navigate(`/viewboard/${folder._id}`)}>
     {/* Image Previews */}
     <div className="flex gap-1 mb-4 ">
       {Array.from({ length: 3 }).map((_, index) => {
-        const img = folder.posts && folder.posts[ index];
+        const img = folder?.posts && folder?.posts?.[index];
         return (
           <div
             key={index}
@@ -271,7 +267,7 @@ function Saved({id}) {
           >
             {img ? (
               <img
-                src={img.image}
+                src={img?.image}
                 alt={`Preview ${index + 1}`}
                 className="w-full h-full object-cover rounded-md"
               />
@@ -286,7 +282,7 @@ function Saved({id}) {
 <button
       className="absolute text-black bottom-[90px] right-5 bg-black bg-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition"
       onClick={(e) => {
-        e.stopPropagation(); // Prevent triggering the navigate action
+        e.stopPropagation();
         handleEdit(folder._id);
       }}
     >
@@ -294,9 +290,8 @@ function Saved({id}) {
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
         fill="currentColor"
-        className="size-4"
-      >
-        <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32L19.513 8.2Z" />
+        className="size-4">
+          <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32L19.513 8.2Z" />
       </svg>
     </button>
 </div>

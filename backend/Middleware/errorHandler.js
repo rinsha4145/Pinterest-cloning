@@ -11,7 +11,6 @@ const errorHandler = (err, req, res, next) => {
     }
     // Handle unknown errors
     console.error("Unknown error:", err); 
-
     return res.status(500).json({
         status: "error",
         message: "Something went wrong!",

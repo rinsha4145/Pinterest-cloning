@@ -2,11 +2,13 @@ const Category = require('../../Models/Admin/categorySchema');
 const { NotFoundError, ValidationError } = require('../../Utils/customeError');
 const {validateCategory}=require ('../../Models/validation')
 
+//get all category
 const getAllCategory = async (req, res, next) => {
     const category = await Category.find();
     res.status(200).json({category});
 };
 
+//add category
 const addCategory = async (req, res, next) => { 
     const { error, value } = validateCategory.validate(req.body);
     if (error) {
@@ -17,10 +19,6 @@ const addCategory = async (req, res, next) => {
     if(excisting){
         return next(new ValidationError("Category name already exists.")); 
     }
-    // if (!req.userId) {
-    //     return res.status(401).json({ message: "Unauthorized: User ID not found" });
-    // }
-    
     const newCategory = new Category({
         name,
     });

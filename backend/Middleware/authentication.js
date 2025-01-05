@@ -4,9 +4,8 @@ const {UnauthorizedError} = require('../Utils/customeError');
 const userAuthMiddleware = async (req, res, next) => {  
   try {
     const token = req.cookies.token;
-    // console.log("first",req.cookies)
     if (!token) {
-      return res.status(401).json({ message: 'Authentication token missing' }); // Ensure return to avoid further execution
+      throw new UnauthorizedError("Authentication token missing");
     }
 
     jwt.verify(token, process.env.JWT_KEY, (err, user) => { 

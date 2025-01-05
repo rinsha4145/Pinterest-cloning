@@ -1,80 +1,58 @@
 const Post = require('../../Models/postSchema'); // Import Post model
 const mongoose = require("mongoose");
 
+// like a post
 const likePost = async (req, res, next) => {
-  const { postId } = req.body;  // Get postId from request body
-  const userId = req.userId;  // Assuming the userId is available in req.userId from authentication middleware
-
-  try {
+  const { postId } = req.body;  
+  const userId = req.userId; 
     if (!mongoose.Types.ObjectId.isValid(postId)) {
       return res.status(400).json({ message: 'Invalid post ID' });
     }
     const post = await Post.findById(postId);   
-   
 
     if (!post) {
       return res.status(404).json({ message: 'Post not found' });
     }
 
-    // Check if the user has already liked the post
     if (post.likedBy.includes(userId)) {
       return res.status(400).json({ message: 'You have already liked this post' });
     }
-
-    // Add the userId to the likedBy array
     post.likedBy.push(userId);
-    await post.save();  // Save the updated post
-
+    await post.save(); 
     return res.status(200).json({ message: 'Post liked successfully', post });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: 'Error liking the post' });
-  }
 };
 
-
+//unlike a post
 const unlikePost = async (req, res, next) => {
-    const { postId } = req.body;  // Get postId from request body
-    const userId = req.userId;  // Assuming the userId is available in req.userId from authentication middleware
-  
-    try {
-      const post = await Post.findById(postId);  // Find the post by ID
+    const { postId } = req.body;  
+    const userId = req.userId;  
+      const post = await Post.findById(postId);  
   
       if (!post) {
         return res.status(404).json({ message: 'Post not found' });
       }
   
-      // Check if the user has liked the post
       if (!post.likedBy.includes(userId)) {
         return res.status(400).json({ message: 'You have not liked this post' });
       }
   
-      // Remove the userId from the likedBy array
       post.likedBy.pull(userId);
-      await post.save();  // Save the updated post
-  
+      await post.save(); 
       return res.status(200).json({ message: 'Post unliked successfully', post });
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({ message: 'Error unliking the post' });
-    }
+    
   };
 
+//get all liked posts by the current userid
   const getLikedPosts = async (req, res, next) => {
-    const userId = req.userId;  // Assuming the userId is available in req.userId from authentication middleware
+    const userId = req.userId; 
+    const likedPosts = await Post.find({ likedBy: userId }).populate('owner', 'name email');  // Find posts where the userId is in the likedBy array
   
-    try {
-      const likedPosts = await Post.find({ likedBy: userId }).populate('owner', 'name email');  // Find posts where the userId is in the likedBy array
-  
-      if (likedPosts.length === 0) {
-        return res.status(404).json({ message: 'No liked posts found' });
-      }
-  
-      return res.status(200).json({ likedPosts });
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({ message: 'Error fetching liked posts' });
+    if (likedPosts.length === 0) {
+      return res.status(404).json({ message: 'No liked posts found' });
     }
+  
+    return res.status(200).json({ likedPosts });
+   
   };
   
 module.exports = { getLikedPosts,likePost,unlikePost };

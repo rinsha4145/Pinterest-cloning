@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const User = require('../Models/userSchema'); // Assuming you have a User model
+const User = require('../Models/User/userSchema'); // Assuming you have a User model
 
 
 // Password reset route
