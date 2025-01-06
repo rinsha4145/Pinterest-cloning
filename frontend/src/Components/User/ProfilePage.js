@@ -67,7 +67,7 @@ function ProfilePage() {
                 </OutsideClickHandler>
                 
               )}
-          <button  onClick={() => navigate('/settings')} className="px-4 sm:px-6 py-2 bg-gray-200  rounded-full hover:bg-gray-300 transition duration-300">
+          <button  onClick={() => navigate('/settings/editprofile')} className="px-4 sm:px-6 py-2 bg-gray-200  rounded-full hover:bg-gray-300 transition duration-300">
             Edit profile
           </button>
         </div>

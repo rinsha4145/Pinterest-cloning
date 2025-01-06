@@ -18,8 +18,10 @@ import Pinned from './Components/User/Pinned';
 import ViewBoard from './Components/User/ViewBoard';
 import ViewPost from './Components/Home/ViewPost';
 import ViewOtherUserProfile from './Components/User/ViewOtherUserProfile';
-import AccountManagement from './Components/User/Settings/AccountManagement';
 import {ToastContainer} from 'react-toastify'
+import EditProfile from './Components/User/Settings/EditProfile';
+import ChangePassword from './Components/User/Settings/ChangePassword';
+import AccountManagement from './Components/User/Settings/AccountManagement';
 
 function App() {
   const { user } = useSelector((state) => state.user);
@@ -37,12 +39,16 @@ function App() {
     <Route path='/reset_password/:id/:token' element={<ResetPassword/>}/>
     <Route path='/profilepage' element={<ProfilePage/>}/>
     <Route path='/userpage/:id' element={<ViewOtherUserProfile/>}/>
-    <Route path='/settings' element={<Settings/>}/>
-    <Route path='/settings/account-settings' element={<AccountManagement/>}/>
-
     <Route path='/created' element={<Created/>}/>
     <Route path='/pin' element={<Pinned/>}/>
     <Route path='/viewboard/:id' element={<ViewBoard/>}/>
+    <Route path='/changepass' element={<ChangePassword/>}/>
+
+    
+    <Route path="/settings" element={<Settings />}>
+    <Route path="editprofile" element={<EditProfile />} />
+    <Route path="account-settings" element={<AccountManagement />} /></Route>
+    
 
    </Routes>
    <ToastContainer   

@@ -1,178 +1,157 @@
-import React, { useState } from 'react';
-import axiosInstance from '../../Utils/AxioaInstance';
-import { Link, useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import React from 'react'
 
-const AccountManagement = () => {
-  const [oldPassword, setOldPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-
-  // Visibility state for each password field
-  const [isOldPasswordVisible, setIsOldPasswordVisible] = useState(false);
-  const [isNewPasswordVisible, setIsNewPasswordVisible] = useState(false);
-  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
-
-  const navigate = useNavigate();
-
-  // Toggle visibility handlers
-  const handleOldPasswordToggle = () => {
-    setIsOldPasswordVisible((prev) => !prev);
-  };
-
-  const handleNewPasswordToggle = () => {
-    setIsNewPasswordVisible((prev) => !prev);
-  };
-
-  const handleConfirmPasswordToggle = () => {
-    setIsConfirmPasswordVisible((prev) => !prev);
-  };
-
-  const handlePasswordReset = async (e) => {
-    e.preventDefault();
-
-    // Basic validation
-    if (newPassword !== confirmPassword) {
-      setErrorMessage('New passwords do not match');
-      return;
-    }
-
-    try {
-      // Make a PUT request to the backend to reset the password
-      const response = await axiosInstance.put('/change-password', {
-        oldPassword,
-        newPassword,
-      });
-
-      // Success handling
-      setSuccessMessage(response.data.message);
-      setErrorMessage('');
-      navigate("/profilepage");
-    } catch (error) {
-      // Error handling
-      setErrorMessage(error.response?.data?.message || 'An error occurred');
-      setSuccessMessage('');
-    }
-  };
-
+function AccountManagement() {
   return (
-    <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md mx-4 sm:mx-auto">
-        <h2 className="text-xl font-bold text-center mb-4">Change your password</h2>
+    <div className="flex-1 w-1/2  ">
+  {/* Header */}
+  <div>
+    <h1 className="text-3xl font-semibold mb-2">Account management</h1>
+    <p className="text-gray-600 text-sm">Make changes to your personal information or account type.</p>
+  </div>
 
-        <form onSubmit={handlePasswordReset}>
-          {/* Old Password */}
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-2" htmlFor="old-password">
-              Old password 
-              <Link className="text-blue-500 text-sm cursor-pointer" to="/forgot-password">
-                · Forgotten it?
-              </Link>
-            </label>
-            <div className="relative">
-              <input
-                type={isOldPasswordVisible ? 'text' : 'password'}
-                value={oldPassword}
-                onChange={(e) => setOldPassword(e.target.value)}
-                required
-                placeholder="Enter your old password"
-                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <button
-                type="button"
-                onClick={handleOldPasswordToggle}
-                className="absolute right-2 top-2"
-              >
-                <FontAwesomeIcon
-                  icon={isOldPasswordVisible ? faEyeSlash : faEye}
-                  size="sm"
-                  color="#000"
-                />
-              </button>
-            </div>
-          </div>
+  {/* Your Account Section */}
+  <div>
+    <h2 className="text-lg font-medium mt-4">Your account</h2>
+    <div className="space-y-4">
+      {/* Email */}
+      <div>
+        <label className="block text-gray-700 text-xs font-medium">Email • Private</label>
+        <input
+          type="email"
+          value="rinujouhar@gmail.com"
+          readOnly
+          className="w-full mt-1 p-2 border border-gray-300 rounded-md  text-gray-600 cursor-not-allowed"
+        />
+      </div>
 
-          {/* New Password */}
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-2" htmlFor="new-password">
-              New password
-            </label>
-            <div className="relative">
-              <input
-                type={isNewPasswordVisible ? 'text' : 'password'}
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                required
-                placeholder="Enter your new password"
-                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <button
-                type="button"
-                onClick={handleNewPasswordToggle}
-                className="absolute right-2 top-2"
-              >
-                <FontAwesomeIcon
-                  icon={isNewPasswordVisible ? faEyeSlash : faEye}
-                  size="sm"
-                  color="#000"
-                />
-              </button>
-            </div>
-          </div>
-
-          {/* Confirm New Password */}
-          <div className="mb-6">
-            <label className="block text-sm font-medium mb-2" htmlFor="confirm-password">
-              Type it again
-            </label>
-            <div className="relative">
-              <input
-                type={isConfirmPasswordVisible ? 'text' : 'password'}
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-                placeholder="Re-enter your new password"
-                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <button
-                type="button"
-                onClick={handleConfirmPasswordToggle}
-                className="absolute right-2 top-2"
-              >
-                <FontAwesomeIcon
-                  icon={isConfirmPasswordVisible ? faEyeSlash : faEye}
-                  size="sm"
-                  color="#000"
-                />
-              </button>
-            </div>
-          </div>
-
-          <div className="flex justify-end space-x-4">
-            <button
-              type="button"
-              className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
-              onClick={() => navigate("/profilepage")}
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-            >
-              Change password
-            </button>
-          </div>
-
-          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-          {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
-        </form>
+      {/* Password */}
+      <div>
+        <label className="block text-gray-700 font-medium">Password</label>
+        <div className="flex relative mt-1">
+          <input
+            type="password"
+            className="w-full p-2 border border-gray-300 rounded-md"
+            placeholder="********"
+          />
+          <button
+            type="button"
+            className="absolute inset-y-0 right-2 flex items-center text-gray-500"
+          >
+            👁️ {/* Replace with an eye icon */}
+          </button>
+        </div>
+        <button className="mt-2 px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">
+          Change
+        </button>
       </div>
     </div>
-  );
-};
+  </div>
 
-export default AccountManagement;
+  
+
+  {/* Personal Information */}
+  <div>
+    <h2 className="text-lg font-medium">Personal information</h2>
+    <div>
+      <label className="block text-gray-700 font-medium">Date of birth</label>
+      <input
+        type="date"
+        className="w-full mt-1 p-2 border border-gray-300 rounded-md"
+      />
+    </div>
+  </div>
+
+  {/* Gender */}
+  <div>
+    <h2 className="text-lg font-medium">Gender</h2>
+    <div className="flex space-x-4 mt-2">
+      <label className="flex items-center">
+        <input
+          type="radio"
+          name="gender"
+          className="mr-2"
+        />
+        Male
+      </label>
+      <label className="flex items-center">
+        <input
+          type="radio"
+          name="gender"
+          className="mr-2"
+        />
+        Female
+      </label>
+      <label className="flex items-center">
+        <input
+          type="radio"
+          name="gender"
+          className="mr-2"
+        />
+        Non-binary
+      </label>
+    </div>
+  </div>
+
+  {/* Country/Region */}
+  <div>
+    <label className="block text-gray-700 font-medium">Country/region</label>
+    <select className="w-full mt-1 p-2 border border-gray-300 rounded-md">
+      <option>India (भारत)</option>
+      <option>United States</option>
+      <option>United Kingdom</option>
+      <option>Australia</option>
+    </select>
+  </div>
+
+  {/* Language */}
+  <div>
+    <label className="block text-gray-700 font-medium">Language</label>
+    <select className="w-full mt-1 p-2 border border-gray-300 rounded-md">
+      <option>English (India)</option>
+      <option>English (US)</option>
+      <option>Hindi</option>
+      <option>Tamil</option>
+    </select>
+  </div>
+
+  {/* Deactivation and Deletion */}
+  <div>
+    <h2 className="text-lg font-medium">Deactivation and deletion</h2>
+    <div className="mt-4 space-y-4">
+      <div>
+        <h3 className="font-medium">Deactivate account</h3>
+        <p className="text-sm text-gray-600">
+          Temporarily hide your profile, Pins, and boards.
+        </p>
+        <button className="mt-2 px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">
+          Deactivate account
+        </button>
+      </div>
+      <div>
+        <h3 className="font-medium">Delete your data and account</h3>
+        <p className="text-sm text-gray-600">
+          Permanently delete your data and everything associated with your account.
+        </p>
+        <button className="mt-2 px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">
+          Delete account
+        </button>
+      </div>
+    </div>
+  </div>
+
+  {/* Action Buttons */}
+  <div className="flex justify-between mt-4">
+    <button className="px-6 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">
+      Reset
+    </button>
+    <button className="px-6 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-800">
+      Save
+    </button>
+  </div>
+</div>
+
+
+  )
+}
+
+export default AccountManagement

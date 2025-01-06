@@ -152,4 +152,8 @@ const userLogout = async (req, res) => {
     res.status(200).json({ status: 'success', message: 'Logout successful' });
 };
 
+
+
+
+
 module.exports = { userReg,userLogin,userLogout,profileView,userProfile,followUnfollow,editProfile};
