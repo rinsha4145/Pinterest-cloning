@@ -187,32 +187,32 @@ function EditProfile() {
       </div>
 
       {/* Buttons */}
-      <div className="mt-6 flex space-x-4">
-    <button
-      onClick={handleReset}
-      type="button"
-      disabled={!isFormChanged} // Disable if no changes
-      className={`px-6 py-2 rounded-full ${
-        isFormChanged
-          ? "bg-gray-200 hover:bg-gray-300"
-          : "bg-gray-100 text-gray-400 cursor-not-allowed"
-      }`}
-    >
-      Reset
-    </button>
-    <button
-      onClick={handleSubmit}
-      type="button"
-      disabled={!isFormChanged} // Disable if no changes
-      className={`px-6 py-2 rounded-full ${
-        isFormChanged
-          ? "bg-red-500 text-white hover:bg-red-600"
-          : "bg-gray-100 text-gray-400 cursor-not-allowed"
-      }`}
-    >
-      Save
-    </button>
-  </div>
+      <div className="mt-6 space-x-4">
+        <button
+          onClick={handleReset}
+          type="button"
+          disabled={!isFormChanged} // Disable if no changes
+          className={`px-6 py-2 rounded-full ${
+            isFormChanged
+              ? "bg-gray-200 hover:bg-gray-300"
+              : "bg-gray-100 text-gray-400 cursor-not-allowed"
+          }`}
+        >
+          Reset
+        </button>
+        <button
+          onClick={handleSubmit}
+          type="button"
+          disabled={!isFormChanged} // Disable if no changes
+          className={`px-6 py-2 rounded-full ${
+            isFormChanged
+              ? "bg-red-500 text-white hover:bg-red-600"
+              : "bg-gray-100 text-gray-400 cursor-not-allowed"
+          }`}
+        >
+          Save
+        </button>
+      </div>
     </form>
   </div></div>
   )

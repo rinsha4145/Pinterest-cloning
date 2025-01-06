@@ -4,8 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
-const ChangePaasword = () => {
-  const [oldPassword, setOldPassword] = useState('');
+const ChangePassword = ({setView,password}) => {
+  const [oldPassword, setOldPassword] = useState(password);
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -155,7 +155,7 @@ const ChangePaasword = () => {
             <button
               type="button"
               className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
-              onClick={() => navigate("/profilepage")}
+              onClick={() => setView(false)}
             >
               Cancel
             </button>
@@ -175,4 +175,4 @@ const ChangePaasword = () => {
   );
 };
 
-export default ChangePaasword;
+export default ChangePassword;

@@ -13,6 +13,7 @@ const { userAuthMiddleware } = require("../Middleware/authentication");
 const { forgotpass } = require("../Controller/forgotPassword");
 const { resetpass } = require("../Controller/resetPassword");
 const { changePass } = require("../Controller/changePassword");
+const {cancelDeletion,deleteAccount,confirmDeletion } = require("../Controller/deleteAccount");
 
  
 
@@ -27,6 +28,10 @@ router
  .post('/forgot-password',tryCatch(forgotpass))
  .post('/reset-password/:id/:token',tryCatch(resetpass))
  .put('/change-password',userAuthMiddleware,tryCatch(changePass))
+ .post('/request-deletion',tryCatch(deleteAccount))
+ .post('/cancel-deletion',tryCatch(cancelDeletion))
+ .post('/confirm-deletion/:deletionToken',tryCatch(confirmDeletion))
+
 
 
 
@@ -38,7 +43,6 @@ router
  .delete('/deletepost/:id',userAuthMiddleware,tryCatch(postcontroller.deletePost))
  .get('/postss',userAuthMiddleware,tryCatch(postcontroller.getPostByOwner))
  .get('/getposts/:id',userAuthMiddleware,tryCatch(postcontroller.getCreatedByUserId))
-
 
  .get('/saves',userAuthMiddleware,tryCatch(savedcontroller.getSaved))   
  .post('/addtosave',userAuthMiddleware,tryCatch(savedcontroller.addToSaved))  
@@ -57,10 +61,6 @@ router
  .put('/updateboard/:id',userAuthMiddleware,tryCatch(boardcontroller.updateBoardById))  
  .delete('/deleteboard/:id',userAuthMiddleware,tryCatch(boardcontroller.deleteBoardById))  
  .delete('/removepost',userAuthMiddleware,tryCatch(boardcontroller.removeFromBoard))  
-
-
-
-
 
  .get('/viewcomment/:id',userAuthMiddleware,tryCatch(commentcontroller.getCommentById))  
  .post('/comment/:id',userAuthMiddleware,tryCatch(commentcontroller.commentOnPin)) 

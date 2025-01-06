@@ -1,11 +1,25 @@
-import React from 'react';
-import { Outlet,Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Outlet, Link } from 'react-router-dom';
 
 function Settings() {
+  const [isFormChanged, setIsFormChanged] = useState(false); // State to track if form is changed
+
+  const handleReset = () => {
+    // Logic to reset the form goes here
+    console.log("Form Reset");
+    setIsFormChanged(false); // Reset form change state
+  };
+
+  const handleSubmit = () => {
+    // Logic to submit the form goes here
+    console.log("Form Submitted");
+    setIsFormChanged(false); // Reset form change state after saving
+  };
+
   return (
     <div className="flex min-h-screen bg-white">
       {/* Sidebar */}
-      <aside className="w-1/4 p-6  ">
+      <aside className="w-1/4 p-6">
         <ul className="space-y-4">
           <li><Link to="/settings/editprofile" className="text-gray-700 hover:text-blue-500">Edit profile</Link></li>
           <li><Link to="/settings/account-settings" className="text-gray-700 hover:text-blue-500">Account management</Link></li>
@@ -20,10 +34,14 @@ function Settings() {
         </ul>
       </aside>
 
+      {/* Main Content */}
       <main className="flex-1 p-6">
         {/* The <Outlet> renders the nested routes' content */}
         <Outlet />
       </main>
+
+      
+      
     </div>
   );
 }

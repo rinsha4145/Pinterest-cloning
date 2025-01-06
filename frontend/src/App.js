@@ -22,6 +22,7 @@ import {ToastContainer} from 'react-toastify'
 import EditProfile from './Components/User/Settings/EditProfile';
 import ChangePassword from './Components/User/Settings/ChangePassword';
 import AccountManagement from './Components/User/Settings/AccountManagement';
+import DeleteAccount from './Components/User/Settings/DeleteAccount';
 
 function App() {
   const { user } = useSelector((state) => state.user);
@@ -43,7 +44,9 @@ function App() {
     <Route path='/pin' element={<Pinned/>}/>
     <Route path='/viewboard/:id' element={<ViewBoard/>}/>
     <Route path='/changepass' element={<ChangePassword/>}/>
+    <Route path='/close-account' element={<DeleteAccount/>}/>
 
+    
     
     <Route path="/settings" element={<Settings />}>
     <Route path="editprofile" element={<EditProfile />} />

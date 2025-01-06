@@ -14,6 +14,8 @@ const userSchema = new mongoose.Schema({
         default: function() {
         return this.email ? this.email.split('@')[0] : '';
     }  },
+    language: { type: String },
+    gender: { type: String},
     email: { type: String, required: true, unique: true, lowercase: true },
     password: { type: String, required: true },
     birthdate: { type: Date, default: null,required:true },
