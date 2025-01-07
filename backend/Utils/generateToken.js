@@ -25,7 +25,7 @@ const jwt =require("jsonwebtoken")
             sameSite: "none",
             maxAge: 7 * 24 * 60 * 60 * 1000 
         })
-    }
+    }else{
         const admtoken = jwt.sign({ id: user._id, admin: true }, process.env.ADM_JWT_KEY, { expiresIn: '30d' });
         console.log(admtoken)
         const admrefreshToken = jwt.sign({ id: user._id, admin: true }, process.env.ADM_JWT_KEY, { expiresIn: '7d' });
@@ -54,7 +54,7 @@ const jwt =require("jsonwebtoken")
 
 
         return res.status(200).json({status: 'success', message: "Admin Logged in successfully"  });
-
+    }
  }
 
  module.exports = {generateToken}

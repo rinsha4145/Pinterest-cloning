@@ -4,18 +4,22 @@ import { useNavigate, Link } from 'react-router-dom';
 import axiosInstance from '../Utils/AxioaInstance';
 import handleAsync from '../Utils/HandleAsync';
 import { toast } from 'react-toastify';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutUser } from '../Redux/UserSlice';
 const AdmNavbar = () => {
-//   const { setAdmin } = useContext(DataContext);
+  const { user } = useSelector((state) => state.user);
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleAdminLogout = handleAsync(async (e) => {
     e.preventDefault();
-    const response = await axiosInstance.post('/admin/adminlogout');
-    // setAdmin(null);
+    const response = await axiosInstance.post('/admin/admlogout');
+          dispatch(logoutUser(user));
+    
     if (response.status >= 200 && response.status < 300) {
       toast.success('Admin Logout successful', response.data);
-      navigate('/login');
+      navigate('/');
     } else {
       throw new Error(response.data.message || 'An error occurred');
     }

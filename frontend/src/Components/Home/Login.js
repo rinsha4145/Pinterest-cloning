@@ -85,7 +85,7 @@ function Login() {
   return (
       <>
       {isOpen && (
-    <OutsideClickHandler onOutsideClick={() => setIsOpen(false)}>
+    // <OutsideClickHandler onOutsideClick={() => setIsOpen(false)}>
     <form onSubmit={handleSubmit}>
       <div className="bg-transparent flex justify-center items-center h-[80vh] font-sans">
         <div className="w-[400px] max-w-md rounded-4xl ">
@@ -168,7 +168,7 @@ function Login() {
         </div>
       </div>
     </form>
-    </OutsideClickHandler>
+    // </OutsideClickHandler>
      )}
 
 

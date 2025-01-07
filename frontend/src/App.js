@@ -1,5 +1,5 @@
 import React from 'react'
-import { Routes, Route, useParams } from 'react-router-dom';
+import { Routes, Route, useParams, useLocation } from 'react-router-dom';
 import Signup from './Components/Home/Signup';
 import Login from './Components/Home/Login';
 import Navbar from './Components/Home/Navbar';
@@ -27,65 +27,68 @@ import AdmNavbar from './Components/Admin/Navbar';
 import AdmLogin from './Components/Admin/Login';
 function App() {
   const { user } = useSelector((state) => state.user ||{});
-  console.log(user.admin)
+  console.log(user?.admin)
+  const location = useLocation();
+  const isAdminLogin = location.pathname === '/adminlogin';
   return (
-  
-   <>
-   <Navbar />
-   <Routes>
-   <Route path='/' element={<Slides/>}/>
-   <Route path='/adminlogin' element={<AdmLogin/>}/>
- </Routes>
-   {!user?.admin ?(
     <>
-     
-   <Routes>
-    {!user ?<Route path='/' element={<Slides/>}/>:<Route path='/' element={<Home/>}/>}
-    <Route path='/create' element={<Create/>}/>
-    <Route path='/explore' element={<Explore/>}/>
-    <Route path='/viewpost/:_id/:category' element={<ViewPost/>}/>
-    <Route path='/category/:category' element={<Category/>}/>
-    <Route path='/forgot-password' element={<ForgotPassword/>}/>
-    <Route path='/reset_password/:id/:token' element={<ResetPassword/>}/>
-    <Route path='/profilepage' element={<ProfilePage/>}/>
-    <Route path='/userpage/:id' element={<ViewOtherUserProfile/>}/>
-    <Route path='/created' element={<Created/>}/>
-    <Route path='/pin' element={<Pinned/>}/>
-    <Route path='/viewboard/:id' element={<ViewBoard/>}/>
-    <Route path='/changepass' element={<ChangePassword/>}/>
-    <Route path='/close-account' element={<DeleteAccount/>}/>
-
-    <Route path="/settings" element={<Settings />}>
-    <Route path="editprofile" element={<EditProfile />} />
-    <Route path="account-settings" element={<AccountManagement />} /></Route>
-   </Routes>
-   <ToastContainer   
-        autoClose={1000}  
-        position="top-center"  
-        hideProgressBar={true} 
-        closeOnClick 
-        pauseOnHover
-        draggable
-        toastStyle={{
-          width: 'auto', // Adjust width dynamically based on content
-          maxWidth: '90%', // Optional: Prevents overly wide toast on large screens
-          padding: '10px 20px', // Optional: Adds padding for better readability
-          wordBreak: 'break-word', // Handles long words gracefully
-        }}
-        />
-        </>
-      ):(
-        <>
-        
+     {/* Conditionally render Navbar */}
+    <Routes>
+      <Route path='/adminlogin' element={<AdmLogin />} />
+    </Routes>
+    {!user?.admin ? (
+      <>
+      {!isAdminLogin && <Navbar />}
         <Routes>
-          
+          {!user ? (
+            <Route path='/' element={<Slides />} />
+          ) : (
+            <Route path='/' element={<Home />} />
+          )}
+          <Route path='/create' element={<Create />} />
+          <Route path='/explore' element={<Explore />} />
+          <Route path='/viewpost/:_id/:category' element={<ViewPost />} />
+          <Route path='/category/:category' element={<Category />} />
+          <Route path='/forgot-password' element={<ForgotPassword />} />
+          <Route path='/reset_password/:id/:token' element={<ResetPassword />} />
+          <Route path='/profilepage' element={<ProfilePage />} />
+          <Route path='/userpage/:id' element={<ViewOtherUserProfile />} />
+          <Route path='/created' element={<Created />} />
+          <Route path='/pin' element={<Pinned />} />
+          <Route path='/viewboard/:id' element={<ViewBoard />} />
+          <Route path='/changepass' element={<ChangePassword />} />
+          <Route path='/close-account' element={<DeleteAccount />} />
+          <Route path='/settings' element={<Settings />}>
+            <Route path='editprofile' element={<EditProfile />} />
+            <Route path='account-settings' element={<AccountManagement />} />
+          </Route>
         </Routes>
-        </>
-      )}
+        <ToastContainer
+          autoClose={1000}
+          position='top-center'
+          hideProgressBar={true}
+          closeOnClick
+          pauseOnHover
+          draggable
+          toastStyle={{
+            width: 'auto',
+            maxWidth: '90%',
+            padding: '10px 20px',
+            wordBreak: 'break-word',
+          }}
+        />
+      </>
+    ) : (
+      <>
+      <AdmNavbar/>
+        <Routes>
 
-   
- </>
-  )
+        </Routes>
+      </>
+    )}
+  </>
+);
+  
 }
 
 export default App
