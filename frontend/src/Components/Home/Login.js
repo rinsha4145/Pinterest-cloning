@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import handleAsync from '../Utils/HandleAsync';
 import axiosInstance from '../Utils/AxioaInstance';
 import Cookies from 'js-cookie'
@@ -12,8 +12,6 @@ function Login() {
 
   const [datas, setDatas] = useState({email: '',password: ''}); // email and password
   const [isLoggedIn, setIsLoggedIn] = useState(false); // check if user is logged in
-  const [cancel, setCancel] = useState(false);  
-    // check if user is logged in
   const [errors, setErrors] = useState({}); // error message
 
   const { setIsOpen,isOpen} = useClickHandler()
@@ -34,11 +32,6 @@ function Login() {
     setErrors(errors);
     return Object.keys(errors).length === 0;
   }
-
-    
-  
-    
- 
 
   // Check if user is logged in
   useEffect(() => {

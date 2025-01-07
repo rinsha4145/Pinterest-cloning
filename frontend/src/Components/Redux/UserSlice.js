@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // Initial state for the user
 const initialState = {
-  user: null, // Initially no user
+  user: {}, // Initially no user
   token: null, // Store token
   isAuthenticated: false, // Store authentication status
 };

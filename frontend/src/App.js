@@ -24,17 +24,21 @@ import ChangePassword from './Components/User/Settings/ChangePassword';
 import AccountManagement from './Components/User/Settings/AccountManagement';
 import DeleteAccount from './Components/User/Settings/DeleteAccount';
 import AdmNavbar from './Components/Admin/Navbar';
+import AdmLogin from './Components/Admin/Login';
 function App() {
-  const { user } = useSelector((state) => state.user);
-  console.log(user?.admin)
+  const { user } = useSelector((state) => state.user ||{});
+  console.log(user?.user?.admin)
   return (
    <>
-   <Navbar />
-
+  
+   
+   <Routes>
+    <Route path='/adminlogin' element={<AdmLogin/>}/>
+  </Routes>
    {!user?.admin ?(
     <>
+     <Navbar />
    <Routes>
-
     {!user ?<Route path='/' element={<Slides/>}/>:<Route path='/' element={<Home/>}/>}
     <Route path='/create' element={<Create/>}/>
     <Route path='/explore' element={<Explore/>}/>
@@ -49,11 +53,10 @@ function App() {
     <Route path='/viewboard/:id' element={<ViewBoard/>}/>
     <Route path='/changepass' element={<ChangePassword/>}/>
     <Route path='/close-account' element={<DeleteAccount/>}/>
+
     <Route path="/settings" element={<Settings />}>
     <Route path="editprofile" element={<EditProfile />} />
     <Route path="account-settings" element={<AccountManagement />} /></Route>
-    
-
    </Routes>
    <ToastContainer   
         autoClose={1000}  
@@ -74,6 +77,7 @@ function App() {
         <>
         <AdmNavbar/>
         <Routes>
+          
         </Routes>
         </>
       )}

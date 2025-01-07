@@ -3,7 +3,7 @@ const router = express.Router();
 const userController = require('../Controller/User/userController');
 const postcontroller = require('../Controller/User/postController');
 const savedcontroller = require('../Controller/User/savedController');
-const boardcontroller = require('../Controller/User/boardController');
+const boardcontroller = require('../Controller/User/boardController'); 
 const likecontroller = require('../Controller/User/likeController');
 const commentcontroller = require('../Controller/User/commentController');
 
@@ -14,8 +14,6 @@ const { forgotpass } = require("../Controller/forgotPassword");
 const { resetpass } = require("../Controller/resetPassword");
 const { changePass } = require("../Controller/changePassword");
 const {cancelDeletionOnLogin,deleteAccount,confirmDeletion } = require("../Controller/deleteAccount");
-
- 
 
 router
  .post('/signup',tryCatch(userController.userReg))
