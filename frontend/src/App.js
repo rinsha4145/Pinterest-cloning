@@ -25,6 +25,8 @@ import AccountManagement from './Components/User/Settings/AccountManagement';
 import DeleteAccount from './Components/User/Settings/DeleteAccount';
 import AdmNavbar from './Components/Admin/Navbar';
 import AdmLogin from './Components/Admin/Login';
+import AdminPage from './Components/Admin/Home';
+import Users from './Components/Admin/Users';
 function App() {
   const { user } = useSelector((state) => state.user ||{});
   console.log(user?.admin)
@@ -82,6 +84,9 @@ function App() {
       <>
       <AdmNavbar/>
         <Routes>
+        <Route path="/" element={<AdminPage />} />
+        <Route path="/users" element={<Users />} />
+
 
         </Routes>
       </>
