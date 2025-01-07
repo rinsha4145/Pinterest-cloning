@@ -18,7 +18,7 @@ const {cancelDeletionOnLogin,deleteAccount,confirmDeletion } = require("../Contr
 router
  .post('/signup',tryCatch(userController.userReg))
  .post('/login',tryCatch(userController.userLogin))   
- .post('/logout',userAuthMiddleware,tryCatch(userController.userLogout))
+ .post('/logout',tryCatch(userController.userLogout))
  .get('/me',userAuthMiddleware,tryCatch(userController.profileView))
  .put('/editprofile',userAuthMiddleware,upload.single('profileimage'),tryCatch(userController.editProfile))
  .get('/profile/:id',userAuthMiddleware,tryCatch(userController.userProfile))

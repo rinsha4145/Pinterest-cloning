@@ -27,17 +27,18 @@ import AdmNavbar from './Components/Admin/Navbar';
 import AdmLogin from './Components/Admin/Login';
 function App() {
   const { user } = useSelector((state) => state.user ||{});
-  console.log(user?.user?.admin)
+  console.log(user.admin)
   return (
-   <>
   
-   
+   <>
+   <Navbar />
    <Routes>
-    <Route path='/adminlogin' element={<AdmLogin/>}/>
-  </Routes>
+   <Route path='/' element={<Slides/>}/>
+   <Route path='/adminlogin' element={<AdmLogin/>}/>
+ </Routes>
    {!user?.admin ?(
     <>
-     <Navbar />
+     
    <Routes>
     {!user ?<Route path='/' element={<Slides/>}/>:<Route path='/' element={<Home/>}/>}
     <Route path='/create' element={<Create/>}/>
@@ -75,13 +76,15 @@ function App() {
         </>
       ):(
         <>
-        <AdmNavbar/>
+        
         <Routes>
           
         </Routes>
         </>
       )}
-   </>
+
+   
+ </>
   )
 }
 

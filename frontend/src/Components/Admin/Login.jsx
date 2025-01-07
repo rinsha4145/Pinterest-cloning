@@ -7,10 +7,10 @@ import { useNavigate } from "react-router-dom";
 import {  setUser } from '../Redux/UserSlice';
 
 const AdmLogin = () => {
-      const [datas, setDatas] = useState({email: '',password: ''}); // email and password
-        const [isLoggedIn, setIsLoggedIn] = useState(false); // check if user is logged in
+    const [datas, setDatas] = useState({email: '',password: ''}); // email and password
+    const [isLoggedIn, setIsLoggedIn] = useState(false); // check if user is logged in
       
-      const [errors, setErrors] = useState({}); // error message
+    const [errors, setErrors] = useState({}); // error message
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -56,7 +56,7 @@ const AdmLogin = () => {
   const handleSubmit = handleAsync(async (e) => {
     e.preventDefault();
     if(validateForm()){
-      const response = await axiosInstance.post('/admlogin', {email: datas.email, password: datas.password});
+      const response = await axiosInstance.post('/admin/admlogin', {email: datas.email, password: datas.password});
       console.log('//',response)
       if (response.status === 200) {
         setIsLoggedIn(true);

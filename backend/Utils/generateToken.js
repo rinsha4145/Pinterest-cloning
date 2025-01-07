@@ -1,50 +1,60 @@
-const jwt = require("jsonwebtoken");
+const jwt =require("jsonwebtoken")
+ const generateToken=(user,res)=>{  
+    if(!user.admin){    
+        const token = jwt.sign({ id: user._id,email: user.email },process.env.JWT_KEY,{ expiresIn: '3d' });
+        const refreshToken = jwt.sign({ id: user._id,email: user.email },process.env.JWT_KEY,{ expiresIn: '7d' });
+            
+        // Set cookies for tokens 
+        res.cookie("token", token, {
+            httpOnly: false,
+            secure: true, 
+            sameSite: "none",
+            maxAge: 3 * 24 * 60 * 60 * 1000 
+        });
 
-const generateToken = (user, res) => {
-  if (!user.admin) {
-    // Generate tokens for non-admin users
-    const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_KEY, { expiresIn: '3d' });
-    const refreshToken = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_KEY, { expiresIn: '7d' });
+        res.cookie("refreshtoken", refreshToken, {
+            httpOnly: false,
+            secure: true, 
+            sameSite: "none",
+            maxAge: 7 * 24 * 60 * 60 * 1000 
+        });
 
-    // Set cookies for non-admin tokens
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      maxAge: 3 * 24 * 60 * 60 * 1000, // 3 days
-    });
+        res.cookie("user", user, {
+            httpOnly: false,
+            secure: true, 
+            sameSite: "none",
+            maxAge: 7 * 24 * 60 * 60 * 1000 
+        })
+    }
+        const admtoken = jwt.sign({ id: user._id, admin: true }, process.env.ADM_JWT_KEY, { expiresIn: '30d' });
+        console.log(admtoken)
+        const admrefreshToken = jwt.sign({ id: user._id, admin: true }, process.env.ADM_JWT_KEY, { expiresIn: '7d' });
 
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-    });
+        res.cookie("admin", user, {
+            httpOnly: false,
+            secure: true, 
+            sameSite: "none",
+            maxAge: 7 * 24 * 60 * 60 * 1000 
+        })
 
-    return res.status(200).json({ status: 'success', message: "User logged in successfully" });
-  }
 
-  // Generate tokens for admin users
-  const adminToken = jwt.sign({ id: user._id, admin: true }, process.env.const { generateToken } = require('../../Utils/generateToken');
-  , { expiresIn: '30d' });
-  const adminRefreshToken = jwt.sign({ id: user._id, admin: true }, process.env.ADM_JWT_KEY, { expiresIn: '7d' });
+        res.cookie("admtoken", admtoken, {
+            httpOnly: false, 
+            secure: true, 
+            sameSite: "none",
+            maxAge: 3 * 24 * 60 * 60 * 1000 
+        });
 
-  // Set cookies for admin tokens
-  res.cookie("admtoken", adminToken, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "none",
-    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-  });
+        res.cookie("admrefreshToken", admrefreshToken, {
+            httpOnly: false,
+            secure: true, 
+            sameSite: "none",
+            maxAge: 7 * 24 * 60 * 60 * 1000 
+        })
 
-  res.cookie("admrefreshToken", adminRefreshToken, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "none",
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-  });
 
-  return res.status(200).json({ status: 'success', message: "Admin logged in successfully" });
-};
+        return res.status(200).json({status: 'success', message: "Admin Logged in successfully"  });
 
-module.exports = { generateToken };
+ }
+
+ module.exports = {generateToken}
