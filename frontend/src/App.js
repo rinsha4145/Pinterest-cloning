@@ -23,14 +23,18 @@ import EditProfile from './Components/User/Settings/EditProfile';
 import ChangePassword from './Components/User/Settings/ChangePassword';
 import AccountManagement from './Components/User/Settings/AccountManagement';
 import DeleteAccount from './Components/User/Settings/DeleteAccount';
-
+import AdmNavbar from './Components/Admin/Navbar';
 function App() {
   const { user } = useSelector((state) => state.user);
-  
+  console.log(user?.admin)
   return (
    <>
    <Navbar />
+
+   {!user?.admin ?(
+    <>
    <Routes>
+
     {!user ?<Route path='/' element={<Slides/>}/>:<Route path='/' element={<Home/>}/>}
     <Route path='/create' element={<Create/>}/>
     <Route path='/explore' element={<Explore/>}/>
@@ -45,9 +49,6 @@ function App() {
     <Route path='/viewboard/:id' element={<ViewBoard/>}/>
     <Route path='/changepass' element={<ChangePassword/>}/>
     <Route path='/close-account' element={<DeleteAccount/>}/>
-
-    
-    
     <Route path="/settings" element={<Settings />}>
     <Route path="editprofile" element={<EditProfile />} />
     <Route path="account-settings" element={<AccountManagement />} /></Route>
@@ -68,6 +69,14 @@ function App() {
           wordBreak: 'break-word', // Handles long words gracefully
         }}
         />
+        </>
+      ):(
+        <>
+        <AdmNavbar/>
+        <Routes>
+        </Routes>
+        </>
+      )}
    </>
   )
 }
