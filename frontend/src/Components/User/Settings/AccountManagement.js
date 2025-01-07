@@ -55,7 +55,7 @@ function AccountManagement() {
 
     
         const handleChange = (event) => {
-            const { name, value, type } = event.target;
+            const { name, value } = event.target;
             
             // Update user data state for any input change
             setValue((prevData) => ({
@@ -253,7 +253,7 @@ function AccountManagement() {
         <p className="text-sm text-gray-600">
           Temporarily hide your profile, Pins, and boards.
         </p>
-        <button className="mt-2 px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300" onClick={navigate('/close-account')}>
+        <button className="mt-2 px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300" >
           Deactivate account
         </button>
       </div>
@@ -262,7 +262,7 @@ function AccountManagement() {
         <p className="text-sm text-gray-600">
           Permanently delete your data and everything associated with your account.
         </p>
-        <button className="mt-2 px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">
+        <button className="mt-2 px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300" onClick={()=>navigate('/close-account')}>
           Delete account
         </button>
       </div>

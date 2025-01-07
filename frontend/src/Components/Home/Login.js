@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import handleAsync from '../Utils/HandleAsync';
 import axiosInstance from '../Utils/AxioaInstance';
 import Cookies from 'js-cookie'
@@ -11,14 +11,14 @@ import OutsideClickHandler from 'react-outside-click-handler';
 function Login() {
 
   const [datas, setDatas] = useState({email: '',password: ''}); // email and password
-  const [isLoggedIn, setIsLoggedIn] = useState(false);  // check if user is logged in
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // check if user is logged in
+  const [cancel, setCancel] = useState(false);  
+    // check if user is logged in
   const [errors, setErrors] = useState({}); // error message
 
   const { setIsOpen,isOpen} = useClickHandler()
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   // Validate form
   const validateForm = () => {
     const errors = {};
@@ -35,6 +35,11 @@ function Login() {
     return Object.keys(errors).length === 0;
   }
 
+    
+  
+    
+ 
+
   // Check if user is logged in
   useEffect(() => {
     const userCookie = Cookies.get('user');
@@ -43,7 +48,7 @@ function Login() {
       try {
         const user = JSON.parse(userJson);
         dispatch(setUser(user));
-
+        cancelDeletion(user);
       } catch (error) {
         console.error('Invalid user cookie');
       }
@@ -51,6 +56,19 @@ function Login() {
       console.log('User cookie not found');
     }
   }, [isLoggedIn]);
+
+  const cancelDeletion = async (user) => {
+    console.log(user?.deletionScheduled)
+    if (user?.deletionScheduled!=null) {
+      try {
+        const response = await axiosInstance.post('/cancel-deletion');
+        console.log("message",response.data.message);
+      } catch (error) {
+        console.error('Error canceling deletion:', error);
+      }
+    }
+  };
+  
 
   // Handle change
   const handleChange = (e) => {
@@ -67,6 +85,7 @@ function Login() {
       if (response.status === 200) {
         setIsLoggedIn(true);
         navigate('/'); 
+        
       }
     }
   });

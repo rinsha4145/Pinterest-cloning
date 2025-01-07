@@ -15,6 +15,8 @@ const Home = () => {
   const posts  = useSelector((state) => state.post.post);
   const saved = useSelector((state) => state.save.save);
   const boards = useSelector((state) => state.board.boards);
+  const user = useSelector((state) => state.user.user);
+  console.log(user)
 
   const [isShareMenuVisible, setShareMenuVisible] = useState(false); //visibiliby of ShareMenu 
   const [isBoardMenuVisible, setBoardMenuVisible] = useState(""); //visibiliby of BoardMenu

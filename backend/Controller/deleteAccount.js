@@ -1,8 +1,7 @@
 const nodemailer = require('nodemailer');
-const User = require('../models/User');
+const User = require('../Models/User/userSchema');
 const crypto = require('crypto');
 const cron = require('node-cron');
-
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -14,10 +13,8 @@ const transporter = nodemailer.createTransport({
 
 // Account Deletion Scheduling
 const deleteAccount = async (req, res) => {
-  const { userId } = req.body;
-
   try {
-    const user = await User.findById(userId);
+    const user = await User.findById(req.userId);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -46,8 +43,8 @@ const deleteAccount = async (req, res) => {
       subject: 'Account Deletion Scheduled',
       html: `
         <p>Your account deletion request has been scheduled for ${deletionDate}. If you want to cancel this, please log in before that time.</p>
-        <p>If you want to confirm the deletion of your account, please click the button below:</p>
-        <a href="http://localhost:5000/confirm-deletion/${deletionToken}" style="padding: 10px 20px; background-color: #ff0000; color: white; text-decoration: none; border-radius: 5px; display: inline-block;">Confirm Account Deletion</a>
+        <p>If you want to delete your account right away , please click the button below:</p>
+        <a href="http://localhost:5000/confirm-deletion/${deletionToken}"  style="padding: 10px 20px; background-color: #ff0000; color: white; text-decoration: none; border-radius: 5px; display: inline-block;">Confirm Account Deletion</a>
       `,
     };
 
@@ -59,7 +56,7 @@ const deleteAccount = async (req, res) => {
   }
 };
 
-// Confirm Account Deletion by Clicking Button
+// Confirm Account Deletion by Clicking Button it delete the account right away
 const confirmDeletion = async (req, res) => {
   const { deletionToken } = req.params;
 
@@ -80,10 +77,9 @@ const confirmDeletion = async (req, res) => {
 
 // Cancel Account Deletion on Login
 const cancelDeletionOnLogin = async (req, res) => {
-  const { userId } = req.body;
 
   try {
-    const user = await User.findById(userId);
+    const user = await User.findById(req.userId);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }

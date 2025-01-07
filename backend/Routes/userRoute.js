@@ -13,7 +13,7 @@ const { userAuthMiddleware } = require("../Middleware/authentication");
 const { forgotpass } = require("../Controller/forgotPassword");
 const { resetpass } = require("../Controller/resetPassword");
 const { changePass } = require("../Controller/changePassword");
-const {cancelDeletion,deleteAccount,confirmDeletion } = require("../Controller/deleteAccount");
+const {cancelDeletionOnLogin,deleteAccount,confirmDeletion } = require("../Controller/deleteAccount");
 
  
 
@@ -28,9 +28,9 @@ router
  .post('/forgot-password',tryCatch(forgotpass))
  .post('/reset-password/:id/:token',tryCatch(resetpass))
  .put('/change-password',userAuthMiddleware,tryCatch(changePass))
- .post('/request-deletion',tryCatch(deleteAccount))
- .post('/cancel-deletion',tryCatch(cancelDeletion))
- .post('/confirm-deletion/:deletionToken',tryCatch(confirmDeletion))
+ .post('/request-deletion',userAuthMiddleware,tryCatch(deleteAccount))
+ .post('/cancel-deletion',userAuthMiddleware,tryCatch(cancelDeletionOnLogin))
+ .post('/confirm-deletion/:deletionToken',userAuthMiddleware,tryCatch(confirmDeletion))
 
 
 

@@ -16,7 +16,6 @@ const Slides = () => {
   const navigate=useNavigate()
   const dispatch = useDispatch();
   const  posts  = useSelector((state) => state.post.post);
-  console.log(posts)
   useEffect(() => {
     const fetchData = handleAsync(async () => {
         const response = await axiosInstance.get('/all');

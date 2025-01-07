@@ -195,7 +195,7 @@ const ViewPost = () => {
             <div className="flex justify-between items-center">
               <div className="flex space-x-4">
                 <div className={`flex space-x-2 right-[430px] cursor-pointer ${
-                  data?.likedBy.some((item) => item === user._id)
+                  data?.likedBy.some((item) => item === user?._id)
                     ? 'text-red-500'
                     : 'text-black-400'
                 }`}>
