@@ -12,7 +12,7 @@ import { setBoards } from '../Redux/BoardSlice';
 import OutsideClickHandler from 'react-outside-click-handler';
 
 const Home = () => {
-  const posts  = useSelector((state) => state.post.post);
+  const {posts}  = useSelector((state) => state.post.post);
   const saved = useSelector((state) => state.save.save);
   const boards = useSelector((state) => state.board.boards);
   const user = useSelector((state) => state.user.user);

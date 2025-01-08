@@ -27,6 +27,7 @@ import AdmNavbar from './Components/Admin/Navbar';
 import AdmLogin from './Components/Admin/Login';
 import AdminPage from './Components/Admin/Home';
 import Users from './Components/Admin/Users';
+import Posts from './Components/Admin/Posts';
 function App() {
   const { user } = useSelector((state) => state.user ||{});
   console.log(user?.admin)
@@ -86,6 +87,8 @@ function App() {
         <Routes>
         <Route path="/" element={<AdminPage />} />
         <Route path="/users" element={<Users />} />
+        <Route path="/posts" element={<Posts />} />
+
 
 
         </Routes>

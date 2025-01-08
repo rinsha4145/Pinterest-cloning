@@ -27,7 +27,6 @@ const jwt =require("jsonwebtoken")
         })
     }else{
         const admtoken = jwt.sign({ id: user._id, admin: true }, process.env.ADM_JWT_KEY, { expiresIn: '30d' });
-        console.log(admtoken)
         const admrefreshToken = jwt.sign({ id: user._id, admin: true }, process.env.ADM_JWT_KEY, { expiresIn: '7d' });
 
         res.cookie("admin", user, {

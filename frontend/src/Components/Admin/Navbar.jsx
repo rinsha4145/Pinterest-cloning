@@ -94,13 +94,13 @@ const AdmNavbar = () => {
               {/* Products */}
               <li>
                 <Link
-                  to="/products"
+                  to="/posts"
                   className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-100 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6"
                 >
                   <span className="inline-flex justify-center items-center ml-4">
                     <FaBox className="h-6 w-6" />
                   </span>
-                  <span className="ml-2 text-sm tracking-wide truncate">Products</span>
+                  <span className="ml-2 text-sm tracking-wide truncate">Posts</span>
                 </Link>
               </li>
 
@@ -139,39 +139,32 @@ const AdmNavbar = () => {
         <div className="absolute top-16 left-0 w-full bg-white shadow-md z-50 md:hidden">
           <Link
             to="/"
-            className={`block font-bold px-4 py-2 rounded-full ${
-              activeTab === 'Home' ? 'bg-black text-white' : ''
-            }`}
+            className='block font-bold px-4 py-2 rounded-full '
             onClick={() => {
               setIsMenuOpen(false);
-              setActiveTab('Home');
+              
             }}
           >
-            Home
+            Dashboard
           </Link>
           <Link
-            to="/explore"
-            className={`block font-bold px-4 py-2 rounded-full ${
-              activeTab === 'Explore' ? 'bg-black text-white' : ''
-            }`}
+            to="/users"
+            className='block font-bold px-4 py-2 rounded-full '
             onClick={() => {
               setIsMenuOpen(false);
-              setActiveTab('Explore');
             }}
           >
-            Explore
+            Users
           </Link>
           <Link
-            to="/create"
-            className={`block font-bold px-4 py-2 rounded-full ${
-              activeTab === 'Create' ? 'bg-black text-white' : ''
-            }`}
+            to="/posts"
+            className='block font-bold px-4 py-2 rounded-full '
+
             onClick={() => {
               setIsMenuOpen(false);
-              setActiveTab('Create');
             }}
           >
-            Create
+            Posts
           </Link>
         </div>
       )}
