@@ -120,9 +120,54 @@ const getCommentById = async (req, res) => {
   
 };
 
+const replyToComment = async (req, res) => {
+  try {
+    const { reply } = req.body;
+
+    // Validate reply content
+    if (!reply || reply.trim() === "") {
+      return res.status(400).json({ message: "Reply is required" });
+    }
+
+    // Find the post containing the comment
+    const post = await Posts.findOne({ "comments._id": req.params.commentId });
+
+    if (!post) {
+      return res.status(404).json({ message: "No post found containing this comment" });
+    }
+
+    // Locate the specific comment
+    const comment = post.comments.find(
+      (item) => item._id.toString() === req.params.commentId.toString()
+    );
+
+    if (!comment) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
+
+    // Add the reply to the comment
+    comment.replies.push({
+      user: req.userId, // Assumes `req.userId` contains the authenticated user's ID
+      reply,
+    });
+
+    // Save the updated post
+    await post.save();
+
+    return res.status(200).json({
+      message: "Reply added successfully",
+      post,
+    });
+  } catch (error) {
+    console.error("Error replying to comment:", error);
+    return res.status(500).json({
+      message: "Something went wrong. Please try again later.",
+    });
+  }
+};
 
 
 
 
 
-module.exports = {commentOnPin,deleteComment,editComment,getCommentById};
+module.exports = {commentOnPin,deleteComment,editComment,getCommentById,replyToComment};
