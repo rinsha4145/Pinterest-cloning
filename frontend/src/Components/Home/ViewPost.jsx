@@ -28,6 +28,8 @@ const ViewPost = () => {
   const [editingCommentId, setEditingCommentId] = useState(null); //get the id editing comment
   const [edit,setEdit] = useState(false) //edit comment
   const [commentData, setCommentData] = useState(""); //set the comment 
+  const [showReply, setShowReply] = useState(false); //toggle reply view 
+
   
   const navigate=useNavigate()
   const dispatch = useDispatch()
@@ -374,6 +376,7 @@ const ViewPost = () => {
               </svg>
 
                     </button>
+
                   </div>
                         <div className="mt-2 flex gap-2">
                           <button
@@ -402,53 +405,68 @@ const ViewPost = () => {
                         {comment.comment}
                       </div>
                     )}
+                     <div className="relative">
+  {/* Comment Row */}
+  <div className="flex items-center justify-between">
+    {/* SVG Button */}
+    {comment?.user?._id === user._id && (
+      <div className="flex">
+        <button
+          className="bg-white hover:bg-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+          onClick={() => handleOpen(comment._id)}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2.5}
+            stroke="currentColor"
+            className="h-4 w-4"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+            />
+          </svg>
+        </button>
+      </div>
+    )}
 
-                      {/* Second Row: SVG Button */}
-                      {comment?.user?._id===user._id &&(
-                      <div className="relative"> 
-                  <div className="flex" > {/* Use `onClick` instead of `onclick` */}
-                    <button className="bg-white hover:bg-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
-                    onClick={()=>handleOpen(comment._id)}>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={2.5}
-                        stroke="currentColor"
-                        className="h-4 w-4"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                  
+    {/* Reply Button */}
+    
+<p
+      className="text-xs text-gray-700 hover:underline cursor-pointer"
+      onClick={() => {handleOpen(comment._id); setShowReply(!showReply)}}
+    >
+      Reply
+    </p>
+  </div>
 
-                  {Open && openCommentId === comment._id && (
+  {/* Dropdown for Edit/Delete */}
+  {showReply && openCommentId === comment._id && (
+    <div className="absolute w-38 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+      <div className="border-t border-gray-200">
+        <button
+          className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          onClick={() => editComment(comment._id)}
+        >
+          Edit
+        </button>
+        <button
+          className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          onClick={() => deleteComment(data._id, comment._id)}
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  )}
+</div>
 
-                    <div className="absolute w-38 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
-                      <div className="border-t border-gray-200">
-                        <button
-                          className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          onClick={() => editComment(comment._id) }
-                        >
-                          Edit
-                        </button>
-                        <button
-                          className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          onClick={() =>deleteComment(data._id,comment._id)}
-                        >
-                          Delete
-                        </button>
-                      </div>
                     </div>
-                  )}
-                </div>
-                      )}
-                    </div>
+                    
+
                                   </div>
                                 ))}
                               </div>
