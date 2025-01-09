@@ -15,8 +15,9 @@ router
 .get('/viewuserbyid/:id',adminAuthMiddleware,tryCatch(usercontroller.viewUserById))
 .post('/updateuser/:id',adminAuthMiddleware,tryCatch(usercontroller.blockUser))
 
-.get('/category',adminAuthMiddleware,tryCatch(categorycontroller.getAllCategory))
+.get('/category',tryCatch(categorycontroller.getAllCategory))
 .post('/addcategory',adminAuthMiddleware,tryCatch(categorycontroller.addCategory))
+.delete('/deletecategory/:id',adminAuthMiddleware,tryCatch(categorycontroller.deleteCategory))
 
 
 module.exports = router; 

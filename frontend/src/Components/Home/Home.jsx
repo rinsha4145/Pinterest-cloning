@@ -10,9 +10,11 @@ import BoardPopup from './BoardPopup';
 import {addSavedFolder,removeSavedFolder,setSavedFolders} from '../Redux/SavedSlice'
 import { setBoards } from '../Redux/BoardSlice';
 import OutsideClickHandler from 'react-outside-click-handler';
+import ReportPost from '../Common/ReportPost';
+import { useClickHandler } from '../Context/ClickHandlerContext';
 
 const Home = () => {
-  const {posts}  = useSelector((state) => state.post.post);
+  const posts  = useSelector((state) => state.post.post);
   const saved = useSelector((state) => state.save.save);
   const boards = useSelector((state) => state.board.boards);
   const user = useSelector((state) => state.user.user);
@@ -20,6 +22,9 @@ const Home = () => {
 
   const [isShareMenuVisible, setShareMenuVisible] = useState(false); //visibiliby of ShareMenu 
   const [isBoardMenuVisible, setBoardMenuVisible] = useState(""); //visibiliby of BoardMenu
+  const [open,setOpen]=useState(false) 
+  const {showBoard,setShowBoard} = useClickHandler()
+  
   
   const videoRefs = useRef([]);
 
@@ -54,6 +59,10 @@ const Home = () => {
     setBoardMenuVisible(id); 
   };
 
+  const handle = (post) => {
+    setShowBoard((prev) => !prev);
+    setOpen((prev) => !prev); // Toggle visibility
+  };
   const handleMouseEnter = (videoElement) => {
     if (videoElement) {
       videoElement.muted = false; // Unmute when hovered
@@ -220,7 +229,8 @@ const Home = () => {
               </button>
   
               {/* More Options */}
-              <button className="absolute bottom-2 right-2 bg-white text-black rounded-full p-2 hover:bg-gray-300">
+              <button className="absolute bottom-2 right-2 bg-white text-black rounded-full p-2 hover:bg-gray-300"
+              onClick={()=>setOpen(!open)}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -236,7 +246,7 @@ const Home = () => {
                   />
                 </svg>
               </button>
-  
+              {showBoard&&(<ReportPost id={post._id}/>)}
               {/* Share Menu Popup */}
               {isShareMenuVisible === post._id && (
                 <OutsideClickHandler onOutsideClick={() => setShareMenuVisible(false)}>
@@ -245,11 +255,34 @@ const Home = () => {
                   </div>
                 </OutsideClickHandler>
               )}
+              {open && (
+        <div className="absolute right-0 bottom-[30px] w-38 bg-white border border-gray-200 rounded-lg shadow-lg z-50 ">
+          <p className="px-4 py-2 text-sm text-gray-500">
+            create
+          </p>
+          <div className="border-t border-gray-200">
+            <button
+              className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              onClick={handle}
+            >
+              Report Pin
+            </button>
+            <button
+              className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              // onClick={handleboard}
+            >
+              Board
+            </button>
+            
+          </div>
+        </div>
+      )}
             </div>
           </div>
         </div>
       ))}
     </div>
+  
   </>
   
   );

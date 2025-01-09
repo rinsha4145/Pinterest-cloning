@@ -41,6 +41,7 @@ router
  .delete('/deletepost/:id',userAuthMiddleware,tryCatch(postcontroller.deletePost))
  .get('/postss',userAuthMiddleware,tryCatch(postcontroller.getPostByOwner))
  .get('/getposts/:id',userAuthMiddleware,tryCatch(postcontroller.getCreatedByUserId))
+ .post('/report/:postId',userAuthMiddleware,tryCatch(postcontroller.reportPost))
 
  .get('/saves',userAuthMiddleware,tryCatch(savedcontroller.getSaved))   
  .post('/addtosave',userAuthMiddleware,tryCatch(savedcontroller.addToSaved))  

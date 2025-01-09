@@ -27,9 +27,7 @@ const getbycategory = async (req, res, next) => {
     if (!categoryDoc) {
         return next(new NotFoundError('Category not found.'));
     }
-    if (!posts || posts.length === 0) {
-        return next(new NotFoundError('Posts not found for this category.'));
-    }
+    
     res.json({posts});
 };
 
@@ -162,6 +160,41 @@ const deletePost=async(req,res,next)=>{
     res.status(200).json("Post deleted successfully");
 }
 
+const reportPost = async (req, res, next) => {
+    const { postId } = req.params; // Assuming postId is passed as a parameter
+    const { reason } = req.body;
+    const userId = req.userId; // Assuming userId is available from middleware or request object
 
-module.exports = { getAllPosts, getpostbyid, addPost, getbycategory,postUpdate,deletePost,getPostByOwner,getCreatedByUserId };
+    if (!postId ) {
+        return next(new ValidationError('Post ID are required', 400));
+    }
+    if (!reason) {
+        return next(new ValidationError(' reason are required', 400));
+    }
+
+    try {
+        const post = await Posts.findById(postId);
+
+        if (!post) {
+            return next(new ValidationError('Post not found', 404));
+        }
+
+        const report = {
+            reportedBy: userId,
+            reason: reason,
+        };
+
+        post.reports.push(report);
+        await post.save();
+
+        res.status(200).json({ status: 'success', message: 'Post reported successfully', report });
+    } catch (error) {
+        console.error('Error reporting the post:', error);
+        next(new ValidationError('Error reporting the post', 500));
+    }
+};
+
+
+
+module.exports = { getAllPosts, getpostbyid, addPost, getbycategory,postUpdate,deletePost,getPostByOwner,getCreatedByUserId,reportPost };
  

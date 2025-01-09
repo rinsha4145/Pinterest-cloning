@@ -15,7 +15,6 @@ import {
 const ShareMenu = ({ url,isShareMenuVisible }) => {
   const shareUrl = url; // Replace with your website URL
   const title = "Check out this awesome image!";
-  const [isOpen, setIsOpen] = useState(isShareMenuVisible);
 
   const handleCopyLink = (value) => {
     // Copy the URL to the clipboard
@@ -31,8 +30,7 @@ const ShareMenu = ({ url,isShareMenuVisible }) => {
   return (
     
       <>
-      
-        {isOpen && (
+        {isShareMenuVisible && (
           <div >
             <h3 className="text-lg font-semibold text-gray-700 mb-4">Share</h3>
             <div className="flex flex-wrap gap-3">

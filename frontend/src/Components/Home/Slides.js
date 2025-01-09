@@ -15,12 +15,12 @@ import { setPosts,clearPosts } from '../Redux/PostSlice';
 const Slides = () => {
   const navigate=useNavigate()
   const dispatch = useDispatch();
-  const  {posts}  = useSelector((state) => state.post.post);
+  const  posts = useSelector((state) => state.post.post);
   useEffect(() => {
     const fetchData = handleAsync(async () => {
         const response = await axiosInstance.get('/all');
-        dispatch(setPosts(response.data)); 
-        console.log("userdata",response.data)
+        dispatch(setPosts(response.data.posts)); 
+        console.log("userdata",response.data.posts)
     });
     fetchData();
   }, []);

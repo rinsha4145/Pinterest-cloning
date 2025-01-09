@@ -267,7 +267,7 @@ const ViewPost = () => {
                 />
               </svg>
             )}
-            <div className="ml-4" onClick={() => navigate(`/userpage/${data.owner._id}`)}>
+            <div className="ml-4" onClick={() => navigate(`/userpage/${data?.owner?._id}`)}>
               <h3 className="font-bold">{data?.owner?.firstname}</h3>
               <p className="text-gray-500">{data?.owner?.followers?.length || 0} followers</p>
             </div>

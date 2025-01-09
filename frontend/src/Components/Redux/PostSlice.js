@@ -17,8 +17,10 @@ const postsSlice = createSlice({
       state.post.push(action.payload); // Add a new post to the list
     },
     updateLikedBy: (state, action) => {
-      const { postId, likedBy } = action.payload; // Extract postId and updated likedBy array
-      const postIndex = state.post.findIndex((post) => post.id === postId);
+      const { postId, likedBy } = action.payload; 
+      console.log(state.post);
+// Extract postId and updated likedBy array
+      const postIndex = state.post.findIndex((post) => post._id === postId);
 
       if (postIndex !== -1) {
         state.post[postIndex].likedBy = likedBy; // Update the likedBy field
@@ -26,7 +28,7 @@ const postsSlice = createSlice({
     },
     updateComments: (state, action) => {
       const { postId, comment, type } = action.payload; // Extract postId, comment, and action type
-      const postIndex = state.post.findIndex((post) => post.id === postId);
+      const postIndex = state.post.findIndex((post) => post._id === postId);
 
       if (postIndex !== -1) {
         if (type === 'add') {
@@ -40,7 +42,14 @@ const postsSlice = createSlice({
         }
       }
     },
-    
+    addReportToPost: (state, action) => {
+      const { postId, report } = action.payload; // Extract postId and report
+      const postIndex = state.post.findIndex((post) => post._id === postId);
+
+      if (postIndex !== -1) {
+        state.post[postIndex].reports.push(report); // Assuming 'reports' is an array in the post schema
+      }
+    },
     clearPosts: (state) => {
       state.post = []; // Clear all posts
     },
@@ -48,7 +57,7 @@ const postsSlice = createSlice({
 });
 
 // Export actions to use in the component
-export const { setPosts, addPost, clearPosts,updatePost,updateLikedBy,updateComments } = postsSlice.actions;
+export const { setPosts, addPost, clearPosts,updatePost,updateLikedBy,updateComments,addReportToPost } = postsSlice.actions;
 
 // Export reducer to configure store
 export default postsSlice.reducer;
