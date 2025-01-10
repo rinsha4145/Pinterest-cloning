@@ -219,77 +219,128 @@ const Navbar = () => {
  
  
     ):(
-      <>
-      <nav className={` flex flex-wrap justify-between items-center px-6 py-4 z-50 fixed top-0 left-0 right-0 bg-white ${isOpen || showSignup ? " bg-black bg-opacity-50 pointer-events-none" : ""}`}>
-        {/* Left Section - Logo */} 
-        <div className="flex items-center space-x-3">
-        <div className="flex items-center space-x-2">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/0/08/Pinterest-logo.png"
-            alt="Logo"
-            className="w-8 h-8  cursor-pointer"
-            onClick={()=>navigate('/')}
+          <>
+        <nav
+  className={`flex flex-wrap justify-between items-center px-6 py-4 z-50 fixed top-0 left-0 right-0 bg-white transition-all duration-300 ${
+    isOpen || showSignup ? "bg-black bg-opacity-50 pointer-events-none" : ""
+  }`}
+>
+  {/* Left Section - Logo */}
+  <div className="flex items-center space-x-3">
+    <div className="flex items-center space-x-2">
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/0/08/Pinterest-logo.png"
+        alt="Logo"
+        className="w-8 h-8 cursor-pointer"
+        onClick={() => navigate("/")}
+      />
+      <span
+        className="text-xl font-bold text-red-600 cursor-pointer"
+        onClick={() => navigate("/")}
+      >
+        Pinterest
+      </span>
+    </div>
+  </div>
+
+  {/* Hamburger Menu for Smaller Screens */}
+  <div className="md:hidden">
+    <button
+      className="focus:outline-none"
+      onClick={() => setIsMenuOpen((prev) => !prev)}
+    >
+      {isMenuOpen ? (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          className="w-6 h-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M6 18L18 6M6 6l12 12"
           />
-            
-            <span className="text-xl font-bold text-red-600 cursor-pointer" onClick={()=>navigate('/')}>Pinterest</span>
-        </div>
+        </svg>
+      ) : (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          className="w-6 h-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M4 6h16M4 12h16M4 18h16"
+          />
+        </svg>
+      )}
+    </button>
+  </div>
+  <OutsideClickHandler  onOutsideClick={() => setIsMenuOpen(false) }>
+<div
+    className={`${
+      isMenuOpen ? "flex" : "hidden"
+    } flex-col md:flex md:flex-row md:items-center space-y-3 md:space-y-0 md:space-x-6 font-medium font-sans font-semibold text-center`}
+  >
+    <Link to="/explore" className="hover:text-black">
+      Today
+    </Link>
+    <Link to="#watch" className="hover:text-black">
+      Watch
+    </Link>
+    <Link to="#explore" className="hover:text-black">
+      Explore
+    </Link>
   
-        {/* Hamburger Menu for Smaller Screens */}
-        <div className="block md:hidden">
-          <button className="focus:outline-none">
-            {/* Use a Hamburger icon (or a menu SVG) */}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          </button>
-        </div>
+
+  {/* Right Section - Links and Buttons */}
   
-        {/* Middle Section - Links */}
-        <div className="hidden mr[750px] md:flex md:space-x-6 font-sm font-sans font-semibold ">
-          <Link to="/explore" className="hover:text-black ">
-            Today
-          </Link>
-          <Link to="#watch" className="hover:text-black">
-            Watch
-          </Link>
-          <Link to="#explore" className="hover:text-black">
-            Explore
-          </Link>
-        </div>
-        </div>
+    <Link
+      to="https://help.pinterest.com/en/guide/all-about-pinterest"
+      className="hover:text-black text-gray-800"
+    >
+      About
+    </Link>
+    <Link
+      to="https://business.pinterest.com/en-in/"
+      className="hover:text-black text-gray-800"
+    >
+      Business
+    </Link>
+    <Link
+      to="https://newsroom.pinterest.com/?utm_campaign=pinterest_homepage_blogicon_all_evergreen&utm_medium=organic-pinterest&utm_source=organicpins_pinsite_homepageicon"
+      className="hover:text-black text-gray-800"
+    >
+      Blog
+    </Link>
+
+    <button
+      className="bg-red-600 text-white px-4 py-2 rounded-full hover:bg-red-700"
+      onClick={() => setIsOpen(true)}
+    >
+      Log in
+    </button>
+
+    <button
+      className="bg-gray-200 px-4 py-2 rounded-full hover:bg-gray-300"
+      onClick={() => setShowSignup(true)}
+    >
+      Sign up
+    </button>
+  </div>
+  </OutsideClickHandler>
   
-        {/* Right Section - Links and Buttons */}
-        <div className="hidden md:flex md:space-x-5 items-center font-sm font-sans font-semibold">
-          <Link to="https://help.pinterest.com/en/guide/all-about-pinterest" className="hover:text-black text-gray-800">
-            About
-          </Link>
-          <Link to="https://business.pinterest.com/en-in/" className="hover:text-black text-gray-800">
-            Business
-          </Link>
-          <Link to="https://newsroom.pinterest.com/?utm_campaign=pinterest_homepage_blogicon_all_evergreen&utm_medium=organic-pinterest&utm_source=organicpins_pinsite_homepageicon" className="hover:text-black text-gray-800">
-            Blog
-          </Link>
-          
-          <button className="bg-red-600 text-white px-4 py-2 rounded-full hover:bg-red-700"  onClick={() => setIsOpen(true)}>
-            Log in
-          </button>
-         
-          <button className="bg-gray-200 px-4 py-2 rounded-full hover:bg-gray-300" onClick={() => setShowSignup(true)}  >
-            Sign up
-          </button>
-        </div>
-      </nav>
+</nav>
+  {/* Middle Section - Links */}
+  
+
+
       
       </>
     

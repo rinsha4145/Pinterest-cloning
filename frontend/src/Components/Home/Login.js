@@ -78,7 +78,7 @@ function Login() {
       if (response.status === 200) {
         setIsLoggedIn(true);
         navigate('/'); 
-        
+       
       }
     }
   });

@@ -3,6 +3,10 @@ const router = express.Router();
 const admincontroller = require('../Controller/Admin/adminController');
 const categorycontroller = require('../Controller/Admin/categoryController');
 const usercontroller = require('../Controller/Admin/userController');
+const reportcontroller = require('../Controller/Admin/reportController');
+const postcontroller = require('../Controller/Admin/postController');
+
+
 
 const tryCatch=require('../Middleware/tryCatch');
 const { adminAuthMiddleware } = require("../Middleware/authentication");
@@ -19,5 +23,8 @@ router
 .post('/addcategory',adminAuthMiddleware,tryCatch(categorycontroller.addCategory))
 .delete('/deletecategory/:id',adminAuthMiddleware,tryCatch(categorycontroller.deleteCategory))
 
+.get('/viewreports',adminAuthMiddleware,tryCatch(reportcontroller.getReports))
+
+.delete('/deletepost/:id',adminAuthMiddleware,tryCatch(postcontroller.deletePost))
 
 module.exports = router; 

@@ -30,6 +30,7 @@ import Users from './Components/Admin/Users';
 import Posts from './Components/Admin/Posts';
 import ReportPost from './Components/Common/ReportPost';
 import ReportedPosts from './Components/Admin/Report';
+import Report from './Components/Admin/Report';
 function App() {
   const { user } = useSelector((state) => state.user ||{});
   console.log(user?.admin)
@@ -90,7 +91,9 @@ function App() {
         <Route path="/" element={<AdminPage />} />
         <Route path="/users" element={<Users />} />
         <Route path="/posts" element={<Posts />} />
-        <Route path="/reportedposts" element={<ReportedPosts />} />
+        {/* <Route path="/reportedposts" element={<ReportedPosts />} /> */}
+        <Route path="/reports" element={< Report/>} />
+
 
 
 

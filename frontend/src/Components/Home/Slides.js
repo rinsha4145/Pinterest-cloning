@@ -265,43 +265,72 @@ const Slides = () => {
 
       
     </section>
-    <section id="food" className="h-[100vh] w-[100%]">
-    <div className="flex justify-center items-center h-screen bg-custom-yellow font-sans" >
-  <div className="rounded-lg  w-full flex flex-col md:flex-row items-center">
-    <div className="ml-[0px] mt-3">
-      <img src="https://media.assettype.com/cdomagazine%2F2024-07%2Fc28cd648-625d-41df-b67d-01bc0f47eb54%2FPinterest.png?w=1024&auto=format%2Ccompress&fit=max" alt="Easy Chicken Dinner" className="rounded-lg  w-[2100px] h-[610px] h-auto object-cover" />
+    <section id="food" className="h-[100vh] w-full">
+  <div className="flex justify-center items-center h-screen bg-custom-yellow font-sans">
+    <div className="rounded-lg w-full flex flex-col md:flex-row items-center">
+      <div className="w-full md:w-1/2 p-4">
+        <img
+          src="https://media.assettype.com/cdomagazine%2F2024-07%2Fc28cd648-625d-41df-b67d-01bc0f47eb54%2FPinterest.png?w=1024&auto=format%2Ccompress&fit=max"
+          alt="Easy Chicken Dinner"
+          className="rounded-lg w-full h-auto object-cover"
+        />
+      </div>
+      <div className="w-full md:w-1/2 text-center md:text-left p-4">
+        <h2 className="text-3xl md:text-5xl font-bold text-pink-700 pb-6">
+          Search for an idea
+        </h2>
+        <p className="text-pink-700 text-lg md:text-2xl mb-6">
+          What do you want to try next? Think
+          <br />
+          of something you're into—like "easy
+          <br />
+          chicken dinner"—and see what you
+          <br />
+          find.
+        </p>
+        <button
+          className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full mt-6"
+          onClick={() => navigate('/category/Food')}
+        >
+          Explore
+        </button>
+      </div>
     </div>
-    <div className="md:w-3/4 md:ml-1 -4 mr-[100px] pb-[100px] md:mt-0  ">
-      <h2 className="text-3xl font-bold text-pink-700 pt-[100px]  pb-10 text-[55px]">Search for an idea</h2>
-      <p className="text-pink-700 text-2xl text-center">
-        What do you want to try next? Think<br/> of something you're into—like "easy<br/> chicken dinner"—and see what you<br/> find.
+  </div>
+</section>
+<section id="fur" className="h-[100vh] w-full bg-[#dafff6]">
+  <div className="flex flex-col md:flex-row h-full">
+    {/* Image Section */}
+    <div className="w-full md:w-1/2 h-[50vh] md:h-full overflow-hidden">
+      <img
+        src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW50ZXJpb3IlMjBkZXNpZ258ZW58MHx8MHx8fDA%3D"
+        alt="Lip shade"
+        className="w-full h-full object-cover"
+      />
+    </div>
+    {/* Content Section */}
+    <div className="w-full md:w-1/2 flex flex-col justify-center items-center md:items-start text-center md:text-left p-6 md:p-12">
+      <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+        See it, make it, <br /> try it, do it
+      </h2>
+      <p className="text-lg sm:text-xl md:text-2xl mb-6">
+        The best part of Pinterest is discovering
+        <br />
+        new things and ideas from people
+        <br />
+        around the world.
       </p>
-      <button className="bg-red-600 ml-[200px] hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full mt-6" onClick={()=>navigate('/category/Food')}>
+      <button
+        className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-full"
+        onClick={() => navigate('/category/Home')}
+      >
         Explore
       </button>
     </div>
   </div>
-</div>
 </section>
-<section id="fur" className="h-[100vh] w-[100%]" style={{backgroundColor:"#dafff6"}}>
-<div className="flex  h-screen">
-  <div className="grid grid-cols-2 ">
-    <div className="  overflow-hidden w-[800px] h-[100vh]">
-      <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW50ZXJpb3IlMjBkZXNpZ258ZW58MHx8MHx8fDA%3D" alt="Lip shade" className="w-full h-full object-cover" />
-      {/* <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white p-4">
-        <h3 className="text-lg  font-bold">How to find the perfect lip shade for any occasion</h3>
-      </div> */}
-    </div>
-    <div className="flex justify-center items-center text-red text-white p-8 rounded-lg flex flex-col items-start">
-      <h2 className=" text-center text-red-700 text-6xl font-bold mb-4">See it, make it,<br/> try it, do it</h2>
-      <p className=" text-center text-2xl text-red-700 mb-6">The best part of Pinterest is discovering<br/> new things and ideas from people<br/> around the world.</p>
-      <button className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-full" onClick={()=>navigate('/category/Home')}>
-        Explore
-      </button>
-    </div>
-  </div>
-</div>
-</section>
+
+
 <section 
   id="shop"
   className="h-[100vh] w-[100%]">
