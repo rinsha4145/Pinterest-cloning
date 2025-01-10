@@ -26,6 +26,19 @@ const postsSlice = createSlice({
         state.post[postIndex].likedBy = likedBy; // Update the likedBy field
       }
     },
+    updatePost: (state, action) => {
+      const { postId, updatedData } = action.payload;
+      const postIndex = state.post.findIndex((post) => post._id === postId);
+    
+      if (postIndex !== -1) {
+        state.post[postIndex] = { ...state.post[postIndex], ...updatedData };
+      }
+    },    
+    deletePost: (state, action) => {
+      const postId = action.payload;
+      state.post = state.post.filter((post) => post._id !== postId);
+    }
+,    
     updateComments: (state, action) => {
       const { postId, comment, type } = action.payload; // Extract postId, comment, and action type
       const postIndex = state.post.findIndex((post) => post._id === postId);
@@ -57,7 +70,7 @@ const postsSlice = createSlice({
 });
 
 // Export actions to use in the component
-export const { setPosts, addPost, clearPosts,updatePost,updateLikedBy,updateComments,addReportToPost } = postsSlice.actions;
+export const { setPosts, addPost, clearPosts,updatePost,deletePost,updateLikedBy,updateComments,addReportToPost, } = postsSlice.actions;
 
 // Export reducer to configure store
 export default postsSlice.reducer;

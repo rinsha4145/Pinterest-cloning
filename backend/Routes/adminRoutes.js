@@ -24,6 +24,7 @@ router
 .delete('/deletecategory/:id',adminAuthMiddleware,tryCatch(categorycontroller.deleteCategory))
 
 .get('/viewreports',adminAuthMiddleware,tryCatch(reportcontroller.getReports))
+.post('/dismissreports/:id',adminAuthMiddleware,tryCatch(reportcontroller.dismissReports))
 
 .delete('/deletepost/:id',adminAuthMiddleware,tryCatch(postcontroller.deletePost))
 

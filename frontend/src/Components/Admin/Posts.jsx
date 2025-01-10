@@ -45,12 +45,14 @@ function Posts() {
       try {
         const response = await axiosInstance.get(`/posts/${selectedCategory}`);
         setFilteredData(response.data.posts);
+      
         setCurrentPage(1); // Reset to the first page when category changes
       } catch (error) {
         console.error('Error fetching category products:', error);
       }
     }
   };
+  
 
   const handleDelete = handleAsync(async (id) => {
     if (window.confirm(`Are you sure you want to delete the product with ID ${id}?`)) {
@@ -115,8 +117,9 @@ function Posts() {
           id="category-filter"
           value={selectedCategory}
           onChange={handleCategoryChange}
-          className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-        >
+         className="focus:outline-none px-4 py-2.5 rounded-lg shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] placeholder-gray-400 text-gray-900 text-base font-normal leading-relaxed border border-gray-300 justify-start items-center gap-2 inline-flex
+          h-12 lg:w-64 w-full ">
+        
           {categories.map((category) => (
             <option key={category._id} value={category.name}>
               {category.name}

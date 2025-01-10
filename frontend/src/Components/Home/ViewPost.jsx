@@ -28,8 +28,6 @@ const ViewPost = () => {
   const [editingCommentId, setEditingCommentId] = useState(null); //get the id editing comment
   const [edit,setEdit] = useState(false) //edit comment
   const [commentData, setCommentData] = useState(""); //set the comment 
-  const [showReply, setShowReply] = useState(false); //toggle reply view 
-
   
   const navigate=useNavigate()
   const dispatch = useDispatch()
@@ -434,17 +432,16 @@ const ViewPost = () => {
     )}
 
     {/* Reply Button */}
-    
-<p
-      className="text-xs text-gray-700 hover:underline cursor-pointer"
-      onClick={() => setShowReply(!showReply)}
+    <p
+      className="text-sm text-gray-700 hover:underline cursor-pointer"
+      // onClick={() => handleReply(comment._id)}
     >
       Reply
     </p>
   </div>
 
   {/* Dropdown for Edit/Delete */}
-  {showReply && openCommentId === comment._id && (
+  {Open && openCommentId === comment._id && (
     <div className="absolute w-38 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
       <div className="border-t border-gray-200">
         <button
