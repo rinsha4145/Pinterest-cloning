@@ -6,8 +6,9 @@ const mongoose = require("mongoose");
 
 // Get all posts
 const getAllPosts = async (req, res, next) => {
-        const posts = await Posts.find().populate("category") // Fetch posts without authentication checks
-        res.status(200).json({posts});
+        const posts = await Posts.find().populate("category")
+        const totalPosts = await Posts.countDocuments(); // Fetch posts without authentication checks
+        res.status(200).json({posts,totalPosts});
 };
 
 // Get post by ID

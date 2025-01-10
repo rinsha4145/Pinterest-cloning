@@ -15,7 +15,7 @@ const allUsers=async(req,res,next)=>{
 
 //get a specific user by id
 const viewUserById=async(req,res,next)=>{
-    const userbyid=await User.findById(req.params.id)
+    const userbyid=await User.findById(req.params.id).select('-password');
     if(!userbyid){
         return next(new CustomError('user with this Id is not found', 404))
     }

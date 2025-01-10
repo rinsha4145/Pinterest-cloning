@@ -15,6 +15,7 @@ const dispatch = useDispatch();
       const response = await axiosInstance.get("/admin/viewreports");
       console.log(response.data.reports);
       setReportedPosts(response.data.reports);
+      setFilteredData(response.data.reports);
     } catch (error) {
       console.error("Error fetching reported posts:", error);
     }
@@ -64,7 +65,7 @@ const handleDismissReport = async (postId) => {
 
     switch (timeFrame) {
       case '1': // All Reports
-        filteredReports =reportedPosts;
+      setFilteredData(reportedPosts);
         break;
       case '2': // Today
         filteredReports =reportedPosts.filter(report => {

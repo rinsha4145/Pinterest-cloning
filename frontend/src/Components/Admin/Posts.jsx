@@ -217,7 +217,7 @@ function Posts() {
                   <td className="px-4 py-2 text-center">
                     <button
                       className="text-sm bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-400"
-                      onClick={() => navigate(`/ViewProductDetails/${post._id}`)}
+                      onClick={() => navigate(`/viewpostdetails/${post._id}`)}
                     >
                       View
                     </button>

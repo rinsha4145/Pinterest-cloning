@@ -22,10 +22,15 @@ router
 .get('/category',tryCatch(categorycontroller.getAllCategory))
 .post('/addcategory',adminAuthMiddleware,tryCatch(categorycontroller.addCategory))
 .delete('/deletecategory/:id',adminAuthMiddleware,tryCatch(categorycontroller.deleteCategory))
+.get('/categorybyid/:id',tryCatch(categorycontroller.getCategoryById))
+.put('/updatecategory/:id',tryCatch(categorycontroller.updateCategory))
+
+
 
 .get('/viewreports',adminAuthMiddleware,tryCatch(reportcontroller.getReports))
 .post('/dismissreports/:id',adminAuthMiddleware,tryCatch(reportcontroller.dismissReports))
 
 .delete('/deletepost/:id',adminAuthMiddleware,tryCatch(postcontroller.deletePost))
+.get('/pop',adminAuthMiddleware,tryCatch(postcontroller.getPostsByDate))
 
 module.exports = router; 

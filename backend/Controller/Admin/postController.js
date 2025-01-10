@@ -7,6 +7,27 @@ const deletePost = async (req, res) => {
       }
       res.status(200).json({ message: 'Post deleted successfully', deletedPost });  
   };
+
+  const getPostsByDate = async (req,res) => {
+    
+
+      const now = new Date();
+
+    // Define date ranges
+    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const startOfWeek = new Date(startOfToday);
+    startOfWeek.setDate(startOfToday.getDate() - startOfToday.getDay()); // Start of the current week (Sunday)
+
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1); // Start of the current month
+
+    // Query posts based on `updatedAt`
+    const postsToday = await Post.find({ createdAt: { $gte: startOfToday } });
+    const postsThisWeek = await Post.find({ createdAt: { $gte: startOfWeek } });
+    const postsThisMonth = await Post.find({ createdAt: { $gte: startOfMonth } });
+
+    res.json({today: postsToday, thisWeek: postsThisWeek, thisMonth: postsThisMonth});
+    
+  };
   
-  module.exports = {deletePost};
+  module.exports = {deletePost,getPostsByDate};
   
