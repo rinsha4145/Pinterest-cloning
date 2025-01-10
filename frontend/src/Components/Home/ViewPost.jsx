@@ -437,7 +437,7 @@ const ViewPost = () => {
     
 <p
       className="text-xs text-gray-700 hover:underline cursor-pointer"
-      onClick={() => {handleOpen(comment._id); setShowReply(!showReply)}}
+      onClick={() => setShowReply(!showReply)}
     >
       Reply
     </p>
