@@ -61,7 +61,9 @@ const ViewPost = () => {
   //open the edit and delete view of a comment
   const handleOpen = (id) => {
     if(id){
+      console.log(id)
     setOpenCommentId((prevId) => (prevId === id ? null : id));
+    console.log(openCommentId)
     setOpen((prev) => !prev); 
     fetchComment(id)
     
@@ -271,7 +273,7 @@ const ViewPost = () => {
               <h3 className="font-bold">{data?.owner?.firstname}</h3>
               <p className="text-gray-500">{data?.owner?.followers?.length || 0} followers</p>
             </div>
-            {data?.owner._id !== user._id && (
+            {data?.owner?._id !== user?._id && (
               <>
                 {data?.owner?.followers?.some((follow) => follow === user._id) ? (
                   <button

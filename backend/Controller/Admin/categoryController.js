@@ -70,16 +70,17 @@ const getCategoryById = async (req, res, next) => {
 
 //update category
 const updateCategory = async (req, res, next) => {
-    const { id } = req.params; // Extract the category ID from request parameters
+    const { id } = req.params;
+    console.log(id) // Extract the category ID from request parameters
     const { error, value } = validateCategory.validate(req.body);
+    console.log(value)
     if (error) {
         return next(new ValidationError(error.details[0].message)); 
     }
 
-    try {
         // Find the category by ID
         const category = await Category.findById(id);
-
+        console.log(category)
         // If category does not exist, throw a NotFoundError
         if (!category) {
             return next(new NotFoundError("Category not found."));
@@ -89,9 +90,7 @@ const updateCategory = async (req, res, next) => {
         const updatedCategory = await Category.findByIdAndUpdate(id, value, { new: true });
 
         res.status(200).json({ status: "success", message: "Category updated successfully", updatedCategory });
-    } catch (error) {
-        // Pass any errors to the error-handling middleware
-        next(error);
-    }
+   
 };
 module.exports = {getAllCategory,addCategory,deleteCategory,getCategoryById,updateCategory};
+   

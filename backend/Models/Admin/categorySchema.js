@@ -9,7 +9,7 @@ const categorySchema = new Schema({
     required: true,
     unique: true
   },
-}); // Automatically adds createdAt and updatedAt
+}); 
 
 // Create and export the model
 module.exports = mongoose.model("Category", categorySchema);

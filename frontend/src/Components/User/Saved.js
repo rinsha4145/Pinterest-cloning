@@ -80,14 +80,10 @@ function Saved({id}) {
   
   const handleSubmit = async (board) => {
     setViewEditBoard(false);
-    console.log('Original board:', board);
-    console.log('Edited board data:', boardData);
   
     const updatedData = {};
     Object.keys(boardData).forEach((key) => {
-      if (boardData[key] && boardData[key] !== board[key]) {
         updatedData[key] = boardData[key];
-      }
     });
   
     try {
@@ -95,10 +91,8 @@ function Saved({id}) {
       if (response.status >= 200 && response.status < 300) {
         console.log(response.data.board);
   
-        // Update Redux state
         dispatch(updateBoard(response.data.board));
   
-        // Update local state
         setBoards((prevBoards) =>
           prevBoards.map((b) =>
             b._id === response.data.board._id ? response.data.board : b

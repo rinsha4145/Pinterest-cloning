@@ -121,7 +121,7 @@ const AdmLogin = () => {
                 value={datas.email}
                 onChange={handleChange}
                 placeholder="Email"
-                className="w-full px-4 py-2 text-sm border border-gray-300 rounded-md text-gray-200 focus:ring-orange-500 focus:border-orange-500"
+                className="w-full px-4 py-2 text-sm border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
               />
                 {errors.email && <p className="ml-10 text-red-500 text-xs">{errors.email}</p>}
 
@@ -139,7 +139,7 @@ const AdmLogin = () => {
                 name="password"
                 value={datas.password}
                 onChange={handleChange}
-                className="w-full px-4 py-2 text-sm  border border-gray-300 rounded-md text-gray-200 focus:ring-orange-500 focus:border-orange-500"
+                className="w-full px-4 py-2 text-sm  border border-gray-300 rounded-md  focus:ring-orange-500 focus:border-orange-500"
               />
             {errors.password && <p className="ml-10 text-red-500 text-xs">{errors.password}</p>}
 

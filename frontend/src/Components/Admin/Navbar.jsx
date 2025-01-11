@@ -26,6 +26,8 @@ const AdmNavbar = () => {
     if (response.status >= 200 && response.status < 300) {
       toast.success('Admin Logout successful', response.data);
       navigate('/');
+      setIsMenuOpen(false);
+
     } else {
       throw new Error(response.data.message || 'An error occurred');
     }
@@ -165,6 +167,22 @@ const AdmNavbar = () => {
             }}
           >
             Posts
+          </Link>
+          <Link
+            to="/reports"
+            className='block font-bold px-4 py-2 rounded-full '
+
+            onClick={() => {
+              setIsMenuOpen(false);
+            }}
+          >
+            Reports
+          </Link>
+          <Link
+            className='block font-bold px-4 py-2 rounded-full '
+            onClick={ handleAdminLogout}
+          >
+            Logout
           </Link>
         </div>
       )}
