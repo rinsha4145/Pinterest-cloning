@@ -92,7 +92,6 @@ function App() {
         <Route path="/" element={<AdminPage />} />
         <Route path="/users" element={<Users />} />
         <Route path="/posts" element={<Posts />} />
-        {/* <Route path="/reportedposts" element={<ReportedPosts />} /> */}
         <Route path="/reports" element={< Report/>} />
         <Route path="/view/:id" element={< ViewUser/>} />
         <Route path="/viewpostdetails/:id" element={< ViewPostDetails/>} />
