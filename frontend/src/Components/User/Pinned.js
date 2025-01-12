@@ -1,7 +1,7 @@
 import React,{ useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import '../Home/Home.css'
-import ShareMenu from '../User/ShareMenu';
+import ShareMenu from '../Common/ShareMenu';
 import { useDispatch, useSelector } from 'react-redux';
 import axiosInstance from '../Utils/AxioaInstance';
 import handleAsync from '../Utils/HandleAsync';

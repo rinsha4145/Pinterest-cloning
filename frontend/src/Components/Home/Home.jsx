@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import './Home.css' 
 import axiosInstance from '../Utils/AxioaInstance';
 import handleAsync from '../Utils/HandleAsync';
-import ShareMenu from '../User/ShareMenu';
-import BoardPopup from './BoardPopup';
+import ShareMenu from '../Common/ShareMenu';
+import BoardPopup from '../Common/BoardPopup';
 import {addSavedFolder,removeSavedFolder,setSavedFolders} from '../Redux/SavedSlice'
 import { setBoards } from '../Redux/BoardSlice';
 import OutsideClickHandler from 'react-outside-click-handler';
@@ -17,8 +17,6 @@ const Home = () => {
   const posts  = useSelector((state) => state.post.post);
   const saved = useSelector((state) => state.save.save);
   const boards = useSelector((state) => state.board.boards);
-  const user = useSelector((state) => state.user.user);
-  console.log(user)
 
   const [isShareMenuVisible, setShareMenuVisible] = useState(false); //visibiliby of ShareMenu 
   const [isBoardMenuVisible, setBoardMenuVisible] = useState(""); //visibiliby of BoardMenu
@@ -136,8 +134,10 @@ const Home = () => {
               {boards?.some((board) =>
                 board.posts?.some((p) => p._id === post?._id)
               ) ? (
-                <p
-                  className="absolute top-2 left-3 text-lg hover:underline"
+                <div
+                  className="absolute top-2 left-2 hover:bg-black bg-transparent border-white rounded-full px-3 py-3 group-hover:bg-opacity-50 opacity-70 hover:opacity-100 transition-opacity duration-300"
+                >
+                 <button className="text-base font-semibold text-white flex items-center space-x-2"
                   onClick={() =>
                     navigate(
                       `/viewboard/${boards.find((board) =>
@@ -149,14 +149,19 @@ const Home = () => {
                   {boards.find((board) =>
                     board.posts?.some((p) => p._id === post?._id)
                   )?.name}
-                </p>
+                </button>
+                </div>
               ) : saved?.some((item) => item._id === post?._id) ? (
-                <p
-                  className="absolute top-2 left-3 text-lg hover:underline"
+                <div
+                  className="absolute top-2 left-2 hover:bg-black bg-transparent border-white rounded-full px-3 py-3 group-hover:bg-opacity-50 opacity-70 hover:opacity-100 transition-opacity duration-300"
+                  
+                >
+                 <button className="text-base font-semibold text-white flex items-center space-x-2"
                   onClick={() => navigate('/pin')}
                 >
                   Profile
-                </p>
+                </button>
+                </div>
               ) : (
                 <div
                   className="absolute top-2 left-2 hover:bg-black bg-transparent border-white rounded-full px-2 py-3 group-hover:bg-opacity-50 opacity-70 hover:opacity-100 transition-opacity duration-300"

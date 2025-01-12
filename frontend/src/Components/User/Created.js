@@ -3,11 +3,11 @@ import handleAsync from '../Utils/HandleAsync';
 import axiosInstance from '../Utils/AxioaInstance';
 import { useNavigate } from 'react-router-dom';
 import '../Home/Home.css'
-import ShareMenu from './ShareMenu';
+import ShareMenu from '../Common/ShareMenu';
 import { useDispatch, useSelector } from 'react-redux';
 import { setBoards } from '../Redux/BoardSlice';
 import {addSavedFolder,removeSavedFolder,setSavedFolders} from '../Redux/SavedSlice'
-import BoardPopup from '../Home/BoardPopup';
+import BoardPopup from '../Common/BoardPopup';
 import UpdatePost from './UpdatePost';
 import OutsideClickHandler from 'react-outside-click-handler';
 

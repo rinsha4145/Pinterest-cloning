@@ -1,22 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import handleAsync from '../Utils/HandleAsync';
 import axiosInstance from '../Utils/AxioaInstance';
-import { useNavigate, useParams } from 'react-router-dom';
-import ShareMenu from './ShareMenu';
-import { updateBoard,deleteBoard } from '../Redux/BoardSlice';
+import { useParams } from 'react-router-dom';
+import { updateBoard } from '../Redux/BoardSlice';
 import { useDispatch } from 'react-redux';
 
 
 function ViewBoard() {
     const {id}=useParams()
     const [data, setData] = useState(null);   // State to store fetched data
-    const [isShareMenuVisible, setShareMenuVisible] = useState(false);
     const dispatch = useDispatch();
 
-    const handleShareClick = (post) => {
-        setShareMenuVisible((prev) => !prev); // Toggle visibility
-      };
-    
         const fetchData = async () => {
             const response = await axiosInstance.get(`/viewbyid/${id}`);
             setData(response.data.board);

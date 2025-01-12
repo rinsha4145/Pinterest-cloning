@@ -11,7 +11,7 @@ cloudinary.config({
 const storage =new CloudinaryStorage({ 
     cloudinary:cloudinary, 
     params:{
-        folder:"products",
+        folder:"Pinterest",
         allowed_formats: ['jpg', 'png', 'jpeg', 'mp4', 'mov', 'avi', 'mkv'],
     },    
 })

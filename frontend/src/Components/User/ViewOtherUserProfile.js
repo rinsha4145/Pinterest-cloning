@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 import handleAsync from '../Utils/HandleAsync';
 import axiosInstance from '../Utils/AxioaInstance';
-import ShareMenu from './ShareMenu';
+import ShareMenu from '../Common/ShareMenu';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {addSavedFolder,removeSavedFolder,setSavedFolders} from '../Redux/SavedSlice'
-import BoardPopup from '../Home/BoardPopup';
+import BoardPopup from '../Common/BoardPopup';
 import UpdatePost from './UpdatePost';
 import OutsideClickHandler from 'react-outside-click-handler';
 function ViewOtherUserProfile() {

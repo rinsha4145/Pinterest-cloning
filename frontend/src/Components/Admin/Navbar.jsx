@@ -6,6 +6,7 @@ import handleAsync from '../Utils/HandleAsync';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../Redux/UserSlice';
+import OutsideClickHandler from 'react-outside-click-handler';
 const AdmNavbar = () => {
   const { user } = useSelector((state) => state.user);
   const [isOpen, setIsOpen] = useState(false);
@@ -36,16 +37,11 @@ const AdmNavbar = () => {
   return (
     
    <>
-      {/* Mobile Menu Button */}
-      <div className="md:hidden flex items-center justify-end p-4">
-        <button onClick={toggleMenu} className="text-gray-600 hover:text-gray-800">
-          <FaBars className="h-6 w-6" />
-        </button>
-      </div>
+      
 
       {/* Sidebar */}
-      <div className={`flex flex-col flex-auto flex-shrink-0 antialiased  bg-gray-50 text-gray-800 overflow-y-auto overflow-x-hidden flex-grow ${isOpen ? 'block' : 'hidden'} md:block`}>
-        <div className={`fixed flex flex-col top-0 left-0 md:w-0 lg:w-64 bg-white h-full border-r gap-3 transition-width duration-300 overflow-y-auto overflow-x-hidden flex-grow ${isOpen ? 'block' : 'hidden'} md:block`}>
+      <div className={`flex flex-col flex-auto flex-shrink-0 antialiased  bg-gray-50 text-gray-800 overflow-y-auto overflow-x-hidden flex-grow ${isOpen ? 'block' : 'hidden'} lg:block`}>
+        <div className={`fixed flex flex-col top-0 left-0 md:w-0 lg:w-64 bg-white h-full border-r gap-3 transition-width duration-300 overflow-y-auto overflow-x-hidden flex-grow ${isOpen ? 'block' : 'hidden'} lg:block`}>
           {/* Logo Section */}
           <div className="flex items-center gap-2 h-14 pt-10 px-4">
             <img
@@ -58,15 +54,8 @@ const AdmNavbar = () => {
           </div>
 
           {/* Menu Section */}
-          <div className={`overflow-y-auto overflow-x-hidden flex-grow ${isOpen ? 'block' : 'hidden'} md:block`}>
+          <div className={`overflow-y-auto overflow-x-hidden pt-2 flex-grow ${isOpen ? 'block' : 'hidden'} lg:block`}>
             <ul className="flex flex-col py-4 space-y-1">
-              {/* Menu Heading */}
-              <li className="px-5">
-                <div className="flex flex-row items-center h-8">
-                  <div className="text-sm font-light tracking-wide text-gray-500">Menu</div>
-                </div>
-              </li>
-
               {/* Dashboard */}
               <li>
                 <Link
@@ -137,55 +126,56 @@ const AdmNavbar = () => {
       </div>
 
       {/* Mobile Dropdown Menu */}
-      {isMenuOpen && (
-        <div className="absolute top-16 left-0 w-full bg-white shadow-md z-50 md:hidden">
-          <Link
-            to="/"
-            className='block font-bold px-4 py-2 rounded-full '
-            onClick={() => {
-              setIsMenuOpen(false);
-              
-            }}
-          >
-            Dashboard
-          </Link>
-          <Link
-            to="/users"
-            className='block font-bold px-4 py-2 rounded-full '
-            onClick={() => {
-              setIsMenuOpen(false);
-            }}
-          >
-            Users
-          </Link>
-          <Link
-            to="/posts"
-            className='block font-bold px-4 py-2 rounded-full '
+      <div>
+  {/* Mobile Menu Button */}
+  <div className="lg:hidden flex items-center justify-end p-4">
+    <button onClick={toggleMenu} className="text-gray-600 hover:text-gray-800">
+      <FaBars className="h-6 w-6" />
+    </button>
+  </div>
 
-            onClick={() => {
-              setIsMenuOpen(false);
-            }}
-          >
-            Posts
-          </Link>
-          <Link
-            to="/reports"
-            className='block font-bold px-4 py-2 rounded-full '
+  {isMenuOpen && (
+    <OutsideClickHandler onOutsideClick={() => setIsMenuOpen(false)}>
+      <div className="absolute top-16 left-0 w-full bg-white shadow-md z-50 lg:hidden">
+        <Link
+          to="/"
+          className="block font-bold px-4 py-2 rounded-full"
+          onClick={() => setIsMenuOpen(false)}
+        >
+          Dashboard
+        </Link>
+        <Link
+          to="/users"
+          className="block font-bold px-4 py-2 rounded-full"
+          onClick={() => setIsMenuOpen(false)}
+        >
+          Users
+        </Link>
+        <Link
+          to="/posts"
+          className="block font-bold px-4 py-2 rounded-full"
+          onClick={() => setIsMenuOpen(false)}
+        >
+          Posts
+        </Link>
+        <Link
+          to="/reports"
+          className="block font-bold px-4 py-2 rounded-full"
+          onClick={() => setIsMenuOpen(false)}
+        >
+          Reports
+        </Link>
+        <Link
+          className="block font-bold px-4 py-2 rounded-full"
+          onClick={handleAdminLogout}
+        >
+          Logout
+        </Link>
+      </div>
+    </OutsideClickHandler>
+  )}
+</div>
 
-            onClick={() => {
-              setIsMenuOpen(false);
-            }}
-          >
-            Reports
-          </Link>
-          <Link
-            className='block font-bold px-4 py-2 rounded-full '
-            onClick={ handleAdminLogout}
-          >
-            Logout
-          </Link>
-        </div>
-      )}
     </>
 
   );

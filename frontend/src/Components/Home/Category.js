@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import './Home.css'
 import axiosInstance from '../Utils/AxioaInstance';
-import ShareMenu from '../User/ShareMenu';
+import ShareMenu from '../Common/ShareMenu';
 
 function Category() {
   const {category} = useParams()

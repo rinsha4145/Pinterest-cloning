@@ -6,7 +6,7 @@ import EmojiPicker from "emoji-picker-react";
 import axiosInstance from "../Utils/AxioaInstance";
 import handleAsync from "../Utils/HandleAsync";
 import Category from "./Category";
-import ShareMenu from "../User/ShareMenu";
+import ShareMenu from "../Common/ShareMenu";
 import {updateLikedBy,updateComments} from '../Redux/PostSlice'
 import {updateFollowing} from '../Redux/UserSlice'
 import {addSavedFolder,removeSavedFolder,setSavedFolders} from '../Redux/SavedSlice'

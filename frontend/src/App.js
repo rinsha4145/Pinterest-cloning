@@ -35,7 +35,6 @@ import ViewUser from './Components/Admin/ViewUser';
 import ViewPostDetails from './Components/Admin/ViewPostDetails';
 function App() {
   const { user } = useSelector((state) => state.user ||{});
-  console.log(user?.admin)
   const location = useLocation();
   const isAdminLogin = location.pathname === '/adminlogin';
   return (

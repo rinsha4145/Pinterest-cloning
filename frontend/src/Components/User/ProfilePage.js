@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import handleAsync from '../Utils/HandleAsync';
 import axiosInstance from '../Utils/AxioaInstance';
-import ShareMenu from './ShareMenu';
-import { useNavigate, useParams } from 'react-router-dom';
+import ShareMenu from '../Common/ShareMenu';
+import { useNavigate } from 'react-router-dom';
 import Created from './Created';
 import Saved from './Saved';
 import OutsideClickHandler from 'react-outside-click-handler';
