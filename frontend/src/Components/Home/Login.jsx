@@ -5,8 +5,6 @@ import handleAsync from "../Utils/HandleAsync";
 import axiosInstance from "../Utils/AxioaInstance";
 import Cookies from "js-cookie";
 import { setUser } from "../Redux/UserSlice";
-import { useClickHandler } from "../Context/ClickHandlerContext";
-import OutsideClickHandler from "react-outside-click-handler";
 
 function Login({ loginOpen, setLoginOpen }) {
   const [datas, setDatas] = useState({ email: "", password: "" }); // email and password
@@ -43,6 +41,7 @@ function Login({ loginOpen, setLoginOpen }) {
       try {
         const user = JSON.parse(userJson);
         dispatch(setUser(user));
+        console.log(user)
         cancelDeletion(user);
       } catch (error) {
         console.error("Invalid user cookie");
@@ -79,18 +78,17 @@ function Login({ loginOpen, setLoginOpen }) {
         email: datas.email,
         password: datas.password,
       });
-      if (response.status === 200) {
         setIsLoggedIn(true);
         navigate("/");
         setLoginOpen(false);
-      }
+      
     }
   });
   return (
     <>
       <div className="bg-white p-5 rounded-3xl shadow-lg">
         {loginOpen && (
-          <form onSubmit={handleSubmit}>
+          <form>
             <div className="bg-transparent flex justify-center items-center h-[80vh] font-sans">
               <div className="w-[400px] max-w-md rounded-4xl ">
                 <div className="px-6 py-6 text-center">
@@ -148,6 +146,7 @@ function Login({ loginOpen, setLoginOpen }) {
                   <button
                     type="submit"
                     className="w-4/6 h-[40px] mx-auto bg-red-600 text-white text-center py-3 mb-2 rounded-full hover:bg-red-700 text-base"
+                    onClick={handleSubmit}
                   >
                     Log in
                   </button>

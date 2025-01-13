@@ -57,7 +57,6 @@ const AdmLogin = () => {
     e.preventDefault();
     if(validateForm()){
       const response = await axiosInstance.post('/admin/admlogin', {email: datas.email, password: datas.password});
-      console.log('//',response)
       if (response.status === 200) {
         setIsLoggedIn(true);
         navigate('/'); 

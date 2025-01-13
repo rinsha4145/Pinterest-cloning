@@ -1,15 +1,14 @@
 import React from 'react'
-import { Routes, Route, useParams, useLocation } from 'react-router-dom';
-import Signup from './Components/Home/Signup';
-import Login from './Components/Home/Login';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import {ToastContainer} from 'react-toastify'
 import Navbar from './Components/Home/Navbar';
 import Slides from './Components/Home/Slides';
 import Home from './Components/Home/Home';
 import ForgotPassword from './Components/Home/ForgotPassword';
-import Create from './Components/Home/Create';
+import Create from './Components/Home/CreatePost';
 import Explore from './Components/Home/Explore';
 import Category from './Components/Home/Category';
-import { useSelector } from 'react-redux';
 import ResetPassword from './Components/Home/ResetPassword';
 import ProfilePage from './Components/User/ProfilePage';
 import Settings from './Components/User/Settings/Settings';
@@ -18,7 +17,6 @@ import Pinned from './Components/User/Pinned';
 import ViewBoard from './Components/User/ViewBoard';
 import ViewPost from './Components/Home/ViewPost';
 import ViewOtherUserProfile from './Components/User/ViewOtherUserProfile';
-import {ToastContainer} from 'react-toastify'
 import EditProfile from './Components/User/Settings/EditProfile';
 import ChangePassword from './Components/User/Settings/ChangePassword';
 import AccountManagement from './Components/User/Settings/AccountManagement';
@@ -28,13 +26,11 @@ import AdmLogin from './Components/Admin/Login';
 import AdminPage from './Components/Admin/Home';
 import Users from './Components/Admin/Users';
 import Posts from './Components/Admin/Posts';
-import ReportPost from './Components/Common/ReportPost';
-import ReportedPosts from './Components/Admin/Report';
 import Report from './Components/Admin/Report';
 import ViewUser from './Components/Admin/ViewUser';
 import ViewPostDetails from './Components/Admin/ViewPostDetails';
 function App() {
-  const { user } = useSelector((state) => state.user ||{});
+  const { user } = useSelector((state) => state.user);
   const location = useLocation();
   const isAdminLogin = location.pathname === '/adminlogin';
   return (
