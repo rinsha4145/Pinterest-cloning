@@ -34,7 +34,7 @@ const postsSlice = createSlice({
         state.post[postIndex] = { ...state.post[postIndex], ...updatedData };
       }
     },    
-    deletePost: (state, action) => {
+    deletedPost: (state, action) => {
       const postId = action.payload;
       state.post = state.post.filter((post) => post._id !== postId);
     }
@@ -70,7 +70,7 @@ const postsSlice = createSlice({
 });
 
 // Export actions to use in the component
-export const { setPosts, addPost, clearPosts,updatePost,deletePost,updateLikedBy,updateComments,addReportToPost, } = postsSlice.actions;
+export const { setPosts, addPost, clearPosts,updatePost,deletedPost,updateLikedBy,updateComments,addReportToPost, } = postsSlice.actions;
 
 // Export reducer to configure store
 export default postsSlice.reducer;

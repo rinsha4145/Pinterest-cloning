@@ -208,8 +208,8 @@ const Navbar = () => {
                         >
                           Settings
                         </button>
-                        <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
-                          Home feed tuner
+                        <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100" onClick={()=>navigate('/close-account')}>
+                          Delete Account
                         </button>
                         <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
                           Install the Windows app

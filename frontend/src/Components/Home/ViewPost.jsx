@@ -36,8 +36,9 @@ const ViewPost = () => {
   const fetchPin =handleAsync( async () => {
     const response = await axiosInstance.get(`/post/${_id}`);
     setData(response.data.onepost);
+    
   });
-
+  console.log(data)
   //fetch the saved posts
   const fetchData = async () => {
     const response = await axiosInstance.get("/saves");

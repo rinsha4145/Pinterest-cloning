@@ -20,7 +20,7 @@ const adminLogin = async (req, res,next) => {
 
     if (!matching) {
        return next(new ValidationError('The Email or UserName is incorrect', 404));
-    }
+    }   
     
     if(user.admin){
         generateToken(user,res)

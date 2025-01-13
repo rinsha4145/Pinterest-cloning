@@ -4,6 +4,8 @@ import axiosInstance from '../Utils/AxioaInstance';
 import handleAsync from '../Utils/HandleAsync';
 import { toast } from 'react-toastify';
 import OutsideClickHandler from 'react-outside-click-handler';
+import { useDispatch } from 'react-redux';
+import {deletedPost} from '../Redux/PostSlice'
 
 function Posts() {
   const [data, setData] = useState([]);
@@ -16,6 +18,7 @@ function Posts() {
   const [category, setCategory] = useState({ name: '' });
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = handleAsync(async () => {
@@ -54,19 +57,6 @@ function Posts() {
   };
   
 
-  const handleDelete = handleAsync(async (id) => {
-    if (window.confirm(`Are you sure you want to delete the product with ID ${id}?`)) {
-      try {
-        await axiosInstance.delete(`admin/deleteproduct/${id}`);
-        setData((prevData) => prevData.filter((product) => product._id !== id));
-        toast.success('Product deleted successfully');
-        navigate('/products');
-      } catch (error) {
-        console.error('Error deleting product:', error);
-        toast.error('An error occurred while deleting the product');
-      }
-    }
-  });
 
   // Pagination
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -106,6 +96,13 @@ function Posts() {
       toast.error('Failed to add category');
     }
   });
+
+   //delete a post
+   const deletePost = async (id) => {
+    const response = await axiosInstance.delete(`admin/deletepost/${id}`);
+    console.log(response.data.deletedPost);
+    dispatch(deletedPost(response.data.deletedPost));
+};
 
   return (
     <div className="min-h-screen lg:ml-60 sm:px-6 sm:ml-0 lg:px-8">
@@ -225,7 +222,7 @@ function Posts() {
                   <td className="px-4 py-2 text-center">
                     <button
                       className="text-sm bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-500"
-                      onClick={() => handleDelete(post._id)}
+                      onClick={deletePost}
                     >
                       Delete
                     </button>

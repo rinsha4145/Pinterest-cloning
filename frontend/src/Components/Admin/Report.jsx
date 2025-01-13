@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../Utils/AxioaInstance";
 import handleAsync from "../Utils/HandleAsync";
-import {updatePost,deletePost} from '../Redux/PostSlice'
+import {updatePost,deletedPost} from '../Redux/PostSlice'
 import {useDispatch} from 'react-redux'
 const ReportedPosts = () => {
   const [reportedPosts, setReportedPosts] = useState([]);
@@ -34,13 +34,13 @@ const dispatch = useDispatch();
     
     }
   };
-   //delete a comment
+   //delete a post
    const deletePost = async (id) => {
     const response = await axiosInstance.delete(`admin/deletepost/${id}`);
     console.log(response.data.deletedPost);
     setOpen(false);
     fetchReportedPosts()
-    dispatch(deletePost(response.data.deletedPost));
+    dispatch(deletedPost(response.data.deletedPost));
 };
 
 const handleDismissReport = async (postId) => {

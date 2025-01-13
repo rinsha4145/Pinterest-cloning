@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import handleAsync from "../Utils/HandleAsync";
 import axiosInstance from "../Utils/AxioaInstance";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { addPost } from "../Redux/PostSlice";
 const Create = () => {
   const [categories,setCategories]=useState([]) //category
   const [isImageUploaded, setIsImageUploaded] = useState(false); // Image upload state
@@ -13,7 +15,7 @@ const Create = () => {
     tags:[],image:''});  // Post data
 
   const fileInputRef = useRef(null);
-
+  const dispatch = useDispatch()
   //fetch category
   useEffect(() => {
     const fetchData = handleAsync(async () => {
@@ -66,6 +68,7 @@ const Create = () => {
       const response = await axiosInstance.post('/addpost', formData);
       if (response.status === 200 && response.status < 300) {
         alert('Post added successfully');
+        dispatch(addPost(response.data.newPost))
         setImagePreview(null);
         setPost({
           title: '',description: '',
@@ -233,26 +236,7 @@ const Create = () => {
         </button>
       </div>
 
-      {/* Conditionally render this section based on isOpen state */}
-      {show && (
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <label className="text-gray-800 font-medium">Allow people to comment</label>
-            <input type="checkbox" className="toggle-switch" />
-          </div>
-
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <label className="text-gray-800 font-medium">Show similar products</label>
-              <input type="checkbox" className="toggle-switch" />
-            </div>
-            <p className="text-sm text-gray-500">
-              People can shop for products similar to what's shown in this Pin using visual search.
-              Shopping recommendations aren't available for Idea ads and Pins with tagged products or paid partnership labels.
-            </p>
-          </div>
-        </div>
-      )}
+      
     </div>
     </form>
       </div>

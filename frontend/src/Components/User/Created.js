@@ -24,9 +24,9 @@ const navigate=useNavigate()
       const  posts  = useSelector((state) => state.post.post);
       const saved = useSelector((state) => state.save.save);
       const boards = useSelector((state) => state.board.boards);
-      const [isShareMenuVisible, setShareMenuVisible] = useState(false); // State to control visibility of ShareMenu
-      const [isBoardMenuVisible, setBoardMenuVisible] = useState(false); // State to control visibility of ShareMenu
-      const [showEdit, setShowEdit] = useState(false); // State to control visibility of ShareMenu
+      const [isShareMenuVisible, setShareMenuVisible] = useState(false); //  control visibility of ShareMenu
+      const [isBoardMenuVisible, setBoardMenuVisible] = useState(false); //  control visibility of board
+      const [showEdit, setShowEdit] = useState(false); //  control visibility of edit
 
       
       const videoRefs = useRef([]);
@@ -212,8 +212,12 @@ return (
 
 
 {showEdit && (
-              <UpdatePost />
-            )}
+    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
+      <OutsideClickHandler onOutsideClick={()=> setShowEdit(false)}>
+                <UpdatePost id={post._id} showEdit={showEdit} setShowEdit={setShowEdit} />
+      </OutsideClickHandler>
+    </div>
+  )}
 </div>
 </div>
   </div>

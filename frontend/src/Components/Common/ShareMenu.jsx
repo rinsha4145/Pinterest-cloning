@@ -10,6 +10,7 @@ import {
   FacebookMessengerShareButton,
   FacebookMessengerIcon,
 } from "react-share";
+import { toast } from "react-toastify";
 
 const ShareMenu = ({ url, isShareMenuVisible }) => {
   const shareUrl = url; // Replace with your website URL
@@ -20,7 +21,7 @@ const ShareMenu = ({ url, isShareMenuVisible }) => {
     navigator.clipboard
       .writeText(value)
       .then(() => {
-        alert("Image URL copied to clipboard!");
+        toast.success("Image URL copied to clipboard!");
       })
       .catch((err) => {
         console.error("Failed to copy: ", err);

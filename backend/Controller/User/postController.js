@@ -46,12 +46,11 @@ const addPost = async (req, res, next) => {
         return res.status(401).json({ message: "Unauthorized: User ID not found" });
     }
 
-    // Ensure category is a valid ObjectId
     if (!mongoose.Types.ObjectId.isValid(category)) {
         return next(new ValidationError("Invalid category ID"));
     }
 
-    const data = await Category.findById(category);  // Use findById instead of findOne when passing an ObjectId directly
+    const data = await Category.findById(category);  
     if (!data) {
         return next(new ValidationError("Category not found"));
     }
@@ -59,7 +58,6 @@ const addPost = async (req, res, next) => {
     let name = data.name;
     console.log("Category", data.name);
 
-    // Query by object with correct field name
     const existingCategory = await Category.findOne({ _id: category });
     console.log("existingCategory", existingCategory);
 
@@ -67,7 +65,12 @@ const addPost = async (req, res, next) => {
         return next(new ValidationError("Category does not exist"));
     }
 
-    const validatedTags = Array.isArray(tags) ? tags : tags.split(',').map(tag => tag.trim());
+    const validatedTags = Array.isArray(tags) 
+    ? tags 
+    : typeof tags === "string" 
+      ? tags.split(',').map(tag => tag.trim()) 
+      : [];
+  
     const image = req.file?.path;
     const newPost = new Posts({
         title,
@@ -93,11 +96,6 @@ const getPostByOwner=async(req,res,next)=>{
             return res.status(401).json({ message: "User not authenticated" });
         }
         const posts = await Posts.find({ owner: userId }).populate("category");
-    // if (posts.length === 0) {
-    //     return res.status(404).json({ message: "No posts found for this user." });
-    // }
-   
-    // Return the posts in the response
     return res.status(200).json({posts});  
    
 }

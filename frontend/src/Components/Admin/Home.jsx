@@ -206,8 +206,10 @@ function Home() {
                           placeholder="Board name"
                         />
                       </div>
+                     
             
                     </div>
+                    
             
                     {/* Footer */}
                     <div className="mt-6 flex space-x-2 justify-end">
@@ -238,6 +240,7 @@ function Home() {
               </button>
              
               <div>
+                
       {isopen && openCategoryId === data._id && (
         <OutsideClickHandler onOutsideClick={() => setOpen(false)}>
           <div className="absolute w-38 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
@@ -256,6 +259,7 @@ function Home() {
           </div>
         </OutsideClickHandler>
       )}
+      
     </div>
            
             

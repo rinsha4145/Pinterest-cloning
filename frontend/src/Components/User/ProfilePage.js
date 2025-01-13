@@ -27,16 +27,16 @@ function ProfilePage() {
      <div className="w-full max-w-4xl text-center mt-10 px-4 sm:px-6">
      <div className="flex justify-center  ">
       <img
-        src={data.profileimage}
+        src={data?.profileimage}
         alt="Profile"
         className="w-32 h-32 mx-auto rounded-full md:w-32 md:h-32 object-cover border"
       />
     </div>
-    <h1 className="mt-4 text-xl sm:text-2xl md:text-3xl font-semibold text-gray-800 leading-tight">{data.firstname}</h1>
-    <p className="text-gray-500 mt-1 text-sm sm:text-base">{data.about}</p>
-    <p className="text-gray-500 mt-1 text-sm sm:text-base">@{data.username}</p>
-    {data.followers? (
-  <p className="mt-2 text-sm sm:text-base text-gray-600">{data.following.length} following</p>
+    <h1 className="mt-4 text-xl sm:text-2xl md:text-3xl font-semibold text-gray-800 leading-tight">{data?.firstname}</h1>
+    <p className="text-gray-500 mt-1 text-sm sm:text-base">{data?.about}</p>
+    <p className="text-gray-500 mt-1 text-sm sm:text-base">@{data?.username}</p>
+    {data?.followers? (
+  <p className="mt-2 text-sm sm:text-base text-gray-600">{data?.following.length} following</p>
 ) : (
   <p className="mt-2 text-sm sm:text-base text-gray-600">0 following</p> 
 )}

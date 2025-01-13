@@ -1,19 +1,32 @@
 import React, { useState } from "react";
 import axiosInstance from "../../Utils/AxioaInstance";
-import { useSelector } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "../../Redux/UserSlice";
+import { clearSavedFolders } from "../../Redux/SavedSlice";
+import { useNavigate } from "react-router-dom";
 const DeleteAccount = () => {
   const { user } = useSelector((state) => state.user);
     const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState("");
-  
+    const saved = useSelector((state) => state.save.save);
+    const dispatch = useDispatch();
+  const navigate = useNavigate();
+
     const handleSubmit = async () => {
       setIsLoading(true); // Start loading
       setMessage(""); // Reset message
       try {
         const response = await axiosInstance.post('/request-deletion');
+        const respon = await axiosInstance.post(
+          "/logout",
+          {},
+          { withCredentials: true }
+        );
+        dispatch(logoutUser(user));
+        dispatch(clearSavedFolders(saved));
         if (response.status === 200) {
           setMessage("An email has been sent with the final step to delete your account.");
+          navigate('/')
         } else {
           setMessage("Something went wrong. Please try again.");
         }
@@ -38,19 +51,19 @@ const DeleteAccount = () => {
         <div className="flex items-center justify-center mb-4">
           <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center">
             <img
-              src={user.profileimage}
+              src={user?.profileimage}
               alt="User image"
               className="rounded-full"
             />
           </div>
         </div>
-        <h2 className="text-lg font-semibold text-gray-800 mb-2">{user.username}</h2>
+        <h2 className="text-lg font-semibold text-gray-800 mb-2">{user?.username}</h2>
         <p className="text-sm md:text-base text-gray-600 mb-4">
-          {user.username}, if you're ready to leave forever, we'll send an email with
+          {user?.username}, if you're ready to leave forever, we'll send an email with
           the final step to:
         </p>
         <p className="text-sm md:text-base font-medium text-gray-800 mb-6">
-          {user.email}
+          {user?.email}
         </p>
         <button className="bg-red-500 hover:bg-red-600 text-white text-sm md:text-base font-semibold py-2 px-4 rounded-lg" onClick={handleSubmit}>
           Continue

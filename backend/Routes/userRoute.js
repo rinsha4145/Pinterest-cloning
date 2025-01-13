@@ -30,9 +30,6 @@ router
  .post('/cancel-deletion',userAuthMiddleware,tryCatch(cancelDeletionOnLogin))
  .post('/confirm-deletion/:deletionToken',userAuthMiddleware,tryCatch(confirmDeletion))
 
-
-
-
  .get('/all',tryCatch(postcontroller.getAllPosts))
  .get('/post/:id',tryCatch(postcontroller.getpostbyid))
  .get('/posts/:category',tryCatch(postcontroller.getbycategory)) 
@@ -66,18 +63,6 @@ router
  .delete('/deletecomment/:id',userAuthMiddleware,tryCatch(commentcontroller.deleteComment))
  .put('/editcomment/:id',userAuthMiddleware,tryCatch(commentcontroller.editComment))
  .post('/replycomment/:id',userAuthMiddleware,tryCatch(commentcontroller.replyToComment))   
-
-
-
-
-
-
-
-
-
-
-
-
 
 
  

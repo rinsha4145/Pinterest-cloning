@@ -41,7 +41,7 @@ function Login({ loginOpen, setLoginOpen }) {
       try {
         const user = JSON.parse(userJson);
         dispatch(setUser(user));
-        console.log(user)
+        setLoginOpen(false);
         cancelDeletion(user);
       } catch (error) {
         console.error("Invalid user cookie");
@@ -79,8 +79,8 @@ function Login({ loginOpen, setLoginOpen }) {
         password: datas.password,
       });
         setIsLoggedIn(true);
+        
         navigate("/");
-        setLoginOpen(false);
       
     }
   });

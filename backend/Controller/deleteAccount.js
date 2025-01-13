@@ -44,7 +44,7 @@ const deleteAccount = async (req, res) => {
       html: `
         <p>Your account deletion request has been scheduled for ${deletionDate}. If you want to cancel this, please log in before that time.</p>
         <p>If you want to delete your account right away , please click the button below:</p>
-        <a href="http://localhost:5000/confirm-deletion/${deletionToken}"  style="padding: 10px 20px; background-color: #ff0000; color: white; text-decoration: none; border-radius: 5px; display: inline-block;">Confirm Account Deletion</a>
+        // <a href="http://localhost:3000/confirm-deletion/${deletionToken}"  style="padding: 10px 20px; background-color: #ff0000; color: white; text-decoration: none; border-radius: 5px; display: inline-block;">Confirm Account Deletion</a>
       `,
     };
 

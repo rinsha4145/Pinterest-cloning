@@ -7,10 +7,8 @@ import { addBoard } from "../Redux/BoardSlice";
 
 const CreateBoard = () => {
   const dispatch = useDispatch();
-    const {showBoard,setShowBoard} = useClickHandler()
+  const {showBoard,setShowBoard} = useClickHandler()
   
-  const { show, setShow } = useClickHandler();
-
   const [data, setData] = useState({ name: "" });
 
   
