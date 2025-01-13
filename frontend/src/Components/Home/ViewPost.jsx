@@ -117,9 +117,9 @@ const ViewPost = () => {
 
    //delete a comment
    const deleteComment = async (postid, commentid) => {
-    const response = await axiosInstance.delete(`/deletepost/${commentid}`);
+    const response = await axiosInstance.delete(`/deletecomment/${commentid}`);
     setOpen(false);
-    // fetchPin(postid);
+    fetchPin(postid);
     dispatch(updateComments(response.data.pin));
 };
 
