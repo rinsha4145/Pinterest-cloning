@@ -11,22 +11,13 @@ const ReportPost = ({ id }) => {
 
   const [reason, setReason] = useState("");
 
-  const handleChange = (event) => {
-    setReason(event.target.value);
-  };
 
   const handleSubmit = handleAsync(async (e) => {
     e.preventDefault(); // Prevent form from refreshing the page
-
-
       const response = await axiosInstance.post(`/report/${id}`, { reason });
-
-      const report = response.data.report;
-     console.log(report)
       setShowBoard(false);
-
       setReason("");
-      dispatch(addReportToPost(report));
+      dispatch(addReportToPost(response.data.report));
 
     
   });
@@ -53,7 +44,7 @@ const ReportPost = ({ id }) => {
               type="text"
               value={reason}
               name="reason"
-              onChange={handleChange}
+              onChange={(e)=>setReason(e.target.value)}
               id="reason"
               placeholder="E.g. 'Inappropriate content' or 'Spam'"
               className="mt-1 w-full h-10 text-black rounded border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue"

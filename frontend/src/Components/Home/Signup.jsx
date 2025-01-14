@@ -4,7 +4,6 @@ import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import axiosInstance from "../Utils/AxioaInstance";
 import { useNavigate } from "react-router-dom";
 import handleAsync from "../Utils/HandleAsync";
-import { useClickHandler } from "../Context/ClickHandlerContext";
 
 function Signup({ SignupOpen, setSignupOpen, setLoginOpen }) {
   const [errors, setErrors] = useState({});
