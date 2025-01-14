@@ -1,10 +1,10 @@
-const tryCatch=(func) =>async(req,res,next)=>{
-    try {
-        await func(req,res,next)
-    } catch (error) {
-        console.log(error)
-        next(error)
-    }
-}
+const tryCatch = (func) => async (req, res, next) => {
+  try {
+    await func(req, res, next);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
 
-module.exports=tryCatch
+module.exports = tryCatch;
