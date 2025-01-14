@@ -61,13 +61,13 @@ function AccountManagement() {
   const handleGenderChange = (event) => {
     setValue((prevData) => ({
       ...prevData,
-      gender: event.target.value, // Update gender directly based on the selected radio button
+      gender: event.target.value,
     }));
   };
   const handleCountryChange = (selectedOption) => {
     setValue((prevData) => ({
       ...prevData,
-      country: selectedOption.value, // Use the country value from the object
+      country: selectedOption.value, 
     }));
   };
 
