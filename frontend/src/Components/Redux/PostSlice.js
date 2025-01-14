@@ -1,9 +1,8 @@
 // postsSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
-// Initial state for posts
 const initialState = {
-  post: [], // Store posts fetched from the API
+  post: [], 
 };
 
 const postsSlice = createSlice({
@@ -11,19 +10,18 @@ const postsSlice = createSlice({
   initialState,
   reducers: {
     setPosts: (state, action) => {
-      state.post = action.payload; // Set post in the state
+      state.post = action.payload; 
     },
     addPost: (state, action) => {
-      state.post.push(action.payload); // Add a new post to the list
+      state.post.push(action.payload); 
     },
     updateLikedBy: (state, action) => {
       const { postId, likedBy } = action.payload; 
       console.log(state.post);
-// Extract postId and updated likedBy array
       const postIndex = state.post.findIndex((post) => post._id === postId);
 
       if (postIndex !== -1) {
-        state.post[postIndex].likedBy = likedBy; // Update the likedBy field
+        state.post[postIndex].likedBy = likedBy; 
       }
     },
     updatePost: (state, action) => {
@@ -40,15 +38,13 @@ const postsSlice = createSlice({
     }
 ,    
     updateComments: (state, action) => {
-      const { postId, comment, type } = action.payload; // Extract postId, comment, and action type
+      const { postId, comment, type } = action.payload; 
       const postIndex = state.post.findIndex((post) => post._id === postId);
 
       if (postIndex !== -1) {
         if (type === 'add') {
-          // Add a new comment
           state.post[postIndex].comments.push(comment);
         } else if (type === 'delete') {
-          // Delete a comment by ID or content
           state.post[postIndex].comments = state.post[postIndex].comments.filter(
             (existingComment) => existingComment.id !== comment.id
           );
@@ -56,21 +52,19 @@ const postsSlice = createSlice({
       }
     },
     addReportToPost: (state, action) => {
-      const { postId, report } = action.payload; // Extract postId and report
+      const { postId, report } = action.payload; 
       const postIndex = state.post.findIndex((post) => post._id === postId);
 
       if (postIndex !== -1) {
-        state.post[postIndex].reports.push(report); // Assuming 'reports' is an array in the post schema
+        state.post[postIndex].reports.push(report); 
       }
     },
     clearPosts: (state) => {
-      state.post = []; // Clear all posts
+      state.post = [];
     },
   },
 });
 
-// Export actions to use in the component
 export const { setPosts, addPost, clearPosts,updatePost,deletedPost,updateLikedBy,updateComments,addReportToPost, } = postsSlice.actions;
 
-// Export reducer to configure store
 export default postsSlice.reducer;

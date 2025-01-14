@@ -2,7 +2,6 @@ import React from "react";
 import { Outlet, Link } from "react-router-dom";
 
 function Settings() {
-
   return (
     <div className="flex min-h-screen bg-white">
       {/* Sidebar */}

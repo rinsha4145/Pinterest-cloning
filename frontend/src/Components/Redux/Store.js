@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage'; // Use localStorage for persistence
+import storage from 'redux-persist/lib/storage'; 
 
 // Import reducers
 import userReducer from './UserSlice';
 import postReducer from './PostSlice';
 import savedReducer from './SavedSlice';
-import boardReducer from './BoardSlice'; // Import BoardSlice
+import boardReducer from './BoardSlice'; 
 
 // Persist configurations for different slices
 const userPersistConfig = { key: 'user', storage };
