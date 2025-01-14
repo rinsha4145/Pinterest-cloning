@@ -6,11 +6,7 @@ import "../Home/Home.css";
 import ShareMenu from "../Common/ShareMenu";
 import { useDispatch, useSelector } from "react-redux";
 import { setBoards } from "../Redux/BoardSlice";
-import {
-  addSavedFolder,
-  removeSavedFolder,
-  setSavedFolders,
-} from "../Redux/SavedSlice";
+import { addSavedFolder, removeSavedFolder, setSavedFolders } from "../Redux/SavedSlice";
 import BoardPopup from "../Common/BoardPopup";
 import UpdatePost from "./UpdatePost";
 import OutsideClickHandler from "react-outside-click-handler";
@@ -34,10 +30,8 @@ function Created() {
     fetchData();
   }, [data.title]);
 
-
   const videoRefs = useRef([]);
 
- 
   useEffect(() => {
     const fetchData = handleAsync(async () => {
       const respond = await axiosInstance.get("/viewboards");
@@ -76,10 +70,8 @@ function Created() {
 
   const handleSave = handleAsync(async (id) => {
     const response = await axiosInstance.post(`/addtosave`, { postId: id });
-    const savedData = response.data.saved;
-    console.log(savedData);
     handleAsync(fetchData)();
-    dispatch(addSavedFolder(savedData));
+    dispatch(addSavedFolder(response.data.saved));
   });
 
   const removesave = handleAsync(async (postid) => {

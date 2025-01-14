@@ -29,7 +29,6 @@ function Pinned() {
       data: { postId: postid },
     });
     const Data = response.data.data;
-    console.log(response.data.data);
     handleAsync(fetchData)();
     dispatch(removeSavedFolder(Data));
   });

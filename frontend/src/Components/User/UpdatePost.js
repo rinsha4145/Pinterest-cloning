@@ -6,7 +6,7 @@ import handleAsync from "../Utils/HandleAsync";
 const UpdatePost = ({id, setShowEdit }) => {
   console.log(id)
   const navigate = useNavigate();
- const [post, setPost] = useState({
+  const [post, setPost] = useState({
      title:'',description: '',
      link: '',category:'',
      tags:[],image:''});
