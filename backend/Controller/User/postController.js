@@ -1,5 +1,5 @@
 const Posts = require("../../Models/postSchema");
-const { postValidationSchema } = require("../../Models/validation");
+const { postValidationSchema } = require("../../Validations/validation");
 const { NotFoundError, ValidationError } = require("../../Utils/customeError");
 const Category = require("../../Models/Admin/categorySchema");
 const mongoose = require("mongoose");

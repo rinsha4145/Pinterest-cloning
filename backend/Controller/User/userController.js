@@ -2,7 +2,7 @@ const User = require("../../Models/User/userSchema");
 const {
   userValidationSchema,
   loginValidationSchema,
-} = require("../../Models/validation");
+} = require("../../Validations/validation");
 const { ValidationError, NotFoundError } = require("../../Utils/customeError");
 const bcrypt = require("bcrypt");
 const { generateToken } = require("../../Utils/generateToken");

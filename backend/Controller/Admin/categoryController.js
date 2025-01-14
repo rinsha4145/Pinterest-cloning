@@ -1,6 +1,6 @@
 const Category = require("../../Models/Admin/categorySchema");
 const { NotFoundError, ValidationError } = require("../../Utils/customeError");
-const { validateCategory } = require("../../Models/validation");
+const { validateCategory } = require("../../Validations/validation");
 
 // get all category
 const getAllCategory = async (req, res, next) => {

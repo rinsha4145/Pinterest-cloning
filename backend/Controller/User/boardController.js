@@ -1,6 +1,6 @@
 const Boards = require("../../Models/User/boardSchema");
 const { NotFoundError, ValidationError } = require("../../Utils/customeError");
-const { validateBoard } = require("../../Models/validation");
+const { validateBoard } = require("../../Validations/validation");
 const Saved = require("../../Models/User/savedSchema");
 
 //create a board
