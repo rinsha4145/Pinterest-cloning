@@ -1,4 +1,4 @@
-const Category = require("../../Models/Admin/categorySchema");
+const Category = require("../../Models/categorySchema");
 const { NotFoundError, ValidationError } = require("../../Utils/customeError");
 const { validateCategory } = require("../../Validations/validation");
 

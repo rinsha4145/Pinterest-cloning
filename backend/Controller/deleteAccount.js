@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-const User = require("../Models/User/userSchema");
+const User = require("../Models/userSchema");
 const crypto = require("crypto");
 const cron = require("node-cron");
 

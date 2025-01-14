@@ -1,4 +1,4 @@
-const User = require("../../Models/User/userSchema");
+const User = require("../../Models/userSchema");
 const CustomError = require("../../Utils/customeError");
 
 // get all Users

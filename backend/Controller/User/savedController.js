@@ -1,4 +1,4 @@
-const Saved=require('../../Models/User/savedSchema')  
+const Saved=require('../../Models/savedSchema')  
 const {NotFoundError,ValidationError}=require('../../Utils/customeError')
  
 // get all the saved posts

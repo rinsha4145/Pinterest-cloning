@@ -1,4 +1,4 @@
-const User = require("../../Models/User/userSchema");
+const User = require("../../Models/userSchema");
 const {
   userValidationSchema,
   loginValidationSchema,

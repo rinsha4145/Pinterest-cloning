@@ -1,4 +1,4 @@
-const User = require("../../Models/User/userSchema");
+const User = require("../../Models/userSchema");
 const { loginValidationSchema } = require("../../Validations/validation");
 const { ValidationError, NotFoundError } = require("../../Utils/customeError");
 const bcrypt = require("bcrypt");

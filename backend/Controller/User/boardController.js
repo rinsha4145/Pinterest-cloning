@@ -1,7 +1,7 @@
-const Boards = require("../../Models/User/boardSchema");
+const Boards = require("../../Models/boardSchema");
 const { NotFoundError, ValidationError } = require("../../Utils/customeError");
 const { validateBoard } = require("../../Validations/validation");
-const Saved = require("../../Models/User/savedSchema");
+const Saved = require("../../Models/savedSchema");
 
 //create a board
 const createBoard = async (req, res, next) => {

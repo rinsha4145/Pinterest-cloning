@@ -1,10 +1,10 @@
-const User = require("../Models/User/userSchema");
+const User = require("../Models/userSchema");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 const resetpass = async (req, res) => {
   const { id, token } = req.params;
-  const { password } = req.body;
+  const { password } = req.body; 
 
   jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
     if (err) {
