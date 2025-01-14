@@ -219,16 +219,16 @@ const Navbar = () => {
                         <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
                           Your privacy rights
                         </button>
-                        <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100" onClick={()=>navigate('/close-account')}>
+                        <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100" onClick={()=>window.location.href='https://help.pinterest.com/en-gb?source=gear_menu_web'}>
                           Help Centre
                         </button>
-                        <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100" onClick={()=>navigate('/close-account')}>
+                        <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100" onClick={()=>window.location.href='https://policy.pinterest.com/en-gb/terms-of-service'}>
                           Terms of Service
                         </button>
-                        <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100" onClick={()=>navigate('/close-account')}>
+                        <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100" onClick={()=>window.location.href='https://policy.pinterest.com/en-gb/privacy-policy'}>
                           Privacy Policy
                         </button>
-                        <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100" onClick={()=>navigate('/close-account')}>
+                        <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100" onClick={()=>window.location.href='https://www.pinterest.com/public-beta/'}>
                           Be a beta tester
                         </button>
                         <button
