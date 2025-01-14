@@ -1,5 +1,4 @@
 import React from "react";
-import link from "../../Assets/link.png";
 import {
   FacebookShareButton,
   FacebookIcon,

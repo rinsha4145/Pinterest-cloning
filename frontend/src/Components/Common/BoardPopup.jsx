@@ -29,19 +29,19 @@ const Popup = ({ postid, isBoardMenuVisible }) => {
     dispatch(addSavedFolder(savedData));
   });
 
-
   const savetoboard = handleAsync(async (id) => {
     const response = await axiosInstance.post(`/addtoboarad`, {
       boardId: id,
       postId: postid,
     });
+    
     const savedData = response.data.saved;
     handleAsync(fetchData)();
     setShow(false);
     dispatch(addPostToBoard(savedData));
   });
 
-
+  
   const fetchData = async () => {
     const response = await axiosInstance.get("/saves");
     dispatch(setSavedFolders(response.data.getsaved?.posts));
