@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../Utils/AxioaInstance"; // Replace with your actual axios instance
 import { useNavigate } from "react-router-dom";
+import handleAsync from "../Utils/HandleAsync";
 
 const UpdatePost = ({id, setShowEdit }) => {
   console.log(id)
@@ -15,32 +16,20 @@ const UpdatePost = ({id, setShowEdit }) => {
 
   // Fetch the post data
   useEffect(() => {
-    const fetchPost = async () => {
-      try {
+    const fetchPost = handleAsync( async () => {
         const response = await axiosInstance.get(`/post/${id}`);
         setPost(response.data.onepost);
-        console.log(post)
         setImagePreview(post.image); // Assuming the response contains an image URL
-      } catch (error) {
-        console.error("Failed to fetch post:", error);
-        alert("Error fetching post data");
-      }
-    };
-
+    });
     fetchPost();
   }, [id]);
 
   // Fetch categories
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
+    const fetchCategories = handleAsync( async () => {
         const response = await axiosInstance.get("/admin/category"); // Replace with your API endpoint
         setCategories(response.data.category || []);
-      } catch (error) {
-        console.error("Failed to fetch categories:", error);
-      }
-    };
-
+    });
     fetchCategories();
   }, []);
 
@@ -57,10 +46,8 @@ const UpdatePost = ({id, setShowEdit }) => {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = handleAsync( async (e) => {
     e.preventDefault();
-
-    try {
       const formData = new FormData();
 
       if (isImageUploaded && typeof isImageUploaded !== "boolean") {
@@ -76,11 +63,7 @@ const UpdatePost = ({id, setShowEdit }) => {
         alert("Post updated successfully!");
         navigate("/posts");
       }
-    } catch (error) {
-      console.error("Failed to update post:", error);
-      alert("Error updating post");
-    }
-  };
+  });
 
   return (
       <>

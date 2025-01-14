@@ -11,23 +11,23 @@ function ViewBoard() {
   
   const dispatch = useDispatch();
 
-  const fetchData = async () => {
+  const fetchData = handleAsync( async () => {
     const response = await axiosInstance.get(`/viewbyid/${id}`);
     setData(response.data.board);
-  };
+  });
 
   useEffect(() => {
     const fetchDataWrapper = handleAsync(fetchData);
     fetchDataWrapper();
   }, [dispatch]);
 
-  const handleDelete = async (postid) => {
+  const handleDelete = handleAsync( async (postid) => {
     const response = await axiosInstance.delete(`/removepost`, {
       data: { boardId: id, postId: postid }, // Use 'data' for the request payload
     });
     dispatch(updateBoard(response.data.board));
     handleAsync(fetchData)();
-  };
+  });
 
   return (
     <>

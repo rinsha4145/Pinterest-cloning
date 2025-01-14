@@ -1,9 +1,8 @@
-// axiosInstance.js
-import axios from 'axios';
+import axios from "axios";
 // import Cookies from 'js-cookie';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:4000', // Set your base URL here
+  baseURL: "http://localhost:4000", // Set your base URL here
   withCredentials: true, // Allows cookies to be sent with cross-site requests
 });
 
@@ -35,7 +34,7 @@ const axiosInstance = axios.create({
 //   (response) => response, // Pass successful responses through
 //   async (error) => {
 //     const originalRequest = error.config;
-    
+
 //     if (error.response?.status === 401 && !originalRequest._retry) {
 //       originalRequest._retry = true; // Avoid retry loops
 
@@ -57,7 +56,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.error('API error:', error);
+    console.error("API error:", error);
     return Promise.reject(error);
   }
 );
