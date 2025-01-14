@@ -1,36 +1,69 @@
-import React, { useState } from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import React from "react";
+import { Outlet, Link } from "react-router-dom";
 
 function Settings() {
-  const [isFormChanged, setIsFormChanged] = useState(false); // State to track if form is changed
-
-  const handleReset = () => {
-    // Logic to reset the form goes here
-    console.log("Form Reset");
-    setIsFormChanged(false); // Reset form change state
-  };
-
-  const handleSubmit = () => {
-    // Logic to submit the form goes here
-    console.log("Form Submitted");
-    setIsFormChanged(false); // Reset form change state after saving
-  };
 
   return (
     <div className="flex min-h-screen bg-white">
       {/* Sidebar */}
       <aside className="w-1/4 p-6">
         <ul className="space-y-4">
-          <li><Link to="/settings/editprofile" className="text-gray-700 hover:text-blue-500">Edit profile</Link></li>
-          <li><Link to="/settings/account-settings" className="text-gray-700 hover:text-blue-500">Account management</Link></li>
-          <li><Link to="" className="text-gray-700 hover:text-blue-500">Profile visibility</Link></li>
-          <li><Link to="" className="text-gray-700 hover:text-blue-500">Tune your home feed</Link></li>
-          <li><Link to="" className="text-gray-700 hover:text-blue-500">Claimed accounts</Link></li>
-          <li><Link to="" className="text-gray-700 hover:text-blue-500">Social permissions</Link></li>
-          <li><Link to="" className="text-gray-700 hover:text-blue-500">Notifications</Link></li>
-          <li><Link to="" className="text-gray-700 hover:text-blue-500">Privacy and data</Link></li>
-          <li><Link to="" className="text-gray-700 hover:text-blue-500">Security</Link></li>
-          <li><Link to="" className="text-gray-700 hover:text-blue-500">Branded Content</Link></li>
+          <li>
+            <Link
+              to="/settings/editprofile"
+              className="text-gray-700 hover:text-blue-500"
+            >
+              Edit profile
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/settings/account-settings"
+              className="text-gray-700 hover:text-blue-500"
+            >
+              Account management
+            </Link>
+          </li>
+          <li>
+            <Link to="" className="text-gray-700 hover:text-blue-500">
+              Profile visibility
+            </Link>
+          </li>
+          <li>
+            <Link to="" className="text-gray-700 hover:text-blue-500">
+              Tune your home feed
+            </Link>
+          </li>
+          <li>
+            <Link to="" className="text-gray-700 hover:text-blue-500">
+              Claimed accounts
+            </Link>
+          </li>
+          <li>
+            <Link to="" className="text-gray-700 hover:text-blue-500">
+              Social permissions
+            </Link>
+          </li>
+          <li>
+            <Link to="" className="text-gray-700 hover:text-blue-500">
+              Notifications
+            </Link>
+          </li>
+          <li>
+            <Link to="" className="text-gray-700 hover:text-blue-500">
+              Privacy and data
+            </Link>
+          </li>
+          <li>
+            <Link to="" className="text-gray-700 hover:text-blue-500">
+              Security
+            </Link>
+          </li>
+          <li>
+            <Link to="" className="text-gray-700 hover:text-blue-500">
+              Branded Content
+            </Link>
+          </li>
         </ul>
       </aside>
 
@@ -39,9 +72,6 @@ function Settings() {
         {/* The <Outlet> renders the nested routes' content */}
         <Outlet />
       </main>
-
-      
-      
     </div>
   );
 }
