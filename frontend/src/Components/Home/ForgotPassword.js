@@ -7,7 +7,8 @@ function ForgotPassword() {
   const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
-    axiosInstance.post("/forgot-password", { email })
+    axiosInstance
+      .post("/forgot-password", { email })
       .then((res) => {
         if (res.data.Status === "Success") {
           navigate("/");

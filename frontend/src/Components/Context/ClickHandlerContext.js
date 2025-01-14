@@ -9,7 +9,6 @@ export const ClickHandlerProvider = ({ children }) => {
   const [showSignup, setShowSignup] = useState(false);
   const [showBoard, setShowBoard] = useState(false);
 
-
   return (
     <clickHandlerContext.Provider value={{ isOpen, showSignup, setIsOpen, setShowSignup,showBoard,setShowBoard }}>
       {children}

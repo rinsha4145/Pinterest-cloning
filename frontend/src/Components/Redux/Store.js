@@ -8,13 +8,11 @@ import postReducer from './PostSlice';
 import savedReducer from './SavedSlice';
 import boardReducer from './BoardSlice'; // Import BoardSlice
 
-
 // Persist configurations for different slices
 const userPersistConfig = { key: 'user', storage };
 const postsPersistConfig = { key: 'posts', storage };
 const savedPersistConfig = { key: 'save', storage };
 const boardPersistConfig = { key: 'boards', storage };
-
 
 // Create persisted reducers
 const persistedUserReducer = persistReducer(userPersistConfig, userReducer);

@@ -10,7 +10,6 @@ import { logoutUser } from "../Redux/UserSlice";
 import { clearSavedFolders } from "../Redux/SavedSlice";
 import OutsideClickHandler from "react-outside-click-handler";
 
-
 const Navbar = () => {
   const { user } = useSelector((state) => state.user);
   const saved = useSelector((state) => state.save.save);

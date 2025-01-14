@@ -14,7 +14,7 @@ const ChangePassword = ({setView,password}) => {
   // Visibility state for each password field
   const [isOldPasswordVisible, setIsOldPasswordVisible] = useState(false);
   const [isNewPasswordVisible, setIsNewPasswordVisible] = useState(false);
-  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false); 
 
   const navigate = useNavigate();
 
