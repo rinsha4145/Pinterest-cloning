@@ -203,7 +203,7 @@ const Navbar = () => {
                         <p className="px-4 text-xs">More options</p>
                         <button
                           className="block w-full text-left px-4 py-4 text-sm hover:bg-gray-100"
-                          onClick={() => navigate("/settings")}
+                          onClick={() => navigate("/settings/editprofile")}
                         >
                           Settings
                         </button>
@@ -219,16 +219,16 @@ const Navbar = () => {
                         <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
                           Your privacy rights
                         </button>
-                        <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
+                        <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100" onClick={()=>navigate('/close-account')}>
                           Help Centre
                         </button>
-                        <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
+                        <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100" onClick={()=>navigate('/close-account')}>
                           Terms of Service
                         </button>
-                        <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
+                        <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100" onClick={()=>navigate('/close-account')}>
                           Privacy Policy
                         </button>
-                        <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
+                        <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100" onClick={()=>navigate('/close-account')}>
                           Be a beta tester
                         </button>
                         <button

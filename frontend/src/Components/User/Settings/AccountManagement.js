@@ -13,14 +13,11 @@ import { useNavigate } from "react-router-dom";
 
 function AccountManagement() {
   const { user } = useSelector((state) => state.user);
+
   const [originalData, setOriginalData] = useState(user);
   const [view, setView] = useState(false);
   const [password, setPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-
-  const handleNewPasswordToggle = () => {
-    setIsPasswordVisible(!isPasswordVisible); // Toggle the password visibility
-  };
   const [value, setValue] = useState({
     email: "",
     birthdate: "",
@@ -28,6 +25,7 @@ function AccountManagement() {
     gender: "",
     language: "",
   });
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -43,23 +41,21 @@ function AccountManagement() {
 
       setValue({
         ...profile,
-        birthdate: formattedBirthdate, // Set the birthdate in the correct format
+        birthdate: formattedBirthdate, 
       });
     });
     fetchData();
   }, []);
-  console.log(value);
+
   const options = useMemo(() => countryList().getData(), []);
 
   const isFormChanged = JSON.stringify(value) !== JSON.stringify(user);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-
-    // Update user data state for any input change
     setValue((prevData) => ({
       ...prevData,
-      [name]: value, // Directly store the value from input (text, radio, select)
+      [name]: value, 
     }));
   };
   const handleGenderChange = (event) => {
@@ -73,10 +69,6 @@ function AccountManagement() {
       ...prevData,
       country: selectedOption.value, // Use the country value from the object
     }));
-  };
-
-  const handleReset = () => {
-    setValue(originalData);
   };
 
   const handleSubmit = async (e) => {
@@ -109,7 +101,6 @@ function AccountManagement() {
 
       if (response.status >= 200 && response.status < 300) {
         dispatch(updateUser(response.data.updatedProfile));
-        console.log(response.data.updatedProfile);
       }
     } catch (error) {
       console.error("Error updating profile:", error);
@@ -158,7 +149,7 @@ function AccountManagement() {
               />
               <button
                 type="button"
-                onClick={handleNewPasswordToggle} // Call the function to toggle visibility
+                onClick={()=>setIsPasswordVisible(!isPasswordVisible)} // Call the function to toggle visibility
                 className="absolute right-2 top-2"
               >
                 <FontAwesomeIcon
@@ -294,7 +285,7 @@ function AccountManagement() {
       {/* Action Buttons */}
       <div className="mt-6 space-x-4">
         <button
-          onClick={handleReset}
+          onClick={()=>setValue(originalData)}
           type="button"
           disabled={!isFormChanged} // Disable if no changes
           className={`px-6 py-2 rounded-full ${

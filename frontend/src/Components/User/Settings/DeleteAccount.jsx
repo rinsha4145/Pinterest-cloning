@@ -8,7 +8,7 @@ import handleAsync from "../../Utils/HandleAsync";
 const DeleteAccount = () => {
   const { user } = useSelector((state) => state.user);
   const saved = useSelector((state) => state.save.save);
-  
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -36,7 +36,7 @@ const DeleteAccount = () => {
           <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center">
             <img
               src={user?.profileimage}
-              alt="User image"
+              alt="UserImage"
               className="rounded-full"
             />
           </div>
