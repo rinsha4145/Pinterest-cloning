@@ -1,4 +1,6 @@
 const Posts = require("../../Models/postSchema");
+
+// comment on a post
 const commentOnPin = async (req, res) => {
   const { comment } = req.body;
   if (!comment || comment.trim() === "") {
@@ -18,6 +20,7 @@ const commentOnPin = async (req, res) => {
   res.status(200).json({ message: "Comment added successfully", pin });
 };
 
+//delete a comment 
 const deleteComment = async (req, res) => {
   try {
     const pin = await Posts.findOne({ "comments._id": req.params.id });
@@ -67,6 +70,7 @@ const deleteComment = async (req, res) => {
   }
 };
 
+// edit a comment
 const editComment = async (req, res) => {
   const { comment } = req.body;
   if (!comment || comment.trim() === "") {
@@ -104,6 +108,7 @@ const editComment = async (req, res) => {
   });
 };
 
+// get a comment by ID
 const getCommentById = async (req, res) => {
   const pin = await Posts.findOne({ "comments._id": req.params.id }).populate(
     "comments.user"
@@ -114,8 +119,6 @@ const getCommentById = async (req, res) => {
       .status(404)
       .json({ message: "No post found containing this comment" });
   }
-
-  // Find the comment in the post by matching the comment ID
   const comment = pin.comments.find(
     (item) => item._id.toString() === req.params.id.toString()
   );
@@ -127,6 +130,7 @@ const getCommentById = async (req, res) => {
   return res.status(200).json({ message: "Comment found", comment });
 };
 
+// replay to a comment
 const replyToComment = async (req, res) => {
   const { reply } = req.body;
   if (!reply || reply.trim() === "") {
