@@ -18,22 +18,8 @@ const ChangePassword = ({setView,password}) => {
 
   const navigate = useNavigate();
 
-  // Toggle visibility handlers
-  const handleOldPasswordToggle = () => {
-    setIsOldPasswordVisible((prev) => !prev);
-  };
-
-  const handleNewPasswordToggle = () => {
-    setIsNewPasswordVisible((prev) => !prev);
-  };
-
-  const handleConfirmPasswordToggle = () => {
-    setIsConfirmPasswordVisible((prev) => !prev);
-  };
-
   const handlePasswordReset = async (e) => {
     e.preventDefault();
-
     // Basic validation
     if (newPassword !== confirmPassword) {
       setErrorMessage('New passwords do not match');
@@ -83,7 +69,7 @@ const ChangePassword = ({setView,password}) => {
               />
               <button
                 type="button"
-                onClick={handleOldPasswordToggle}
+                onClick={()=> setIsOldPasswordVisible((prev) => !prev)}
                 className="absolute right-2 top-2"
               >
                 <FontAwesomeIcon
@@ -111,7 +97,7 @@ const ChangePassword = ({setView,password}) => {
               />
               <button
                 type="button"
-                onClick={handleNewPasswordToggle}
+                onClick={()=> setIsNewPasswordVisible((prev) => !prev)}
                 className="absolute right-2 top-2"
               >
                 <FontAwesomeIcon
@@ -139,7 +125,7 @@ const ChangePassword = ({setView,password}) => {
               />
               <button
                 type="button"
-                onClick={handleConfirmPasswordToggle}
+                onClick={()=>setIsConfirmPasswordVisible((prev) => !prev)}
                 className="absolute right-2 top-2"
               >
                 <FontAwesomeIcon
