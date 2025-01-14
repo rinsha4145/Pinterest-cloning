@@ -2,9 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // Initial state for the user
 const initialState = {
-  user: {}, // Initially no user
-  token: null, // Store token
-  isAuthenticated: false, // Store authentication status
+  user: {}, 
+ 
 };
 
 const userSlice = createSlice({
@@ -13,24 +12,18 @@ const userSlice = createSlice({
   reducers: {
     setUser: (state, action) => {
       state.user = action.payload; 
-      state.token = action.payload.token;
-      state.refreshtoken = action.payload.refreshtoken; 
-      state.isAuthenticated = true; // Set user as authenticated
     },
     updateUser: (state, action) => {
-      // Update specific user details in the state
       state.user = {
         ...state.user,
-        ...action.payload, // Merge the new details into the user object
+        ...action.payload, 
       }
     },
 
     updateFollowing: (state, action) => {
       const { following } = action.payload;
-
-      // Ensure the user object exists
       if (state.user) {
-        state.user.following = following; // Update the following array
+        state.user.following = following;
       }
     },
     logoutUser: (state) => {
@@ -41,7 +34,5 @@ const userSlice = createSlice({
   },
 });
 
-// Export actions to use in the component
 export const { setUser, logoutUser,updateUser,updateFollowing } = userSlice.actions;
-// Export reducer to configure store
 export default userSlice.reducer;
