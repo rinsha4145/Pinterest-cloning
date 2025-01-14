@@ -1,25 +1,23 @@
-import React from 'react'
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axiosInstance from '../Utils/AxioaInstance';
-
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axiosInstance from "../Utils/AxioaInstance";
 
 function ForgotPassword() {
-    const [email, setEmail] = useState()
-    const navigate = useNavigate()
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        axiosInstance.post('/forgot-password', {email})
-        .then(res => {
-            if(res.data.Status === "Success") {
-                navigate('/')
-               
-            }
-        }).catch(err => console.log(err))
-    }
+  const [email, setEmail] = useState();
+  const navigate = useNavigate();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axiosInstance.post("/forgot-password", { email })
+      .then((res) => {
+        if (res.data.Status === "Success") {
+          navigate("/");
+        }
+      })
+      .catch((err) => console.log(err));
+  };
 
-    return(
-      <>
+  return (
+    <>
       <div className="flex justify-center items-center bg-gray-200 h-screen">
         <div className="bg-white p-6 rounded-md w-80">
           <h4 className="text-lg font-semibold mb-4">Forgot Password</h4>
@@ -47,7 +45,7 @@ function ForgotPassword() {
         </div>
       </div>
     </>
-    )
+  );
 }
 
 export default ForgotPassword;

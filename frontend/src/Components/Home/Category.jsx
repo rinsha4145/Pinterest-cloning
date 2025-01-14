@@ -6,10 +6,11 @@ import ShareMenu from "../Common/ShareMenu";
 
 function Category() {
   const { category } = useParams();
-  const [isShareMenuVisible, setShareMenuVisible] = useState(false); // State to control visibility of ShareMenu
-  const navigate = useNavigate();
 
+  const [isShareMenuVisible, setShareMenuVisible] = useState(false); // visibility of ShareMenu
   const [data, setData] = useState([]); // State to store fetched data
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {

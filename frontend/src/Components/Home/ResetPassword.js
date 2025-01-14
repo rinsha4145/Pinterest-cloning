@@ -22,10 +22,15 @@ function ResetPassword() {
   return (
     <div className="flex justify-center items-center bg-gray-200 min-h-screen">
       <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
-        <h4 className="text-xl font-semibold mb-4 text-center">Reset Password</h4>
+        <h4 className="text-xl font-semibold mb-4 text-center">
+          Reset Password
+        </h4>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               New Password
             </label>
             <input
