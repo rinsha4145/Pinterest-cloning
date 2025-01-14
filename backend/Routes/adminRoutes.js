@@ -8,8 +8,8 @@ const postcontroller = require('../Controller/Admin/postController');
 
 
 
-const tryCatch=require('../Middleware/tryCatch');
-const { adminAuthMiddleware } = require("../Middleware/authentication");
+const tryCatch=require('../Middlewares/tryCatch');
+const { adminAuthMiddleware } = require("../Middlewares/authentication");
  
 router
 .post('/admlogin',tryCatch(admincontroller.adminLogin))   

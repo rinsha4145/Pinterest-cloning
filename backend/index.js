@@ -3,7 +3,7 @@ const app = express();
 const mongoose = require("mongoose");
 require('dotenv').config();
 const cookieParser = require('cookie-parser');
-const errorHandler = require('./Middleware/errorHandler');
+const errorHandler = require('./Middlewares/errorHandler');
 const useRoutes = require('./Routes/userRoute'); 
 const adminRoutes = require('./Routes/adminRoutes'); 
 const cors=require("cors") 
@@ -21,6 +21,13 @@ app.use('/', useRoutes);
 app.use('/admin',adminRoutes);
 
 app.use(errorHandler)
-mongoose.connect(process.env.MONGODB_URL)
-  .then(() => app.listen(PORT, () => console.log(`Server Running on Port: http://localhost:${PORT}`)))
-  .catch((error) => console.log(`${error} did not connect`)); 
+
+connectDB()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server Running on Port: http://localhost:${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error("Failed to start server:", error.message);
+  });

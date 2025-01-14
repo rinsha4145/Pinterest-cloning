@@ -7,9 +7,9 @@ const boardcontroller = require('../Controller/User/boardController');
 const likecontroller = require('../Controller/User/likeController');
 const commentcontroller = require('../Controller/User/commentController');
 
-const tryCatch=require('../Middleware/tryCatch');
-const upload = require("../Middleware/imageUpload");
-const { userAuthMiddleware } = require("../Middleware/authentication");
+const tryCatch=require('../Middlewares/tryCatch');
+const upload = require("../Middlewares/imageUpload");
+const { userAuthMiddleware } = require("../Middlewares/authentication");
 const { forgotpass } = require("../Controller/forgotPassword");
 const { resetpass } = require("../Controller/resetPassword");
 const { changePass } = require("../Controller/changePassword");
