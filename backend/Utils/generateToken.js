@@ -13,21 +13,21 @@ const generateToken = (user, res) => {
     );
 
     // Set cookies for tokens
-    res.cookie("token",JSON.stringify(token), {
+    res.cookie("token", token, {
       httpOnly: true,
       secure: true,
       sameSite: "none",
       maxAge: 3 * 24 * 60 * 60 * 1000,
     });
 
-    res.cookie("refreshtoken",JSON.stringify(refreshToken), {
+    res.cookie("refreshtoken", refreshToken, {
       httpOnly: true,
       secure: true,
       sameSite: "none",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.cookie("user",JSON.stringify(user), {
+    res.cookie("user", user, {
       httpOnly: true,
       secure: true,
       sameSite: "none",
@@ -65,10 +65,6 @@ const generateToken = (user, res) => {
       sameSite: "none",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
-
-    return res
-      .status(200)
-      .json({ status: "success", message: "Admin Logged in successfully" });
   }
 };
 

@@ -32,26 +32,26 @@ function Login({ loginOpen, setLoginOpen }) {
   };
 
   // Check if user is logged in
-  useEffect(() => {
-    const userCookie = Cookies.get("user");
-    console.log(userCookie)
-    if (userCookie) {
-      const userJson = userCookie.startsWith("j:")
-        ? userCookie.slice(2)
-        : userCookie;
-      try {
-        const user = JSON.parse(userJson);
-        console.log(user)
-        dispatch(setUser(user));
-        setLoginOpen(false);
-        cancelDeletion(user);
-      } catch (error) {
-        console.error("Invalid user cookie");
-      }
-    } else {
-      console.log("User cookie not found");
-    }
-  }, [isLoggedIn]);
+  // useEffect(() => {
+  //   const userCookie = Cookies.get("user");
+  //   console.log(userCookie)
+  //   if (userCookie) {
+  //     const userJson = userCookie.startsWith("j:")
+  //       ? userCookie.slice(2)
+  //       : userCookie;
+  //     try {
+  //       const user = JSON.parse(userJson);
+  //       console.log(user)
+  //       dispatch(setUser(user));
+  //       setLoginOpen(false);
+  //       cancelDeletion(user);
+  //     } catch (error) {
+  //       console.error("Invalid user cookie");
+  //     }
+  //   } else {
+  //     console.log("User cookie not found");
+  //   }
+  // }, [isLoggedIn]);
 
   //cancel the account deletion
   const cancelDeletion = async (user) => {
@@ -81,8 +81,9 @@ function Login({ loginOpen, setLoginOpen }) {
         password: datas.password,
       });
         setIsLoggedIn(true);
-        console.log("first,",response)
-        
+        console.log("first,",response.data.user)
+        dispatch(setUser(response.data.user))
+        cancelDeletion(response.data.user);
         navigate("/");
       
     }

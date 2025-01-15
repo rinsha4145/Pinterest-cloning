@@ -58,7 +58,7 @@ const userLogin = async (req, res, next) => {
     generateToken(user, res);
     res
       .status(200)
-      .json({ status: "success", message: "User Logged in successfully" });
+      .json({ status: "success", message: "User Logged in successfully",user });
   }
 };
 
