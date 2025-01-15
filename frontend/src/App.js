@@ -1,42 +1,47 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import Navbar from "./Components/Home/Navbar";
-import Slides from "./Components/Home/Slides";
-import Home from "./Components/Home/Home";
-import ForgotPassword from "./Components/Home/ForgotPassword";
-import Create from "./Components/Home/CreatePost";
-import Explore from "./Components/Home/Explore";
-import Category from "./Components/Home/Category";
-import ResetPassword from "./Components/Home/ResetPassword";
-import ProfilePage from "./Components/User/ProfilePage";
-import Settings from "./Components/User/Settings/Settings";
-import Created from "./Components/User/Created";
-import Pinned from "./Components/User/Pinned";
-import ViewBoard from "./Components/User/ViewBoard";
-import ViewPost from "./Components/Home/ViewPost";
-import ViewOtherUserProfile from "./Components/User/ViewOtherUserProfile";
-import EditProfile from "./Components/User/Settings/EditProfile";
-import ChangePassword from "./Components/User/Settings/ChangePassword";
-import AccountManagement from "./Components/User/Settings/AccountManagement";
-import DeleteAccount from "./Components/User/Settings/DeleteAccount";
 import AdmNavbar from "./Components/Admin/Navbar";
-import AdmLogin from "./Components/Admin/Login";
-import AdminPage from "./Components/Admin/Home";
-import Users from "./Components/Admin/Users";
-import Posts from "./Components/Admin/Posts";
-import Report from "./Components/Admin/Report";
-import ViewUser from "./Components/Admin/ViewUser";
-import ViewPostDetails from "./Components/Admin/ViewPostDetails";
+import Loading from "./Components/Common/Loading"; // Custom spinner component
+import "react-toastify/dist/ReactToastify.css";
+
+// Lazy load components
+const Slides = lazy(() => import("./Components/Home/Slides"));
+const Home = lazy(() => import("./Components/Home/Home"));
+const ForgotPassword = lazy(() => import("./Components/Home/ForgotPassword"));
+const Create = lazy(() => import("./Components/Home/CreatePost"));
+const Explore = lazy(() => import("./Components/Home/Explore"));
+const Category = lazy(() => import("./Components/Home/Category"));
+const ResetPassword = lazy(() => import("./Components/Home/ResetPassword"));
+const ProfilePage = lazy(() => import("./Components/User/ProfilePage"));
+const Settings = lazy(() => import("./Components/User/Settings/Settings"));
+const Created = lazy(() => import("./Components/User/Created"));
+const Pinned = lazy(() => import("./Components/User/Pinned"));
+const ViewBoard = lazy(() => import("./Components/User/ViewBoard"));
+const ViewPost = lazy(() => import("./Components/Home/ViewPost"));
+const ViewOtherUserProfile = lazy(() => import("./Components/User/ViewOtherUserProfile"));
+const EditProfile = lazy(() => import("./Components/User/Settings/EditProfile"));
+const ChangePassword = lazy(() => import("./Components/User/Settings/ChangePassword"));
+const AccountManagement = lazy(() => import("./Components/User/Settings/AccountManagement"));
+const DeleteAccount = lazy(() => import("./Components/User/Settings/DeleteAccount"));
+const AdmLogin = lazy(() => import("./Components/Admin/Login"));
+const AdminPage = lazy(() => import("./Components/Admin/Home"));
+const Users = lazy(() => import("./Components/Admin/Users"));
+const Posts = lazy(() => import("./Components/Admin/Posts"));
+const Report = lazy(() => import("./Components/Admin/Report"));
+const ViewUser = lazy(() => import("./Components/Admin/ViewUser"));
+const ViewPostDetails = lazy(() => import("./Components/Admin/ViewPostDetails"));
+
 function App() {
   const { user } = useSelector((state) => state.user);
   const location = useLocation();
   const isAdminLogin = location.pathname === "/adminlogin";
+
   return (
-    <>
-      {/* Conditionally render Navbar */}
-      <Routes>
+    <Suspense fallback={<Loading />}>
+        <Routes>
         <Route path="/adminlogin" element={<AdmLogin />} />
       </Routes>
       {!user?.admin ? (
@@ -97,7 +102,7 @@ function App() {
           </Routes>
         </>
       )}
-    </>
+    </Suspense>
   );
 }
 

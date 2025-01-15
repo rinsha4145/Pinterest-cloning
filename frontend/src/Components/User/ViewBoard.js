@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 
 function ViewBoard() {
   const { id } = useParams();
-  const [data, setData] = useState(null); // State to store fetched data
+  const [data, setData] = useState(null); 
   
   const dispatch = useDispatch();
 
@@ -23,7 +23,7 @@ function ViewBoard() {
 
   const handleDelete = handleAsync( async (postid) => {
     const response = await axiosInstance.delete(`/removepost`, {
-      data: { boardId: id, postId: postid }, // Use 'data' for the request payload
+      data: { boardId: id, postId: postid }, 
     });
     dispatch(updateBoard(response.data.board));
     handleAsync(fetchData)();

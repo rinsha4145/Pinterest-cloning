@@ -288,12 +288,7 @@ const Navbar = () => {
       ) : (
         <>
           <nav
-            className={`flex flex-wrap justify-between items-center px-6 py-4 z-50 fixed top-0 left-0 right-0 bg-white transition-all duration-300 ${
-              loginOpen || SignupOpen
-                ? "bg-black bg-opacity-50 pointer-events-none"
-                : ""
-            }`}
-          >
+            className="flex flex-wrap justify-between items-center px-6 py-4 z-50 fixed top-0 left-0 right-0 bg-white transition-all duration-300 ">
             {/* Left Section - Logo */}
             <div className="flex items-center space-x-3">
               <div className="flex items-center space-x-2">

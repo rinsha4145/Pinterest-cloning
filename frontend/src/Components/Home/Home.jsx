@@ -128,7 +128,7 @@ const Home = () => {
           )}
   
           {/* Hover Content */}
-          <div className="absolute inset-0 bg-black rounded-2xl bg-opacity-0 group-hover:bg-opacity-50 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="absolute inset-0 bg-black rounded-2xl bg-opacity-50 group-hover:bg-opacity-50 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <div className="text-center relative w-full h-full">
               {/* Conditional content rendering */}
               {boards?.some((board) =>

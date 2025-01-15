@@ -279,7 +279,7 @@ function Saved({ id }) {
                       </div>
                     </div>
                     <button
-                      className="absolute text-black bottom-[90px] right-5 bg-black bg-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition"
+                      className="absolute text-black bottom-[90px] right-5 bg-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleEdit(folder._id);
