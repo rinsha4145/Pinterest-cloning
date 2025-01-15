@@ -2,7 +2,7 @@ import axios from "axios";
 // import Cookies from 'js-cookie';
 
 const axiosInstance = axios.create({
-  baseURL: "https://pinterest-cloning.onrender.com", // Set your base URL here
+  baseURL: "http://localhost:4000", // Set your base URL here
   withCredentials: true, // Allows cookies to be sent with cross-site requests
 });
 
