@@ -25,7 +25,7 @@ app.use(errorHandler)
 connectDB()
   .then(() => {
     app.listen(PORT, () => {
-      console.log(`Server Running on Port: http://localhost:${PORT}`);
+      console.log(`Server Running on Port:${process.env.FRONTEND_URL}`);
     });
   })
   .catch((error) => {
