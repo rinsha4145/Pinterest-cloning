@@ -11,7 +11,7 @@ const connectDB = require("./Configs/db");
 
 app.use(express.json());
 app.use(cors(
-  {origin:"http://localhost:3000",
+  {origin:process.env.FRONTEND_URL,
     credentials:true
   }
 ))
