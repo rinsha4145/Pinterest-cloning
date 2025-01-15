@@ -13,21 +13,21 @@ const generateToken = (user, res) => {
     );
 
     // Set cookies for tokens
-    res.cookie("token", token, {
+    res.cookie("token",JSON.stringify(token), {
       httpOnly: true,
       secure: true,
       sameSite: "none",
       maxAge: 3 * 24 * 60 * 60 * 1000,
     });
 
-    res.cookie("refreshtoken", refreshToken, {
+    res.cookie("refreshtoken",JSON.stringify(refreshToken), {
       httpOnly: true,
       secure: true,
       sameSite: "none",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.cookie("user", user, {
+    res.cookie("user",JSON.stringify(user), {
       httpOnly: true,
       secure: true,
       sameSite: "none",

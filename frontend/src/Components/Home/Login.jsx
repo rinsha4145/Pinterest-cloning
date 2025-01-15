@@ -34,7 +34,7 @@ function Login({ loginOpen, setLoginOpen }) {
   // Check if user is logged in
   useEffect(() => {
     const userCookie = Cookies.get("user");
-
+    console.log(userCookie)
     if (userCookie) {
       const userJson = userCookie.startsWith("j:")
         ? userCookie.slice(2)
