@@ -14,21 +14,21 @@ const generateToken = (user, res) => {
 
     // Set cookies for tokens
     res.cookie("token", token, {
-      httpOnly: false,
+      httpOnly: true,
       secure: true,
       sameSite: "none",
       maxAge: 3 * 24 * 60 * 60 * 1000,
     });
 
     res.cookie("refreshtoken", refreshToken, {
-      httpOnly: false,
+      httpOnly: true,
       secure: true,
       sameSite: "none",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     res.cookie("user", user, {
-      httpOnly: false,
+      httpOnly: true,
       secure: true,
       sameSite: "none",
       maxAge: 7 * 24 * 60 * 60 * 1000,
@@ -46,21 +46,21 @@ const generateToken = (user, res) => {
     );
 
     res.cookie("admin", user, {
-      httpOnly: false,
+      httpOnly: true,
       secure: true,
       sameSite: "none",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     res.cookie("admtoken", admtoken, {
-      httpOnly: false,
+      httpOnly: true,
       secure: true,
       sameSite: "none",
       maxAge: 3 * 24 * 60 * 60 * 1000,
     });
 
     res.cookie("admrefreshToken", admrefreshToken, {
-      httpOnly: false,
+      httpOnly: true,
       secure: true,
       sameSite: "none",
       maxAge: 7 * 24 * 60 * 60 * 1000,

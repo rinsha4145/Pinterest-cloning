@@ -34,12 +34,14 @@ function Login({ loginOpen, setLoginOpen }) {
   // Check if user is logged in
   useEffect(() => {
     const userCookie = Cookies.get("user");
+
     if (userCookie) {
       const userJson = userCookie.startsWith("j:")
         ? userCookie.slice(2)
         : userCookie;
       try {
         const user = JSON.parse(userJson);
+        console.log(user)
         dispatch(setUser(user));
         setLoginOpen(false);
         cancelDeletion(user);
@@ -79,6 +81,7 @@ function Login({ loginOpen, setLoginOpen }) {
         password: datas.password,
       });
         setIsLoggedIn(true);
+        console.log("first,",response)
         
         navigate("/");
       
